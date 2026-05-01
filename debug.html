@@ -68,6 +68,8 @@ body{font:13px/1.5 Consolas,Menlo,monospace;background:#1e1e1e;color:#d4d4d4;dis
 .hnt{color:#555;font-size:11px;cursor:pointer}
 .jt-ch{margin-left:14px}
 .pin-dot{color:#4d9eff;font-size:10px;margin-left:3px;flex-shrink:0;user-select:none}
+.edit-input{background:#1e1e1e;border:1px solid #4d9eff;color:#d4d4d4;font:12px Consolas,Menlo,monospace;padding:1px 4px;min-width:80px;outline:none;border-radius:1px}
+.edit-input.err{border-color:#f48771}
 </style>
 </head>
 <body>
@@ -227,6 +229,7 @@ function buildNode(parent,key,value,path,filename,depth,changedPaths){
   }else{
     const vs=document.createElement('span');vs.className=primCls(value);vs.textContent=JSON.stringify(value);
     vs.onclick=e=>nodeClick(e,filename,path,value,row);
+    vs.ondblclick=e=>{e.stopPropagation();startInlineEdit(vs,filename,path,value);};
     tog.textContent=' ';row.appendChild(vs);li.appendChild(row);
   }
   parent.appendChild(li);
@@ -447,6 +450,56 @@ function stopRun(){
   if(pollTimer){clearTimeout(pollTimer);pollTimer=null;}
   appendOut('[用户中断]','warn');
   resetRun();
+}
+
+// ── Inline edit ──
+function startInlineEdit(span, filename, path, oldValue) {
+  const inp = document.createElement('input');
+  inp.className = 'edit-input';
+  const typ = typeof oldValue;
+  inp.value = typ === 'string' ? oldValue : JSON.stringify(oldValue);
+  inp.style.width = Math.max(120, span.offsetWidth + 40) + 'px';
+  span.replaceWith(inp);
+  inp.focus(); inp.select();
+  let done = false;
+  const commit = async () => {
+    if (done) return; done = true;
+    const raw = inp.value;
+    let newVal;
+    try {
+      if (typ === 'number') {
+        if (raw.trim() === '') throw new Error('cannot be empty');
+        newVal = Number(raw);
+        if (isNaN(newVal)) throw new Error('not a number');
+      } else if (typ === 'boolean') {
+        if (raw === 'true') newVal = true;
+        else if (raw === 'false') newVal = false;
+        else throw new Error('must be true/false');
+      } else if (oldValue === null) {
+        newVal = raw === 'null' ? null : raw;
+      } else {
+        newVal = raw;
+      }
+      await apiPost('/api/patch_field', {file: filename, path: path, value: newVal});
+      let node = S.cache[filename];
+      for (let i = 0; i < path.length - 1; i++) node = node[path[i]];
+      node[path[path.length - 1]] = newVal;
+      renderTree(S.cache[filename], filename, S.changedPaths);
+      setStatus('已保存 ' + path.join('/'), '#89d185');
+      setTimeout(() => setStatus('就绪'), 1500);
+    } catch(e) {
+      done = false;
+      inp.classList.add('err');
+      inp.title = e.message;
+      inp.focus();
+    }
+  };
+  const cancel = () => { if (!done) { done = true; renderTree(S.cache[filename], filename, S.changedPaths); } };
+  inp.addEventListener('keydown', e => {
+    if (e.key === 'Enter') { e.preventDefault(); commit(); }
+    if (e.key === 'Escape') { e.preventDefault(); cancel(); }
+  });
+  inp.addEventListener('blur', () => setTimeout(cancel, 100));
 }
 
 document.addEventListener('keydown',e=>{if(e.ctrlKey&&e.key==='Enter')run();});

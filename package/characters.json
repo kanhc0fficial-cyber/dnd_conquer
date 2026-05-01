@@ -1,0 +1,304 @@
+[
+  {
+    "id": "card_char_xie_nian",
+    "name": "邪念",
+    "type": "character",
+    "image_path": "assets/cards/xie_nian.png",
+    "control": "player",
+    "summary": "来自东方大陆卡拉图尔寿龙国的游历武僧，头脑冷静而内心复杂，惯以观察代替言语，脑中被植入了夺心魔蝌蚪。",
+    "is_locked": false,
+    "bound_event_id": null,
+    "location": "loc_ravaged_beach",
+    "_combat_info": {
+      "_Class": "武僧",
+      "_Subclass": "四元素之道",
+      "_Level": 1,
+      "_Stats": { "STR": 12, "DEX": 17, "CON": 13, "INT": 12, "WIS": 16, "CHA": 8 },
+      "_Feats": ["无"],
+      "_Equipment": {
+        "MainHand": "无（徒手）",
+        "OffHand": "无",
+        "Armor": "无（武僧袍服）"
+      },
+      "_Actions": [
+        { "name": "徒手打击", "type": "Melee", "effect": "1d4 + DEX调整值 钝击伤害，可以附赠动作再打一次" },
+        { "name": "闪避", "type": "Ability", "effect": "附赠动作，直到下回合开始，所有需要敏捷豁免的攻击对你的优势以及自动失败等效" },
+        { "name": "以气为盾", "type": "Ability", "effect": "消耗1点气，使用反应减少受到的伤害" },
+        { "name": "眩晕打击", "type": "Melee", "effect": "命中后消耗1点气，目标进行体质豁免，失败则被眩晕直到下回合结束" }
+      ],
+      "_ki_points": 2
+    },
+    "_level_info": {
+      "_ExpToNextLevel": 300,
+      "_ExpRules": "5e标准经验曲线"
+    },
+    "_story_info": {
+      "_Background": [
+        "邪念出生于寿龙国（Shou Lung）南境的一座港口城市，寿人面孔，少年时随商船西行抵达费伦大陆。",
+        "他在深水城的一间隐秘武馆中接受了长达十年的武僧训练，磨砺出异于常人的感知与克制。",
+        "一次前往博德之门的途中，遭遇了夺心魔飞船事故，被吸入星界空间后植入了蝌蚪，随飞船坠落至此。",
+        "[HIDDEN] 他离开寿龙的真正原因是他在故乡犯下了一件令自己终生不愿提及的事，那件事至今未了结。",
+        "他惯于观察而非行动，极少主动开口，但一旦做出决定便极难撼动。"
+      ],
+      "_Goal": [
+        "找到一个可靠的途径移除脑中的夺心魔蝌蚪，绝不接受任何会让自己失去自我意志的代价。",
+        "在费伦大陆找到一条生存下去的路，暂时不急于回到卡拉图尔。",
+        "[HIDDEN] 确认追踪他的那个人是否已经在飞船事故中死亡。"
+      ]
+    },
+    "_appearance": {
+      "_Race": "人类（寿人，来自卡拉图尔东方大陆）",
+      "_Body_and_Face": {
+        "facial_features": "典型的东方面孔，轮廓清晰，眼角微微上挑，表情极少变化，静止时如同一尊雕像",
+        "eye_color": "深棕色，几乎接近黑色",
+        "hair": "纯黑色，扎成发髻，几缕散发贴着太阳穴",
+        "height": "178cm"
+      },
+      "_Clothing": "一身洗得发白的深灰色武僧袍服，腰间以布条代替腰带，手肘和膝盖处有磨损的痕迹"
+    },
+    "current_hp": 10,
+    "current_exp": 0,
+    "attitude_value": null,
+    "attitude_desc": "（玩家角色，无好感度系统）",
+    "attitude_update_rule": null,
+    "inventory": [],
+    "agenda": "观察当前局势，在不暴露自身弱点的前提下，逐步与其他幸存者建立可信赖的关系。"
+  },
+  {
+    "id": "card_char_shadowheart",
+    "name": "影心",
+    "type": "character",
+    "image_path": "assets/cards/shadowheart.png",
+    "control": "world",
+    "summary": "一名半精灵牧师，[HIDDEN]是莎尔的隐秘信徒，怀抱一个能够抵御夺心魔控制的星界遗物，[HIDDEN]为防泄密被抹去了部分记忆。",
+    "is_locked": false,
+    "bound_event_id": null,
+    "location": "loc_ravaged_beach",
+    "_combat_info": {
+      "_Class": "牧师",
+      "_Level": 1,
+      "_Stats": { "STR": 13, "DEX": 13, "CON": 14, "INT": 10, "WIS": 15, "CHA": 14 },
+      "_Feats": ["无"],
+      "_Equipment": {
+        "MainHand": "钉锤",
+        "OffHand": "盾牌",
+        "Armor": "链甲衫"
+      },
+      "_Actions": [
+        { "name": "近战攻击 (钉锤)", "type": "Melee", "effect": "1d6 + STR调整值 钝击伤害" },
+        { "name": "远程攻击 (轻弩)", "type": "Ranged", "effect": "1d8 + DEX调整值 穿刺伤害" },
+        { "name": "治愈真言", "type": "Spell", "effect": "附赠动作施放，恢复 1d4 + WIS调整值 生命值" },
+        { "name": "圣火术", "type": "Spell", "effect": "1d8 辐射伤害，目标需进行敏捷豁免对抗，失败则承受全额伤害" },
+        { "name": "曳光弹", "type": "Spell", "effect": "4d6 辐射伤害，命中后使下一个攻击该目标的检定具有优势" },
+        { "name": "祝福术", "type": "Spell", "effect": "专注，使3名友军的攻击检定和豁免检定获得 1d4 加值" },
+        { "name": "引导神力：召唤分身", "type": "Ability", "effect": "创造一个完美的幻象，使攻击幻象周围目标的检定获得优势" }
+      ]
+    },
+    "_level_info": {
+      "_ExpToNextLevel": 300,
+      "_ExpRules": "5e标准经验曲线"
+    },
+    "_story_info": {
+      "_Background": [
+        "作为半精灵从小在博德之门长大，熟悉城市的三教九流。",
+        "[HIDDEN] 她的真实身份是从小被莎尔教会绑架洗脑的塞伦涅信徒。",
+        "作为暗夜法官候选人和虔诚的莎尔信徒，她精通暗影法术与隐匿潜行技巧。",
+        "受修道院院长指派执行了一项从吉斯洋基人手中夺取星界棱柱的高度机密任务。",
+        "[HIDDEN] 脑中缺失了一部分记忆，这是她在执行偷取神器任务前被自愿抹去以防泄密的。"
+      ],
+      "_Goal": [
+        "急需寻找医师或特殊的治疗手段，移除脑中的夺心魔蝌蚪。",
+        "不惜一切代价保护并把神秘的星界棱柱安全带回博德之门的莎尔教会驻地。",
+        "[HIDDEN] 渴望通过莎尔女神的严苛试炼，成为一名真正的暗夜法官。",
+        "在旅途中寻找有关莎尔教会的线索或隐秘祭坛，以维持自己的信仰和祈祷。",
+        "在这片充满敌意的荒野中隐藏自己莎尔信徒的身份并努力生存下来。"
+      ]
+    },
+    "_appearance": {
+      "_Race": "半精灵",
+      "_Body_and_Face": {
+        "facial_features": "面容精致秀丽，但眉宇间总是带着几分疏离与防备",
+        "eye_color": "深绿色",
+        "hair": "纯黑发色，长直发，脑后扎着精巧的发髻，留有标志性的齐刘海",
+        "measurements": "86-62-90",
+        "height": "165cm"
+      },
+      "_Clothing": "穿着带有莎尔神圣标志的特制黑紫色锁子甲，头上戴着黑色的额前环饰"
+    },
+    "current_hp": 10,
+    "current_exp": 0,
+    "attitude_value": -20,
+    "attitude_desc": "警惕且充满防备，不愿透露过多关于自己的过去，但为了生存愿意暂时同行。",
+    "attitude_update_rule": "看重实用主义和谨慎行事，对尊重她隐私、对莎尔教会表现出宽容或感兴趣的言行会增加好感；反感过度刺探隐私、无底线的善良、以及对塞伦涅的赞美。",
+    "inventory": ["item_potion_of_healing", "item_scroll_of_revivify"],
+    "agenda": "寻找医师移除脑中的夺心魔蝌蚪，寻找前往博德之门的道路，同时保护神秘遗物不被夺走。"
+  },
+  {
+    "id": "card_char_gale",
+    "name": "盖尔",
+    "type": "character",
+    "image_path": "assets/cards/gale.png",
+    "control": "world",
+    "summary": "一位来自深水城的天才人类法师，胸口寄生着危险的耐色瑞尔魔法阵，必须定期吞噬魔法物品以防爆发。",
+    "is_locked": false,
+    "bound_event_id": null,
+    "location": "loc_roadside_cliffs",
+    "_combat_info": {
+      "_Class": "法师",
+      "_Level": 1,
+      "_Stats": { "STR": 8, "DEX": 13, "CON": 14, "INT": 17, "WIS": 10, "CHA": 13 },
+      "_Feats": ["无"],
+      "_Equipment": {
+        "MainHand": "铁头杖",
+        "OffHand": "无",
+        "Armor": "法师长袍"
+      },
+      "_Actions": [
+        { "name": "近战攻击 (铁头杖)", "type": "Melee", "effect": "1d6 + STR调整值 钝击伤害" },
+        { "name": "魔法飞弹", "type": "Spell", "effect": "发射3枚飞弹，每枚造成 1d4+1 力场伤害，必定命中" },
+        { "name": "火炎箭", "type": "Spell", "effect": "远程法术攻击，命中造成 1d10 火焰伤害" },
+        { "name": "护盾术", "type": "Spell_Reaction", "effect": "反应施放，本回合AC获得 +5 加值，并免疫魔法飞弹" },
+        { "name": "睡眠术", "type": "Spell", "effect": "影响 5d8 点当前生命值的生物陷入沉睡，持续1分钟" },
+        { "name": "塔莎狂笑术", "type": "Spell", "effect": "专注，目标感知豁免失败则陷入狂笑并倒地" },
+        { "name": "法师之手", "type": "Spell", "effect": "召唤一只隐形或幽灵般的手进行简单的交互操作" }
+      ]
+    },
+    "_level_info": {
+      "_ExpToNextLevel": 300,
+      "_ExpRules": "5e标准经验曲线"
+    },
+    "_story_info": {
+      "_Background": [
+        "盖尔是深水城一位年少成名的天才人类法师，精通各项高深奥术原理。",
+        "他曾经是魔法女神密斯特拉的选民，并且一度成为她最亲密的凡人伴侣。",
+        "为了进一步证明自己的能力并取悦密斯特拉，他鲁莽地寻回了耐色瑞尔帝国遗失的危险魔法碎片。",
+        "这块包含纯粹魔网能量的耐色瑞尔碎片寄生在他的胸口，导致他失去了女神的宠爱。",
+        "如果他不能定期用高强度的魔法物品来喂养胸口的法阵，它就会引发足以摧毁整个城市的灾难性爆炸。"
+      ],
+      "_Goal": [
+        "尽快寻找高明的施法者移除脑中的夺心魔蝌蚪。",
+        "持续寻找并获取富含魔网能量的魔法物品，用来稳定胸口饥饿的耐色瑞尔魔法阵。",
+        "寻找能彻底解除胸口诅咒、将魔法碎片安全剥离或者完全控制它的方法。",
+        "祈求有朝一日能够赎罪，重新获得魔法女神密斯特拉的原谅和青睐。",
+        "结交有用的盟友，利用队伍的力量达成自己的目的，并在必要时保护他们免受法阵的波及。"
+      ]
+    },
+    "_appearance": {
+      "_Race": "人类",
+      "_Body_and_Face": {
+        "facial_features": "五官端正，留着精心修剪的胡须，常带有从容或自嘲的微笑，带有浓厚的书卷气",
+        "eye_color": "深棕色",
+        "hair": "棕色发色，中长微卷发，通常向后梳理得整齐",
+        "measurements": "98-80-95",
+        "height": "180cm"
+      },
+      "_Clothing": "穿着绣有星月暗纹的紫罗兰色法师长袍，腰间挂着多个施法材料小袋，随身带有微弱的奥术气息"
+    },
+    "current_hp": 8,
+    "current_exp": 0,
+    "attitude_value": 30,
+    "attitude_desc": "友好且健谈，急切地寻求合作以应对当前的双重危机（蝌蚪和法阵）。",
+    "attitude_update_rule": "欣赏智慧、魔法知识的探讨以及理性的决策，对愿意提供魔法物品帮助他稳定法阵的盟友会极大增加好感；反感愚蠢、残忍或对魔法不敬的行为。",
+    "condition": "胸口的耐色瑞尔魔法阵极其饥饿，急需在接下来几天内吸收一件带有魔网能量的魔法物品。",
+    "inventory": ["item_potion_of_healing"],
+    "agenda": "说服主角收留自己，利用自己的魔法知识提供帮助，并试图获取队伍中多余的魔法装备来喂养法阵。"
+  },
+  {
+    "id": "card_char_halsin",
+    "name": "哈尔辛",
+    "type": "character",
+    "image_path": "assets/cards/halsin.png",
+    "control": "world",
+    "summary": "翠绿林地的大德鲁伊，拥有强大的自然法术，为了调查寄生虫起源而离开林地，目前身陷地精营地。",
+    "is_locked": false,
+    "bound_event_id": null,
+    "location": "loc_goblin_camp",
+    "_combat_info": {
+      "_Class": "德鲁伊",
+      "_Level": 5,
+      "_Stats": { "STR": 16, "DEX": 14, "CON": 16, "INT": 10, "WIS": 16, "CHA": 14 },
+      "_Feats": ["巨武器大师"],
+      "_Equipment": {
+        "MainHand": "无",
+        "OffHand": "无",
+        "Armor": "破损的皮甲"
+      },
+      "_Actions": [
+        { "name": "荒野形态：洞熊", "type": "Ability", "effect": "变身为熊，获得30点临时生命值，拥有多重攻击能力，使用熊的属性" },
+        { "name": "熊形态爪击", "type": "Melee", "effect": "2d6 + STR调整值 挥砍伤害" },
+        { "name": "橡棍术", "type": "Spell", "effect": "附赠动作，使木棍使用感知作为攻击和伤害加值，伤害变为 1d8" },
+        { "name": "召唤闪电", "type": "Spell", "effect": "专注，指定区域降下闪电，造成 3d10 闪电伤害，目标敏捷豁免减半" },
+        { "name": "治愈伤口", "type": "Spell", "effect": "接触施法，恢复 1d8 + WIS调整值 生命值" },
+        { "name": "纠缠术", "type": "Spell", "effect": "专注，召唤蔓藤缠绕区域内的生物，力量豁免失败则被束缚" }
+      ]
+    },
+    "_level_info": {
+      "_ExpToNextLevel": 14000,
+      "_ExpRules": "5e标准经验曲线"
+    },
+    "_story_info": {
+      "_Background": [
+        "哈尔辛是翠绿林地的大德鲁伊，在当地极受德鲁伊同僚与提夫林难民的敬爱。",
+        "一百多年前，他曾亲自参与过对抗凯瑟里克·索姆及其麾下暗夜法官的惨烈战役。",
+        "[HIDDEN] 他对当年雷斯文小镇变成可怕暗影诅咒之地的悲剧深感内疚，认为是自己未能及时采取行动导致的。",
+        "他坚信自然平衡至高无上，认为一切反自然的事物（尤其是夺心魔造物）都必须被彻底根除。",
+        "最近他发现了一种不受常规灵吸怪网络控制的特殊夺心魔寄生体，为了调查其源头而带队前往地精营地，不幸遭到伏击被俘。"
+      ],
+      "_Goal": [
+        "积攒力量并寻找时机从地精营地的兽栏中逃脱，同时彻底消灭领导地精的三大头目。",
+        "深入查明绝对真神教团的底细以及特殊夺心魔寄生体的真正来源与阴谋意图。",
+        "尽快回到翠绿林地，阻止副手卡哈用荆棘仪式彻底封锁林地的极端排外行为。",
+        "保护那些逃亡到林地寻求庇护的提夫林难民，带领他们安全前往博德之门。",
+        "[HIDDEN] 寻找解除雷斯文暗影诅咒的方法，净化那片被污染的土地以弥补过去的遗憾。"
+      ]
+    },
+    "_appearance": {
+      "_Race": "木精灵",
+      "_Body_and_Face": {
+        "facial_features": "面部轮廓刚毅，左脸一直延伸到颈部有独特的自然刺青纹身，眼神深邃且充满长者的沉稳",
+        "eye_color": "浅金色",
+        "hair": "深棕色发色，长直发，通常随意地披散或者扎成粗犷的低马尾",
+        "measurements": "130-95-115",
+        "height": "210cm"
+      },
+      "_Clothing": "穿着粗糙的兽皮与天然树皮编织的破损皮甲，经常不着上衣以展现其充满狂野力量感的肌肉"
+    },
+    "current_hp": 45,
+    "current_exp": 6500,
+    "attitude_value": 0,
+    "attitude_desc": "未知，目前处于被囚禁状态。",
+    "attitude_update_rule": "极度看重对自然平衡的维护和对弱者的保护，对阻止地精暴行、帮助提夫林难民的举动会大幅增加好感；反感破坏自然、使用邪恶魔法或自私冷血的行为。",
+    "status": "被地精关押在兽栏里，地精小孩子们正恶劣地向他投掷石块。",
+    "current_form": "熊形态",
+    "inventory": [],
+    "agenda": "积蓄力量，准备在合适的时机打破牢笼，消灭守卫并寻找可以共同对抗地精的盟友。"
+  },
+  {
+    "id": "card_item_mysterious_artefact",
+    "name": "神秘遗物",
+    "type": "item",
+    "image_path": "assets/cards/artefact.png",
+    "control": "world",
+    "summary": "一个散发着幽暗光芒的多面体星界棱柱，似乎有自己的意识。",
+    "is_locked": false,
+    "bound_event_id": null,
+    "location": "card_char_shadowheart",
+    "_story_info": {
+      "_Background": [
+        "这是一个来历不明的多面体金属盒子，表面刻有神秘复杂的魔法符文，材质是极其罕见的星界金属。",
+        "它散发出的强大魔法结界能够直接干扰并屏蔽夺心魔主脑的精神控制广播。",
+        "[HIDDEN] 盒子内部实际上关押着吉斯洋基人的正统王子奥尔菲斯。"
+      ],
+      "_Goal": [
+        "保护当前的持有者免受夺心魔主脑的直接精神控制。",
+        "[HIDDEN] 内部关押的存在一直渴望挣脱枷锁，重获自由并拯救他的人民。",
+        "抵抗被吉斯洋基审判官强行回收的命运。"
+      ]
+    },
+    "_appearance": {
+      "_Description": "多面体形状，表面刻有复杂的符文，发出微弱的紫光，拿在手里能感觉到微弱的脉搏般的跳动。"
+    },
+    "binding": "影心",
+    "current_effect": "当你靠近它时，脑中的夺心魔蝌蚪会变得极其安静，仿佛被屏蔽了大部分的精神联系。"
+  }
+]

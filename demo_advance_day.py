@@ -143,6 +143,35 @@ TOOLS = [
     {
         "type": "function",
         "function": {
+            "name": "reveal_hidden",
+            "description": (
+                "移除游戏状态中指定对象里所有 [HIDDEN] 标记，揭示被遮蔽的信息。"
+                "调用后，目标对象的字符串值中的 [HIDDEN] 前缀将被去除，使后续叙事可以引用该完整信息。"
+            ),
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "target": {
+                        "type": "string",
+                        "enum": ["world", "focus_location", "characters_snapshot"],
+                        "description": "要揭示隐藏内容的顶层目标对象"
+                    },
+                    "char_index": {
+                        "type": "integer",
+                        "description": "当 target=characters_snapshot 时，指定角色索引（从0开始）"
+                    },
+                    "field_path": {
+                        "type": "string",
+                        "description": "可选，指定要揭示的字段路径（如 'summary' 或 '_story_info._Background'）。不填则揭示目标对象中全部 [HIDDEN] 内容"
+                    }
+                },
+                "required": ["target"]
+            }
+        }
+    },
+    {
+        "type": "function",
+        "function": {
             "name": "apply_json_patch",
             "description": (
                 "对游戏状态执行一条 JSONPatch 更新。"
@@ -567,9 +596,9 @@ Positionnement des personnages :
 
     # 写入完整日志
     log_filename = f"log_full_{timestamp}.json"
-    with open(os.path.join(DATA_DIR, log_filename), "w", encoding="utf-8") as f:
+    with open(os.path.join(LOGS_DIR, log_filename), "w", encoding="utf-8") as f:
         json.dump(full_log, f, ensure_ascii=False, indent=2)
-    print(f"\n[系统] 完整请求与返回已记录至 {log_filename}")
+    print(f"\n[系统] 完整请求与返回已记录至 logs/{log_filename}")
 
     # ══════════════════════════════════════════════════════════════════════
     # 执行 JSONPatch
@@ -588,6 +617,34 @@ Positionnement des personnages :
 
             if fn_name == "apply_json_patch":
                 result = apply_patch(game_state, args)
+                print(f"  执行结果: {result}")
+                patch_log.append(result)
+
+            elif fn_name == "reveal_hidden":
+                target = args.get("target")
+                char_idx = args.get("char_index")
+                field_path = args.get("field_path")
+                if target == "world":
+                    obj = game_state["world"]
+                    reveal_hidden(obj, field_path)
+                    result = f"[reveal_hidden] world{'.' + field_path if field_path else ''} 已揭示"
+                elif target == "focus_location":
+                    obj = game_state["focus_location"]
+                    reveal_hidden(obj, field_path)
+                    result = f"[reveal_hidden] focus_location{'.' + field_path if field_path else ''} 已揭示"
+                elif target == "characters_snapshot":
+                    if char_idx is None:
+                        result = "[error] reveal_hidden: characters_snapshot 需要 char_index"
+                    else:
+                        snap = game_state.get("characters_snapshot", [])
+                        if 0 <= char_idx < len(snap):
+                            obj = snap[char_idx]
+                            reveal_hidden(obj, field_path)
+                            result = f"[reveal_hidden] characters_snapshot[{char_idx}]{'.' + field_path if field_path else ''} 已揭示"
+                        else:
+                            result = f"[error] reveal_hidden: char_index {char_idx} 越界"
+                else:
+                    result = f"[error] reveal_hidden: 未知 target {target!r}"
                 print(f"  执行结果: {result}")
                 patch_log.append(result)
     else:

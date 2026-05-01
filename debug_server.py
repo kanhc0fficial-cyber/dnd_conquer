@@ -150,6 +150,46 @@ class Handler(BaseHTTPRequestHandler):
             open(fp, "w", encoding="utf-8").write(body.get("content", ""))
             self._send_json({"ok": True})
 
+        elif p.path == "/api/patch_field":
+            file_name = os.path.basename(body.get("file", ""))
+            path      = body.get("path", [])
+            value     = body.get("value")
+            if not file_name or not isinstance(path, list) or len(path) == 0:
+                self._send_json({"error": "missing or invalid file/path"}, 400)
+                return
+            fp = os.path.join(PKG_DIR, file_name)
+            # Guard: resolved path must stay within PKG_DIR
+            if not os.path.abspath(fp).startswith(os.path.abspath(PKG_DIR) + os.sep):
+                self._send_json({"error": "invalid file"}, 400)
+                return
+            if not os.path.isfile(fp):
+                self._send_json({"error": "file not found"}, 404)
+                return
+            try:
+                with open(fp, encoding="utf-8") as f:
+                    data = json.load(f)
+                node = data
+                for key in path[:-1]:
+                    try:
+                        node = node[int(key)] if isinstance(node, list) else node[key]
+                    except (KeyError, IndexError, ValueError) as e:
+                        self._send_json({"error": f"invalid path segment {key!r}: {e}"}, 400)
+                        return
+                last = path[-1]
+                try:
+                    if isinstance(node, list):
+                        node[int(last)] = value
+                    else:
+                        node[last] = value
+                except (IndexError, ValueError) as e:
+                    self._send_json({"error": f"invalid path segment {last!r}: {e}"}, 400)
+                    return
+                with open(fp, "w", encoding="utf-8") as f:
+                    json.dump(data, f, ensure_ascii=False, indent=2)
+                self._send_json({"ok": True})
+            except Exception as e:
+                self._send_json({"error": str(e)}, 500)
+
         elif p.path == "/api/run":
             script = os.path.join(BASE_DIR, "demo_advance_day.py")
             cmd = [sys.executable, "-u", script]

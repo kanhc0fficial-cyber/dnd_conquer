@@ -257,6 +257,12 @@ def main():
                         help="注入的角色 id 列表，空=全部角色")
     parser.add_argument("--location-idx", type=int, default=0,
                         help="焦点地点在 grove_locations.json 中的索引（默认0）")
+    parser.add_argument("--location-id", default=None,
+                        metavar="LOC_ID",
+                        help="按 id 指定焦点地点（优先于 --location-idx）")
+    parser.add_argument("--game-state-file", default=None,
+                        metavar="PATH",
+                        help="直接加载预构建的 game_state JSON，跳过 build_context")
     args_cli = parser.parse_args()
 
     # 2. 加载数据
@@ -299,10 +305,22 @@ def main():
         [c for c in char_state if c["id"] in char_filter]
         if char_filter else char_state
     )
-    loc_idx = args_cli.location_idx
+
+    # --location-id 优先于 --location-idx
+    if args_cli.location_id:
+        loc_idx = next(
+            (i for i, l in enumerate(loc_state) if l.get("id") == args_cli.location_id), 0
+        )
+    else:
+        loc_idx = args_cli.location_idx
     locs_to_inject = loc_state[loc_idx : loc_idx + 1]
 
-    game_state   = build_context(world_state, chars_to_inject, locs_to_inject)
+    # --game-state-file: 直接加载预构建 game_state（跳过 build_context）
+    if args_cli.game_state_file:
+        with open(args_cli.game_state_file, "r", encoding="utf-8") as _f:
+            game_state = json.load(_f)
+    else:
+        game_state   = build_context(world_state, chars_to_inject, locs_to_inject)
     game_context = json.dumps(game_state, ensure_ascii=False, indent=2)
 
     # 4. 玩家输入 & 玩家角色检测
@@ -595,6 +613,36 @@ Positionnement des personnages :
     print(f"⏱  总耗时: {total_elapsed:.2f}s  |  总 Token: {total_tokens}")
     print("  第一轮（叙事）: {:.2f}s".format(elapsed1))
     print("  第二轮（Patch）: {:.2f}s".format(elapsed2))
+
+    # ── 写回更新后状态到 package/*.json ──────────────────────────────────────
+    # characters_snapshot 是从 char_state 每个角色的可变字段提取出的新拷贝，
+    # patch 修改了 characters_snapshot，需手动合并回 char_state
+    snap_map = {s.get("id"): s for s in game_state.get("characters_snapshot", []) if s.get("id")}
+    for c in char_state:
+        if c.get("id") in snap_map:
+            snap = snap_map[c["id"]]
+            for k, v in snap.items():
+                c[k] = v
+
+    # focus_location 在正常流程下与 loc_state[loc_idx] 共享引用，
+    # 若使用 --game-state-file 则解耦，按 id 回写保证两种情况均正确
+    fl = game_state.get("focus_location", {})
+    if fl.get("id"):
+        for loc in loc_state:
+            if loc.get("id") == fl["id"]:
+                for k, v in fl.items():
+                    if not k.startswith("_"):
+                        loc[k] = v
+                break
+
+    with open(os.path.join(PKG_DIR, "world.json"), "w", encoding="utf-8") as f:
+        json.dump(world_state, f, ensure_ascii=False, indent=2)
+    with open(os.path.join(PKG_DIR, "characters.json"), "w", encoding="utf-8") as f:
+        json.dump(char_state, f, ensure_ascii=False, indent=2)
+    with open(os.path.join(PKG_DIR, "grove_locations.json"), "w", encoding="utf-8") as f:
+        json.dump(loc_state, f, ensure_ascii=False, indent=2)
+    write_log("[系统] 状态已写回 package/*.json")
+    print("=== STATE_UPDATED ===")
 
     print("\n" + "=" * 60)
     print("  Demo 运行完毕")

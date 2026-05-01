@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>DnD Debug</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;overflow:hidden}
+body{font:13px/1.5 Consolas,Menlo,monospace;background:#1e1e1e;color:#d4d4d4;display:flex;flex-direction:column}
+#hdr{padding:4px 12px;background:#323233;border-bottom:1px solid #3c3c3c;display:flex;align-items:center;gap:8px;flex-shrink:0;font-size:11px}
+#hdr h1{font-size:13px;font-weight:bold;color:#e8e8e8}
+#pin-badge{background:#0e639c;color:#fff;border-radius:10px;padding:1px 7px;font-size:10px;display:none}
+#status{color:#888;margin-left:auto}
+#main{flex:1;display:flex;overflow:hidden;min-height:0}
+#lp{width:42%;min-width:180px;display:flex;flex-direction:column;border-right:1px solid #3c3c3c}
+#tabs{display:flex;flex-wrap:wrap;padding:4px 4px 0;gap:2px;background:#2d2d2d;border-bottom:1px solid #3c3c3c;flex-shrink:0}
+.tab{padding:3px 9px;cursor:pointer;background:transparent;border:none;border-bottom:2px solid transparent;color:#999;font:inherit;font-size:11px;white-space:nowrap}
+.tab:hover{color:#eee}.tab.on{color:#fff;border-bottom-color:#4d9eff}
+#tbar{padding:3px 6px;display:flex;gap:4px;background:#252526;border-bottom:1px solid #3c3c3c;flex-shrink:0;align-items:center}
+#jtree{flex:1;overflow:auto;padding:4px 6px;font-size:12px}
+#pins-panel{flex-shrink:0;border-top:1px solid #3c3c3c;max-height:130px;overflow-y:auto;background:#12121e}
+#pins-hdr{padding:3px 8px;display:flex;align-items:center;gap:6px;background:#1a1a30;font-size:11px;color:#7c9eff;flex-shrink:0}
+#pins-hdr .cnt{color:#fff;background:#0e5599;border-radius:8px;padding:0 6px;font-size:10px}
+.pin-item{display:flex;align-items:center;padding:2px 8px;gap:5px;font-size:11px;border-bottom:1px solid #1e1e30}
+.pin-item:hover{background:#1a1a2e}
+.pin-file{color:#555;white-space:nowrap;font-size:10px}
+.pin-lbl{color:#9cdcfe;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pin-type{font-size:10px;padding:0 4px;border-radius:3px;flex-shrink:0}
+.pin-type.char{background:#0e3018;color:#89d185}.pin-type.loc{background:#3a1e08;color:#d4a574}.pin-type.world{background:#221040;color:#c586c0}.pin-type.extra{background:#282828;color:#777}
+.pin-rm{cursor:pointer;color:#444;font-size:13px;flex-shrink:0;line-height:1}.pin-rm:hover{color:#f48771}
+#rp{flex:1;display:flex;flex-direction:column;overflow:hidden;min-width:0}
+#sp{border-bottom:1px solid #3c3c3c;flex-shrink:0}
+#sph{padding:4px 8px;background:#252526;display:flex;align-items:center;gap:6px;cursor:pointer;user-select:none;font-size:11px;color:#888}
+#sph:hover{background:#2a2a2b}
+#sph .lbl{color:#9cdcfe;font-weight:bold}
+#sph .note{color:#555;font-size:10px}
+#spb textarea{width:100%;height:80px;background:#1e1e1e;border:none;border-top:1px solid #3c3c3c;color:#d4d4d4;font:12px/1.4 Consolas,Menlo,monospace;padding:5px 8px;resize:vertical}
+#spb textarea:focus{outline:1px solid #4d9eff}
+#rc{padding:6px 8px;border-bottom:1px solid #3c3c3c;display:flex;flex-direction:column;gap:5px;flex-shrink:0;background:#252526}
+.row{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.lbl{font-size:11px;color:#888;white-space:nowrap;flex-shrink:0}
+#pa{flex:1;height:48px;background:#1e1e1e;border:1px solid #3c3c3c;color:#d4d4d4;font:12px/1.4 Consolas,Menlo,monospace;padding:4px 7px;resize:vertical}
+#pa:focus{outline:1px solid #4d9eff}
+#ci{flex:1;min-width:60px;background:#1e1e1e;border:1px solid #3c3c3c;color:#d4d4d4;font:12px Consolas,Menlo,monospace;padding:3px 6px}
+#ci:focus{outline:1px solid #4d9eff}
+#li{width:160px;background:#1e1e1e;border:1px solid #3c3c3c;color:#d4d4d4;font:12px Consolas,Menlo,monospace;padding:3px 6px}
+#li:focus{outline:1px solid #4d9eff}
+#ci.af,#li.af{border-color:#4d9eff66;background:#0a1620}
+.btn{padding:3px 10px;border:none;border-radius:2px;font:11px Consolas,Menlo,monospace;cursor:pointer;white-space:nowrap;flex-shrink:0}
+.btn-p{background:#0e639c;color:#fff}.btn-p:hover{background:#1177bb}.btn-p:disabled{background:#132840;color:#446;cursor:not-allowed}
+.btn-s{background:#3c3c3c;color:#ccc}.btn-s:hover{background:#505050}
+#out-wrap{flex:1;overflow:auto;padding:6px 8px;min-height:0}
+#out{white-space:pre-wrap;word-break:break-all;font-size:12px;line-height:1.5}
+.i{color:#9cdcfe}.ok{color:#89d185}.err{color:#f48771}.warn{color:#dcdcaa}.dim{color:#555}
+.jt{list-style:none;margin:0;padding:0}
+.jt-node{margin:0}
+.jtr{display:flex;align-items:baseline;gap:2px;padding:1px 3px;border-radius:2px;line-height:1.7}
+.jtr:hover{background:#2a2d2e}
+.jtr.sel{background:#094771}
+.jtr.pinned{background:#0c2040;outline:1px solid #1a4a88}
+.jtr.changed{animation:flash 2s ease-out}
+@keyframes flash{0%{background:#2a4800}60%{background:#1a3000}100%{background:transparent}}
+.tog{color:#555;cursor:pointer;width:12px;text-align:center;flex-shrink:0;font-size:10px;user-select:none;line-height:1.7}
+.tog:hover{color:#ccc}
+.jk{color:#9cdcfe;cursor:pointer}
+.sep{color:#555}
+.sv{color:#ce9178;cursor:pointer}.nv{color:#b5cea8;cursor:pointer}.kv{color:#569cd6;cursor:pointer}
+.hnt{color:#555;font-size:11px;cursor:pointer}
+.jt-ch{margin-left:14px}
+.pin-dot{color:#4d9eff;font-size:10px;margin-left:3px;flex-shrink:0;user-select:none}
+</style>
+</head>
+<body>
+<div id="hdr">
+  <h1>DnD Debug</h1>
+  <span id="pin-badge">0 已固定</span>
+  <span id="status">正在加载...</span>
+</div>
+<div id="main">
+  <div id="lp">
+    <div id="tabs"></div>
+    <div id="tbar">
+      <button class="btn btn-s" onclick="expandAll()">展开全部</button>
+      <button class="btn btn-s" onclick="collapseAll()">折叠全部</button>
+      <button class="btn btn-s" onclick="reload()">刷新文件</button>
+      <span style="margin-left:auto;font-size:10px;color:#444">Ctrl+单击 → 固定</span>
+    </div>
+    <div id="jtree"><span class="dim">加载中...</span></div>
+    <div id="pins-panel" style="display:none">
+      <div id="pins-hdr">
+        <span>📌 已固定上下文</span><span id="pin-cnt" class="cnt">0</span>
+        <button class="btn btn-s" style="font-size:10px;margin-left:auto" onclick="clearPins()">清空</button>
+      </div>
+      <div id="pins-list"></div>
+    </div>
+  </div>
+  <div id="rp">
+    <div id="sp">
+      <div id="sph" onclick="togglePrompt()">
+        <span id="sp-tog">▼</span>
+        <span class="lbl">base_prompt.txt</span>
+        <span class="note">（叙事风格指导，注入 system prompt；空则不注入）</span>
+        <button class="btn btn-s" style="font-size:11px;margin-left:auto" onclick="event.stopPropagation();savePrompt()">保存</button>
+      </div>
+      <div id="spb">
+        <textarea id="bpt" placeholder="填写叙事风格指导..."></textarea>
+      </div>
+    </div>
+    <div id="rc">
+      <div class="row">
+        <label class="lbl">玩家行动</label>
+        <textarea id="pa" placeholder="描述本回合玩家行动（留空使用脚本默认值）..."></textarea>
+      </div>
+      <div class="row">
+        <label class="lbl">角色 ID</label>
+        <input id="ci" placeholder="空=全部；Ctrl+单击角色节点自动填入">
+        <label class="lbl">地点</label>
+        <input id="li" value="0" placeholder="索引数字 或 loc_xxx ID">
+      </div>
+      <div class="row">
+        <span id="sh" style="font-size:11px;color:#555;flex:1">Ctrl+单击任意树节点可固定到上下文并自动填入角色/地点</span>
+        <button class="btn btn-s" onclick="clearPins()">清除固定</button>
+        <button class="btn btn-p" id="run-btn" onclick="run()">▶ 推进一天</button>
+        <button class="btn btn-s" id="stop-btn" onclick="stopRun()" style="display:none">■ 停止</button>
+        <button class="btn btn-s" onclick="clearOut()">清空输出</button>
+      </div>
+    </div>
+    <div id="out-wrap">
+      <pre id="out"><span class="dim">// 输出将显示在此（Ctrl+Enter 快速运行）
+</span></pre>
+    </div>
+  </div>
+</div>
+<script>
+'use strict';
+const S={cache:{},active:null,pins:{},selRow:null,changedPaths:null};
+const $=id=>document.getElementById(id);
+function setStatus(msg,color){const el=$('status');el.textContent=msg;el.style.color=color||'#888';}
+async function apiFetch(url){const r=await fetch(url);if(!r.ok)throw new Error(r.status+' '+url);return r.json();}
+async function apiPost(url,data){const r=await fetch(url,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)});if(!r.ok)throw new Error(r.status);return r.json();}
+
+async function init(){
+  try{
+    const[files,bp]=await Promise.all([apiFetch('/api/files'),apiFetch('/api/base_prompt')]);
+    $('bpt').value=bp.content;
+    const tabs=$('tabs');tabs.innerHTML='';
+    for(const f of files){
+      const b=document.createElement('button');
+      b.className='tab';b.textContent=f;b.dataset.f=f;b.onclick=()=>switchFile(f);
+      tabs.appendChild(b);
+    }
+    if(files.length)await switchFile(files[0]);
+    setStatus('就绪');
+  }catch(e){setStatus('加载失败: '+e.message,'#f48771');}
+}
+async function reload(){S.cache={};S.changedPaths=null;await init();}
+async function switchFile(name){
+  // Guard: if already showing this file, skip
+  if(S.active===name&&S.cache[name]){renderTree(S.cache[name],name,S.changedPaths);return;}
+  S.active=name;
+  document.querySelectorAll('.tab').forEach(b=>b.classList.toggle('on',b.dataset.f===name));
+  if(!S.cache[name]){
+    setStatus('加载 '+name+'...');
+    try{
+      S.cache[name]=await apiFetch('/api/file?name='+encodeURIComponent(name));
+    }catch(e){
+      setStatus('加载失败: '+e.message,'#f48771');return;
+    }
+  }
+  // Only render if this tab is still the active one (user may have switched again)
+  if(S.active===name)renderTree(S.cache[name],name,S.changedPaths);
+  setStatus('就绪');
+}
+
+// ── Tree builder ──
+let uid=0;
+function renderTree(data,filename,changedPaths){
+  uid=0;const c=$('jtree');c.innerHTML='';
+  const ul=document.createElement('ul');ul.className='jt';
+  buildNode(ul,null,data,[],filename,0,changedPaths);
+  c.appendChild(ul);
+}
+function buildNode(parent,key,value,path,filename,depth,changedPaths){
+  const li=document.createElement('li');li.className='jt-node';
+  const isArr=Array.isArray(value);
+  const complex=isArr||(!isArr&&value!==null&&typeof value==='object');
+  const row=document.createElement('div');row.className='jtr';
+
+  // Changed highlight
+  if(changedPaths){
+    const pk=filename+':'+path.join('/')+'/';
+    if(changedPaths.has(pk))row.classList.add('changed');
+  }
+  // Pinned highlight (root entities only)
+  const rootIsArr=Array.isArray(S.cache[filename]);
+  const isRoot=(rootIsArr&&path.length===1)||(!rootIsArr&&path.length===0);
+  if(isRoot){
+    const pk=mkPinKey(filename,rootIsArr?[path[0]]:[]);
+    if(S.pins[pk])row.classList.add('pinned');
+  }
+
+  const tog=document.createElement('span');tog.className='tog';row.appendChild(tog);
+  if(key!==null){
+    const ks=document.createElement('span');ks.className='jk';
+    ks.textContent=typeof key==='number'?'['+key+']':key;
+    ks.onclick=e=>nodeClick(e,filename,path,value,row);
+    row.appendChild(ks);
+    const sep=document.createElement('span');sep.className='sep';sep.textContent=': ';row.appendChild(sep);
+  }
+  if(complex){
+    const count=isArr?value.length:Object.keys(value).length;
+    const hint=document.createElement('span');hint.className='hnt';
+    hint.textContent=isArr?'['+count+' items]':previewObj(value,count);
+    hint.onclick=e=>nodeClick(e,filename,path,value,row);
+    row.appendChild(hint);
+    if(isRoot){
+      const pk=mkPinKey(filename,rootIsArr?[path[0]]:[]);
+      if(S.pins[pk]){const d=document.createElement('span');d.className='pin-dot';d.textContent='★';row.appendChild(d);}
+    }
+    const ch=document.createElement('ul');ch.className='jt jt-ch';
+    if(isArr)value.forEach((item,i)=>buildNode(ch,i,item,[...path,i],filename,depth+1,changedPaths));
+    else Object.entries(value).forEach(([k,v])=>buildNode(ch,k,v,[...path,k],filename,depth+1,changedPaths));
+    const col=rootIsArr?depth>=1:depth>=2;
+    if(col){ch.style.display='none';tog.textContent='▶';}else{tog.textContent='▼';}
+    tog.onclick=e=>{e.stopPropagation();const h=ch.style.display==='none';ch.style.display=h?'':'none';tog.textContent=h?'▼':'▶';};
+    li.appendChild(row);li.appendChild(ch);
+  }else{
+    const vs=document.createElement('span');vs.className=primCls(value);vs.textContent=JSON.stringify(value);
+    vs.onclick=e=>nodeClick(e,filename,path,value,row);
+    tog.textContent=' ';row.appendChild(vs);li.appendChild(row);
+  }
+  parent.appendChild(li);
+}
+function previewObj(obj,count){const n=obj.name||obj.id;return n?'{ "'+n+'", … } ('+count+')':'{ … } ('+count+')';}
+function primCls(v){if(v===null||typeof v==='boolean')return 'kv';if(typeof v==='number')return 'nv';return 'sv';}
+
+// ── Click handling ──
+function nodeClick(e,filename,path,value,row){
+  e.stopPropagation();
+  if(e.ctrlKey||e.metaKey){togglePin(filename,path,value);}
+  else{
+    if(S.selRow)S.selRow.classList.remove('sel');
+    S.selRow=row;row.classList.add('sel');
+    $('sh').textContent=filename+(path.length?'  →  '+path.join(' › '):'');
+  }
+}
+
+// ── Pins ──
+function mkPinKey(filename,rootPath){return filename+':'+rootPath.join(',');}
+function getRootEntity(filename,path){
+  const data=S.cache[filename];
+  if(!data)return{rootPath:[],rootValue:data};
+  if(Array.isArray(data)&&path.length>=1)return{rootPath:[path[0]],rootValue:data[path[0]]};
+  return{rootPath:[],rootValue:data};
+}
+function classifyPin(value,filename){
+  if(!value||typeof value!=='object')return 'extra';
+  if(value.type==='character')return 'char';
+  if(value.id&&(value.id.startsWith('loc_')||filename.toLowerCase().includes('location')||filename.toLowerCase().includes('area')))return 'loc';
+  if(filename==='world.json'||value.day_count!==undefined)return 'world';
+  return 'extra';
+}
+function togglePin(filename,path,value){
+  const{rootPath,rootValue}=getRootEntity(filename,path);
+  const pk=mkPinKey(filename,rootPath);
+  if(S.pins[pk]){delete S.pins[pk];}
+  else{
+    const type=classifyPin(rootValue,filename);
+    const label=(rootValue&&typeof rootValue==='object')?(rootValue.name||rootValue.id||filename):filename;
+    S.pins[pk]={key:pk,file:filename,rootPath,label,value:rootValue,type};
+  }
+  updatePinsUI();updateRunFields();
+  renderTree(S.cache[filename],filename,S.changedPaths);
+}
+function clearPins(){
+  S.pins={};updatePinsUI();updateRunFields();
+  if(S.active)renderTree(S.cache[S.active],S.active,S.changedPaths);
+}
+function updatePinsUI(){
+  const pins=Object.values(S.pins);
+  const panel=$('pins-panel'),badge=$('pin-badge'),cnt=$('pin-cnt');
+  if(!pins.length){panel.style.display='none';badge.style.display='none';return;}
+  panel.style.display='';badge.style.display='';badge.textContent=pins.length+' 已固定';cnt.textContent=pins.length;
+  const list=$('pins-list');list.innerHTML='';
+  for(const p of pins){
+    const item=document.createElement('div');item.className='pin-item';
+    const file=document.createElement('span');file.className='pin-file';file.textContent=p.file;item.appendChild(file);
+    const lbl=document.createElement('span');lbl.className='pin-lbl';lbl.textContent='› '+p.label;item.appendChild(lbl);
+    const type=document.createElement('span');type.className='pin-type '+p.type;
+    type.textContent={char:'角色',loc:'地点',world:'世界',extra:'其他'}[p.type]||p.type;item.appendChild(type);
+    const rm=document.createElement('span');rm.className='pin-rm';rm.textContent='✕';
+    rm.onclick=()=>{delete S.pins[p.key];updatePinsUI();updateRunFields();renderTree(S.cache[S.active],S.active,S.changedPaths);};
+    item.appendChild(rm);list.appendChild(item);
+  }
+}
+function updateRunFields(){
+  const pins=Object.values(S.pins);
+  const charIds=pins.filter(p=>p.type==='char').map(p=>p.value&&p.value.id).filter(Boolean);
+  const locPin=pins.find(p=>p.type==='loc');
+  const ci=$('ci'),li=$('li');
+  if(charIds.length){ci.value=charIds.join(', ');ci.classList.add('af');}else{ci.classList.remove('af');}
+  if(locPin&&locPin.value){li.value=locPin.value.id||'0';li.classList.add('af');}else{li.classList.remove('af');}
+  if(pins.length){
+    const parts=[];
+    if(charIds.length)parts.push('角色: '+charIds.join(', '));
+    if(locPin)parts.push('地点: '+(locPin.label||'?'));
+    $('sh').textContent='已固定 → '+(parts.join('  |  ')||'（其他类型，仅展示）');
+  }else{$('sh').textContent='Ctrl+单击树节点可固定到上下文并自动填入角色/地点';}
+}
+
+// ── Expand/Collapse ──
+function expandAll(){
+  document.querySelectorAll('#jtree .jt-ch').forEach(el=>el.style.display='');
+  document.querySelectorAll('#jtree .tog').forEach(t=>{if(t.textContent==='▶')t.textContent='▼';});
+}
+function collapseAll(){
+  document.querySelectorAll('#jtree .jt-ch').forEach(el=>el.style.display='none');
+  document.querySelectorAll('#jtree .tog').forEach(t=>{if(t.textContent==='▼')t.textContent='▶';});
+}
+
+// ── base_prompt ──
+let promptHidden=false;
+function togglePrompt(){promptHidden=!promptHidden;$('spb').style.display=promptHidden?'none':'';$('sp-tog').textContent=promptHidden?'▶':'▼';}
+async function savePrompt(){await apiPost('/api/base_prompt',{content:$('bpt').value});setStatus('base_prompt.txt 已保存','#89d185');setTimeout(()=>setStatus('就绪'),1500);}
+
+// ── Output ──
+function appendOut(text,cls){
+  const out=$('out');const sp=document.createElement('span');
+  if(cls)sp.className=cls;sp.textContent=text+'\n';out.appendChild(sp);
+  $('out-wrap').scrollTop=$('out-wrap').scrollHeight;
+}
+function clearOut(){$('out').innerHTML='<span class="dim">// 已清空\n</span>';}
+
+// ── Diff ──
+function diffTrees(before,after){
+  const changed=new Set();
+  for(const file of Object.keys(after)){
+    if(JSON.stringify(before[file])!==JSON.stringify(after[file]))diffValue(before[file],after[file],file+':',changed);
+  }
+  return changed;
+}
+function diffValue(b,a,prefix,changed){
+  if(b===a)return;
+  if(b==null||a==null||typeof b!==typeof a||typeof a!=='object'){changed.add(prefix);return;}
+  const kb=Array.isArray(b)?b.map((_,i)=>i):Object.keys(b);
+  const ka=Array.isArray(a)?a.map((_,i)=>i):Object.keys(a);
+  const all=new Set([...kb.map(String),...ka.map(String)]);
+  for(const k of all)diffValue(b[k],a[k],prefix+k+'/',changed);
+}
+
+// ── Run (job-based polling) ──
+let running=false;
+let pollTimer=null;
+
+async function run(){
+  if(running)return;
+  running=true;
+  const btn=$('run-btn');
+  btn.disabled=true;btn.textContent='⏳ 运行中...';
+  $('stop-btn').style.display='';
+  appendOut('','dim');
+  appendOut('─'.repeat(54),'dim');
+  appendOut('['+new Date().toLocaleTimeString()+'] 启动 demo_advance_day.py ...','i');
+
+  // Save base_prompt first (quick, independent request)
+  try{ await apiPost('/api/base_prompt',{content:$('bpt').value}); }catch(_){}
+
+  const action=$('pa').value.trim();
+  const ciRaw=$('ci').value.trim();
+  const charIds=ciRaw?ciRaw.split(',').map(s=>s.trim()).filter(Boolean):[];
+  const locVal=$('li').value.trim();
+  const isLocId=locVal&&!/^\d+$/.test(locVal);
+  const payload={player_action:action,char_ids:charIds};
+  if(isLocId)payload.location_id=locVal;else payload.location_idx=parseInt(locVal)||0;
+
+  appendOut('  角色  : '+(charIds.length?charIds.join(', '):'全部'),'i');
+  appendOut('  地点  : '+locVal,'i');
+  appendOut('─'.repeat(54),'dim');
+
+  let jobId=null;
+  try{
+    const r=await apiPost('/api/run',payload);
+    jobId=r.job_id;
+  }catch(e){
+    appendOut('[启动失败] '+e.message,'err');
+    appendOut('请确认 python debug_server.py 已启动','warn');
+    return resetRun();
+  }
+
+  appendOut('任务已启动，job='+jobId+'  等待输出...','dim');
+
+  // Poll every 2 seconds
+  const snapBefore=JSON.parse(JSON.stringify(S.cache));
+  let offset=0;
+  let stateUpdated=false;
+
+  function poll(){
+    fetch('/api/job?id='+encodeURIComponent(jobId)+'&offset='+offset)
+      .then(r=>{if(!r.ok)throw new Error('job poll '+r.status);return r.json();})
+      .then(data=>{
+        for(const ln of data.lines){
+          if(ln.includes('=== STATE_UPDATED ===')){stateUpdated=true;appendOut('✔ 状态已写回，稍后刷新 JSON 树...','ok');}
+          else appendOut(ln);
+        }
+        offset=data.offset;
+        if(data.status==='running'){
+          pollTimer=setTimeout(poll,2000);
+        }else{
+          // done or error
+          appendOut('─'.repeat(54),'dim');
+          appendOut(data.status==='done'?'[完成]':'[出错]',data.status==='done'?'ok':'err');
+          if(stateUpdated){
+            setStatus('刷新 JSON 文件...','#dcdcaa');
+            const reloads=Object.keys(S.cache).map(file=>
+              apiFetch('/api/file?name='+encodeURIComponent(file))
+                .then(d=>{S.cache[file]=d;})
+                .catch(()=>{})
+            );
+            Promise.all(reloads).then(()=>{
+              const changed=diffTrees(snapBefore,S.cache);
+              S.changedPaths=changed.size>0?changed:null;
+              if(S.active)renderTree(S.cache[S.active],S.active,S.changedPaths);
+              appendOut(changed.size>0?'📊 检测到 '+changed.size+' 处字段变更，JSON 树已高亮':'（未检测到字段变更）',changed.size>0?'ok':'dim');
+              resetRun();
+            });
+          }else{
+            resetRun();
+          }
+        }
+      })
+      .catch(e=>{
+        appendOut('[轮询错误] '+e.message,'err');
+        pollTimer=setTimeout(poll,3000); // retry
+      });
+  }
+  pollTimer=setTimeout(poll,2000);
+}
+
+function resetRun(){
+  running=false;
+  const btn=$('run-btn');
+  btn.disabled=false;btn.textContent='▶ 推进一天';
+  $('stop-btn').style.display='none';
+  setStatus('就绪');
+}
+function stopRun(){
+  if(pollTimer){clearTimeout(pollTimer);pollTimer=null;}
+  appendOut('[用户中断]','warn');
+  resetRun();
+}
+
+document.addEventListener('keydown',e=>{if(e.ctrlKey&&e.key==='Enter')run();});
+init();
+</script>
+</body>
+</html>

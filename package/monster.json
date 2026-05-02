@@ -1,0 +1,692 @@
+[
+  {
+    "id": "monster_goblin",
+    "name": "地精 (Goblin)",
+    "type": "monster",
+    "appearance": "矮小，绿皮，耳朵尖长，通常衣衫褴褛且装备简陋。",
+    "possible_locations": [
+      "loc_emerald_grove_environs",
+      "loc_blighted_village",
+      "loc_goblin_camp",
+      "loc_shattered_sanctum"
+    ],
+    "_combat_info": {
+      "ac": 15,
+      "hp": 7,
+      "speed": "30尺",
+      "attributes": {
+        "str": 8, "dex": 14, "con": 10, "int": 10, "wis": 8, "cha": 8
+      },
+      "saving_throws": {
+        "str": -1, "dex": 2, "con": 0, "int": 0, "wis": -1, "cha": -1
+      },
+      "skills": {
+        "stealth": 6
+      },
+      "senses": "暗视 60尺, 被动察觉 9",
+      "challenge_rating": "1/4",
+      "traits": [
+        {
+          "name": "灵活移动 (Nimble Escape)",
+          "description": "地精可以在每个自己的回合中以附赠动作执行撤退或隐蔽。"
+        }
+      ],
+      "actions": [
+        {
+          "name": "弯刀 (Scimitar)",
+          "type": "近战武器攻击",
+          "hit": "+4",
+          "reach": "5尺",
+          "damage": "1d6+2 挥砍伤害"
+        },
+        {
+          "name": "短弓 (Shortbow)",
+          "type": "远程武器攻击",
+          "hit": "+4",
+          "range": "80/320尺",
+          "damage": "1d6+2 穿刺伤害"
+        }
+      ]
+    }
+  },
+  {
+    "id": "monster_bugbear",
+    "name": "熊地精 (Bugbear)",
+    "type": "monster",
+    "appearance": "体型庞大，浑身长满粗糙毛发的地精类生物，肌肉发达，具有威慑力。",
+    "possible_locations": [
+      "loc_blighted_village",
+      "loc_goblin_camp",
+      "loc_shattered_sanctum"
+    ],
+    "_combat_info": {
+      "ac": 16,
+      "hp": 27,
+      "speed": "30尺",
+      "attributes": {
+        "str": 15, "dex": 14, "con": 13, "int": 8, "wis": 11, "cha": 9
+      },
+      "saving_throws": {
+        "str": 2, "dex": 2, "con": 1, "int": -1, "wis": 0, "cha": -1
+      },
+      "skills": {
+        "stealth": 6, "survival": 2
+      },
+      "senses": "暗视 60尺, 被动察觉 10",
+      "challenge_rating": "1",
+      "traits": [
+        {
+          "name": "野蛮攻击 (Brute)",
+          "description": "该熊地精发动近战武器攻击命中时，可以掷一个额外的武器伤害骰附加到伤害中。"
+        },
+        {
+          "name": "突袭打击 (Surprise Attack)",
+          "description": "如果熊地精突袭一个生物并在此回合攻击命中该生物，则目标承受额外2d6点伤害。"
+        }
+      ],
+      "actions": [
+        {
+          "name": "晨星锤 (Morningstar)",
+          "type": "近战武器攻击",
+          "hit": "+4",
+          "reach": "5尺",
+          "damage": "2d8+2 穿刺伤害"
+        },
+        {
+          "name": "标枪 (Javelin)",
+          "type": "近/远程武器攻击",
+          "hit": "+4",
+          "range": "30/120尺",
+          "damage": "1d6+2 穿刺伤害"
+        }
+      ]
+    }
+  },
+  {
+    "id": "monster_intellect_devourer",
+    "name": "噬脑怪 (Intellect Devourer)",
+    "type": "monster",
+    "appearance": "一颗长着四条带有利爪的腿的巨大脑子，表面布满血管。",
+    "possible_locations": [
+      "loc_nautiloid",
+      "loc_ravaged_beach"
+    ],
+    "_combat_info": {
+      "ac": 12,
+      "hp": 21,
+      "speed": "40尺",
+      "attributes": {
+        "str": 6, "dex": 14, "con": 13, "int": 12, "wis": 11, "cha": 10
+      },
+      "saving_throws": {
+        "str": -2, "dex": 2, "con": 1, "int": 1, "wis": 0, "cha": 0
+      },
+      "skills": {
+        "perception": 2, "stealth": 4
+      },
+      "damage_resistances": "非魔法攻击的钝击、穿刺、挥砍",
+      "condition_immunities": "目盲",
+      "senses": "盲视 60尺, 被动察觉 12",
+      "challenge_rating": "2",
+      "traits": [
+        {
+          "name": "心灵感应 (Telepathy)",
+          "description": "可以与60尺内理解语言的生物进行心灵感应。"
+        }
+      ],
+      "actions": [
+        {
+          "name": "多重攻击 (Multiattack)",
+          "description": "发动一次爪击和一次吞噬智力。"
+        },
+        {
+          "name": "爪击 (Claws)",
+          "type": "近战武器攻击",
+          "hit": "+4",
+          "reach": "5尺",
+          "damage": "2d4+2 挥砍伤害"
+        },
+        {
+          "name": "吞噬智力 (Devour Intellect)",
+          "description": "迫使10尺内一个具有大脑的生物进行DC 12智力豁免。豁免失败受2d10精神伤害。若目标智力变为0则陷入震慑，直到恢复至少1点智力。"
+        }
+      ]
+    }
+  },
+  {
+    "id": "monster_phase_spider",
+    "name": "相位蜘蛛 (Phase Spider)",
+    "type": "monster",
+    "appearance": "一种巨大、外形可怖的蜘蛛，身体散发着微光，能够短暂地在物质界面与灵界间穿梭。",
+    "possible_locations": [
+      "loc_blighted_village_well",
+      "loc_underdark"
+    ],
+    "_combat_info": {
+      "ac": 13,
+      "hp": 32,
+      "speed": "30尺, 攀爬 30尺",
+      "attributes": {
+        "str": 15, "dex": 15, "con": 12, "int": 6, "wis": 10, "cha": 6
+      },
+      "saving_throws": {
+        "str": 2, "dex": 2, "con": 1, "int": -2, "wis": 0, "cha": -2
+      },
+      "skills": {
+        "stealth": 6
+      },
+      "senses": "暗视 60尺, 被动察觉 10",
+      "challenge_rating": "3",
+      "traits": [
+        {
+          "name": "灵界步履 (Ethereal Jaunt)",
+          "description": "以附赠动作，相位蜘蛛可以从物质位面魔法转换到灵界，或者反之。"
+        },
+        {
+          "name": "蜘蛛攀爬 (Spider Climb)",
+          "description": "能在困难表面攀爬，包括倒吊在天花板上，且无需做属性检定。"
+        },
+        {
+          "name": "蛛网行者 (Web Walker)",
+          "description": "蜘蛛无视蛛网带来的移动限制。"
+        }
+      ],
+      "actions": [
+        {
+          "name": "啃咬 (Bite)",
+          "type": "近战武器攻击",
+          "hit": "+4",
+          "reach": "5尺",
+          "damage": "1d10+2 穿刺伤害，且目标必须进行DC 11的体质豁免。豁免失败受到4d8毒素伤害，成功则伤害减半。"
+        }
+      ]
+    }
+  },
+  {
+    "id": "monster_worg",
+    "name": "座狼 (Worg)",
+    "type": "monster",
+    "appearance": "体型巨大，目光凶狠的魔兽类狼生物，常常被地精作为坐骑或战兽。",
+    "possible_locations": [
+      "loc_goblin_camp",
+      "loc_shattered_sanctum"
+    ],
+    "_combat_info": {
+      "ac": 13,
+      "hp": 26,
+      "speed": "50尺",
+      "attributes": {
+        "str": 16, "dex": 13, "con": 13, "int": 7, "wis": 11, "cha": 8
+      },
+      "saving_throws": {
+        "str": 3, "dex": 1, "con": 1, "int": -2, "wis": 0, "cha": -1
+      },
+      "skills": {
+        "perception": 4
+      },
+      "senses": "暗视 60尺, 被动察觉 14",
+      "challenge_rating": "1/2",
+      "traits": [
+        {
+          "name": "敏锐听觉和嗅觉 (Keen Hearing and Smell)",
+          "description": "依靠听觉或嗅觉进行的感知（察觉）检定具有优势。"
+        }
+      ],
+      "actions": [
+        {
+          "name": "啃咬 (Bite)",
+          "type": "近战武器攻击",
+          "hit": "+5",
+          "reach": "5尺",
+          "damage": "2d6+3 穿刺伤害。如果目标是生物，则必须进行DC 13的力量豁免，失败则陷入倒地(Prone)。"
+        }
+      ]
+    }
+  },
+  {
+    "id": "monster_harpy",
+    "name": "鹰身女妖 (Harpy)",
+    "type": "monster",
+    "appearance": "长有羽翼和利爪，上半身呈现人形女性的畸形怪物，羽毛通常沾满血污。",
+    "possible_locations": [
+      "loc_emerald_grove_environs"
+    ],
+    "_combat_info": {
+      "ac": 11,
+      "hp": 38,
+      "speed": "20尺, 飞行 40尺",
+      "attributes": {
+        "str": 12, "dex": 13, "con": 12, "int": 7, "wis": 10, "cha": 13
+      },
+      "saving_throws": {
+        "str": 1, "dex": 1, "con": 1, "int": -2, "wis": 0, "cha": 1
+      },
+      "senses": "被动察觉 10",
+      "challenge_rating": "1",
+      "traits": [],
+      "actions": [
+        {
+          "name": "多重攻击 (Multiattack)",
+          "description": "发动两次攻击：一次爪击和一次短棒。"
+        },
+        {
+          "name": "爪击 (Claws)",
+          "type": "近战武器攻击",
+          "hit": "+3",
+          "reach": "5尺",
+          "damage": "2d4+1 挥砍伤害"
+        },
+        {
+          "name": "短棒 (Club)",
+          "type": "近战武器攻击",
+          "hit": "+3",
+          "reach": "5尺",
+          "damage": "1d4+1 钝击伤害"
+        },
+        {
+          "name": "魅惑之歌 (Luring Song)",
+          "description": "女妖吟唱魔法之歌。所有能听到歌曲且在300尺内的非女妖生物必须进行DC 11的感知豁免，失败则被魅惑并向女妖移动。成功豁免者24小时内免疫。"
+        }
+      ]
+    }
+  },
+  {
+    "id": "monster_gnoll",
+    "name": "豺狼人 (Gnoll)",
+    "type": "monster",
+    "appearance": "有着鬣狗头部的类人生物，身形高大干瘦，眼中透露出饥饿与残暴。",
+    "possible_locations": [
+      "loc_risen_road"
+    ],
+    "_combat_info": {
+      "ac": 15,
+      "hp": 22,
+      "speed": "30尺",
+      "attributes": {
+        "str": 14, "dex": 12, "con": 11, "int": 6, "wis": 10, "cha": 7
+      },
+      "saving_throws": {
+        "str": 2, "dex": 1, "con": 0, "int": -2, "wis": 0, "cha": -2
+      },
+      "senses": "暗视 60尺, 被动察觉 10",
+      "challenge_rating": "1/2",
+      "traits": [
+        {
+          "name": "狂暴 (Rampage)",
+          "description": "如果豺狼人在自己的回合内将一个生物的生命值降至0，它可以以附赠动作移动最多一半的速度，并进行一次啃咬攻击。"
+        }
+      ],
+      "actions": [
+        {
+          "name": "啃咬 (Bite)",
+          "type": "近战武器攻击",
+          "hit": "+4",
+          "reach": "5尺",
+          "damage": "1d4+2 穿刺伤害"
+        },
+        {
+          "name": "矛 (Spear)",
+          "type": "近/远程武器攻击",
+          "hit": "+4",
+          "range": "20/60尺",
+          "damage": "1d6+2 穿刺伤害"
+        },
+        {
+          "name": "长弓 (Longbow)",
+          "type": "远程武器攻击",
+          "hit": "+3",
+          "range": "150/600尺",
+          "damage": "1d8+1 穿刺伤害"
+        }
+      ]
+    }
+  },
+  {
+    "id": "monster_ogre",
+    "name": "食人魔 (Ogre)",
+    "type": "monster",
+    "appearance": "巨大的类人生物，身高达10尺，体态肥胖、肌肉发达，挥舞着粗大的树干或巨型棒槌。",
+    "possible_locations": [
+      "loc_blighted_village",
+      "loc_goblin_camp"
+    ],
+    "_combat_info": {
+      "ac": 11,
+      "hp": 59,
+      "speed": "40尺",
+      "attributes": {
+        "str": 19, "dex": 8, "con": 16, "int": 5, "wis": 7, "cha": 7
+      },
+      "saving_throws": {
+        "str": 4, "dex": -1, "con": 3, "int": -3, "wis": -2, "cha": -2
+      },
+      "senses": "暗视 60尺, 被动察觉 8",
+      "challenge_rating": "2",
+      "traits": [],
+      "actions": [
+        {
+          "name": "大木棒 (Greatclub)",
+          "type": "近战武器攻击",
+          "hit": "+6",
+          "reach": "5尺",
+          "damage": "2d8+4 钝击伤害"
+        },
+        {
+          "name": "标枪 (Javelin)",
+          "type": "远程武器攻击",
+          "hit": "+6",
+          "range": "30/120尺",
+          "damage": "2d6+4 穿刺伤害"
+        }
+      ]
+    }
+  },
+  {
+    "id": "monster_minotaur",
+    "name": "牛头人 (Minotaur)",
+    "type": "monster",
+    "appearance": "人身牛头的巨大怪物，浑身长满坚硬的肌肉和粗壮的毛发，头顶有一对致命的牛角。",
+    "possible_locations": [
+      "loc_underdark"
+    ],
+    "_combat_info": {
+      "ac": 14,
+      "hp": 76,
+      "speed": "40尺",
+      "attributes": {
+        "str": 18, "dex": 11, "con": 16, "int": 6, "wis": 16, "cha": 9
+      },
+      "saving_throws": {
+        "str": 4, "dex": 0, "con": 3, "int": -2, "wis": 3, "cha": -1
+      },
+      "skills": {
+        "perception": 7
+      },
+      "senses": "暗视 60尺, 被动察觉 17",
+      "challenge_rating": "3",
+      "traits": [
+        {
+          "name": "冲锋 (Charge)",
+          "description": "如果牛头人直线朝向目标移动至少10尺并在同一回合对其发动抵角攻击，该攻击命中会造成额外2d8穿刺伤害，且目标必须进行DC 14的力量豁免，失败则陷入倒地。"
+        },
+        {
+          "name": "迷宫回忆 (Labyrinthine Recall)",
+          "description": "牛头人能够完美回忆起它走过的任何路线。"
+        },
+        {
+          "name": "鲁莽 (Reckless)",
+          "description": "牛头人在自己的回合开始时可以选择其所有的近战武器攻击具有优势，直到它的下个回合开始，但针对它的攻击检定也具有优势。"
+        }
+      ],
+      "actions": [
+        {
+          "name": "巨斧 (Greataxe)",
+          "type": "近战武器攻击",
+          "hit": "+6",
+          "reach": "5尺",
+          "damage": "2d12+4 挥砍伤害"
+        },
+        {
+          "name": "抵角 (Gore)",
+          "type": "近战武器攻击",
+          "hit": "+6",
+          "reach": "5尺",
+          "damage": "2d8+4 穿刺伤害"
+        }
+      ]
+    }
+  },
+  {
+    "id": "monster_duergar",
+    "name": "灰矮人 (Duergar)",
+    "type": "monster",
+    "appearance": "肤色如灰烬一般的矮人，光头或留着整齐的胡须，性格阴沉且好战。",
+    "possible_locations": [
+      "loc_underdark",
+      "loc_grymforge"
+    ],
+    "_combat_info": {
+      "ac": 16,
+      "hp": 26,
+      "speed": "25尺",
+      "attributes": {
+        "str": 14, "dex": 11, "con": 14, "int": 11, "wis": 10, "cha": 9
+      },
+      "saving_throws": {
+        "str": 2, "dex": 0, "con": 2, "int": 0, "wis": 0, "cha": -1
+      },
+      "damage_resistances": "毒素",
+      "condition_immunities": "中毒",
+      "senses": "高级暗视 120尺, 被动察觉 10",
+      "challenge_rating": "1",
+      "traits": [
+        {
+          "name": "灰矮人韧性 (Duergar Resilience)",
+          "description": "对抗中毒、魅惑、麻痹的豁免检定具有优势。"
+        },
+        {
+          "name": "阳光敏感 (Sunlight Sensitivity)",
+          "description": "在阳光下攻击检定与感知（察觉）检定处于劣势。"
+        }
+      ],
+      "actions": [
+        {
+          "name": "变大术 (Enlarge)",
+          "description": "每天1次。持续1分钟。体型变为大型，基于力量的检定和豁免具有优势，武器攻击额外造成1d4伤害。"
+        },
+        {
+          "name": "隐形术 (Invisibility)",
+          "description": "每天1次。自身变得隐形，直到攻击或施法为止。"
+        },
+        {
+          "name": "战锤 (Warhammer)",
+          "type": "近战武器攻击",
+          "hit": "+4",
+          "reach": "5尺",
+          "damage": "1d8+2 钝击伤害 / 双手1d10+2"
+        },
+        {
+          "name": "标枪 (Javelin)",
+          "type": "远程武器攻击",
+          "hit": "+4",
+          "range": "30/120尺",
+          "damage": "1d6+2 穿刺伤害"
+        }
+      ]
+    }
+  },
+  {
+    "id": "monster_spectator",
+    "name": "观察者眼魔 (Spectator)",
+    "type": "monster",
+    "appearance": "体型较小的眼魔变种，中央有一只大眼，头顶伸出四根眼柄。",
+    "possible_locations": [
+      "loc_underdark"
+    ],
+    "_combat_info": {
+      "ac": 14,
+      "hp": 39,
+      "speed": "0尺, 悬浮 30尺",
+      "attributes": {
+        "str": 8, "dex": 14, "con": 14, "int": 13, "wis": 14, "cha": 11
+      },
+      "saving_throws": {
+        "str": -1, "dex": 2, "con": 2, "int": 1, "wis": 2, "cha": 0
+      },
+      "skills": {
+        "perception": 6
+      },
+      "condition_immunities": "倒地",
+      "senses": "暗视 120尺, 被动察觉 16",
+      "challenge_rating": "3",
+      "traits": [
+        {
+          "name": "盘旋 (Hover)",
+          "description": "悬浮移动"
+        },
+        {
+          "name": "法术反射 (Spell Reflection)",
+          "description": "如果观察者在某法术的豁免成功，或是其针对某法术的攻击未命中，它可以反弹该法术给60尺内另外一个目标。"
+        }
+      ],
+      "actions": [
+        {
+          "name": "啃咬 (Bite)",
+          "type": "近战武器攻击",
+          "hit": "+1",
+          "reach": "5尺",
+          "damage": "1d6-1 穿刺伤害"
+        },
+        {
+          "name": "眼射线 (Eye Rays)",
+          "description": "观察者随机发射两条以下不同射线（目标各异）：\n1. 困惑射线（DC 13感知豁免，失败陷入困惑）\n2. 麻痹射线（DC 13体质豁免，失败陷入麻痹）\n3. 恐惧射线（DC 13感知豁免，失败陷入恐惧）\n4. 致伤射线（DC 13体质豁免，失败受3d10黯蚀伤害）"
+        }
+      ]
+    }
+  },
+  {
+    "id": "monster_skeleton",
+    "name": "骷髅 (Skeleton)",
+    "type": "monster",
+    "appearance": "一具剥去了皮肉的骨架，受魔法驱使而活动，眼中闪烁着空洞的幽光。",
+    "possible_locations": [
+      "loc_ravaged_beach",
+      "loc_overgrown_ruins",
+      "loc_underdark"
+    ],
+    "_combat_info": {
+      "ac": 13,
+      "hp": 13,
+      "speed": "30尺",
+      "attributes": {
+        "str": 10, "dex": 14, "con": 15, "int": 6, "wis": 8, "cha": 5
+      },
+      "saving_throws": {
+        "str": 0, "dex": 2, "con": 2, "int": -2, "wis": -1, "cha": -3
+      },
+      "damage_vulnerabilities": "钝击",
+      "damage_immunities": "毒素",
+      "condition_immunities": "力竭, 中毒",
+      "senses": "暗视 60尺, 被动察觉 9",
+      "challenge_rating": "1/4",
+      "traits": [],
+      "actions": [
+        {
+          "name": "短剑 (Shortsword)",
+          "type": "近战武器攻击",
+          "hit": "+4",
+          "reach": "5尺",
+          "damage": "1d6+2 穿刺伤害"
+        },
+        {
+          "name": "短弓 (Shortbow)",
+          "type": "远程武器攻击",
+          "hit": "+4",
+          "range": "80/320尺",
+          "damage": "1d6+2 穿刺伤害"
+        }
+      ]
+    }
+  },
+  {
+    "id": "monster_redcap",
+    "name": "红帽子 (Redcap)",
+    "type": "monster",
+    "appearance": "体型矮小的妖精，长着胡子和尖利的牙齿，最引人注目的是他们那顶浸泡在鲜血中而变得深红的帽子。",
+    "possible_locations": [
+      "loc_sunlit_wetlands",
+      "loc_putrid_bog"
+    ],
+    "_combat_info": {
+      "ac": 13,
+      "hp": 45,
+      "speed": "25尺",
+      "attributes": {
+        "str": 18, "dex": 13, "con": 14, "int": 10, "wis": 12, "cha": 9
+      },
+      "saving_throws": {
+        "str": 4, "dex": 1, "con": 2, "int": 0, "wis": 1, "cha": -1
+      },
+      "skills": {
+        "athletics": 6, "perception": 3
+      },
+      "senses": "暗视 60尺, 被动察觉 13",
+      "challenge_rating": "3",
+      "traits": [
+        {
+          "name": "铁靴践踏 (Ironbound Pursuit)",
+          "description": "红帽子可以以附赠动作冲刺。当使用冲刺时，它可以在移动结束时发动一次啃咬攻击。"
+        }
+      ],
+      "actions": [
+        {
+          "name": "多重攻击 (Multiattack)",
+          "description": "发动三次攻击（如果携带镰刀则为三次镰刀，不携带则为三次徒手攻击）"
+        },
+        {
+          "name": "镰刀 (Wicked Sickle)",
+          "type": "近战武器攻击",
+          "hit": "+6",
+          "reach": "5尺",
+          "damage": "2d4+4 挥砍伤害"
+        },
+        {
+          "name": "铁靴重踢 (Ironbound Kick)",
+          "type": "近战武器攻击",
+          "hit": "+6",
+          "reach": "5尺",
+          "damage": "1d10+4 钝击伤害，且目标必须进行DC 14力量豁免，失败则倒地。"
+        }
+      ]
+    }
+  },
+  {
+    "id": "monster_green_hag",
+    "name": "绿鬼婆 (Green Hag)",
+    "type": "monster",
+    "appearance": "干瘪老妪的外表，面容扭曲，皮肤发绿，散发着腐烂的气息。",
+    "possible_locations": [
+      "loc_putrid_bog",
+      "loc_sunlit_wetlands"
+    ],
+    "_combat_info": {
+      "ac": 17,
+      "hp": 82,
+      "speed": "30尺",
+      "attributes": {
+        "str": 18, "dex": 12, "con": 16, "int": 13, "wis": 14, "cha": 14
+      },
+      "saving_throws": {
+        "str": 4, "dex": 1, "con": 3, "int": 1, "wis": 2, "cha": 2
+      },
+      "skills": {
+        "arcana": 3, "deception": 4, "perception": 4, "stealth": 3
+      },
+      "senses": "暗视 60尺, 被动察觉 14",
+      "challenge_rating": "3",
+      "traits": [
+        {
+          "name": "两栖 (Amphibious)",
+          "description": "鬼婆可以在水中和空气中呼吸。"
+        },
+        {
+          "name": "隐形术 (Innate Spellcasting)",
+          "description": "可以无限制施展：变颜术(随意)、隐形术(随意)"
+        }
+      ],
+      "actions": [
+        {
+          "name": "爪击 (Claws)",
+          "type": "近战武器攻击",
+          "hit": "+6",
+          "reach": "5尺",
+          "damage": "2d8+4 挥砍伤害"
+        },
+        {
+          "name": "幻象化身 (Illusory Copies)",
+          "description": "召唤自身的幻象（镜像），它们会分担注意力，受到伤害即消散。"
+        }
+      ]
+    }
+  }
+]

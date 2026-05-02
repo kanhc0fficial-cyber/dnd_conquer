@@ -31,9 +31,3 @@
     *   在输入框中输入玩家的测试行动。
     *   点击“运行 Demo”，通过控制台实时查看大模型的叙事生成和对 `JSON` 的 Patch 覆盖结果。
 
-## 环境配置
-
-运行前需要确保已设置正确的环境变量以便访问大模型 API：
-*   `OPENAI_API_KEY`: 您的模型 API 密钥。
-*   `OPENAI_BASE_URL`: API 端点地址。
-*   `OPENAI_MODEL`: 模型名称 (例如 `gemini-3.1-pro-preview`)。

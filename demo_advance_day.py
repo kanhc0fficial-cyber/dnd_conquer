@@ -21,13 +21,15 @@ if sys.stdout.encoding and sys.stdout.encoding.lower() != "utf-8":
 if sys.stderr.encoding and sys.stderr.encoding.lower() != "utf-8":
     sys.stderr.reconfigure(encoding="utf-8", errors="replace")
 
-# ── 配置 ──────────────────────────────────────────────────────────────────────
-# 请填入你的 API Key 和兼容端点
+# 第一轮配置（叙事生成）
 API_KEY  = os.environ.get("OPENAI_API_KEY", "gg-gcli-HByloFRM6KIzamEI2dH81NyjQdum8qc2KQAeZTxBYiY")
 BASE_URL = os.environ.get("OPENAI_BASE_URL", "https://gcli.ggchan.dev/v1")
 MODEL    = os.environ.get("OPENAI_MODEL", "gemini-3.1-pro-preview")
 
-# ── 数据路径 ──────────────────────────────────────────────────────────────────
+# 第二轮配置（工具调用），默认平滑降级回第一轮配置
+API_KEY_TOOL  = os.environ.get("OPENAI_API_KEY_TOOL", "sk-9d227aac50594b89875b5ae8266ecc37")
+BASE_URL_TOOL = os.environ.get("OPENAI_BASE_URL_TOOL", "https://api.deepseek.com")
+MODEL_TOOL    = os.environ.get("OPENAI_MODEL_TOOL", "deepseek-v4-flash")
 DATA_DIR  = os.path.dirname(os.path.abspath(__file__))
 PKG_DIR   = os.path.join(DATA_DIR, "package")
 LOGS_DIR  = os.path.join(DATA_DIR, "logs")
@@ -72,7 +74,7 @@ def resolve_path(obj: dict | list, path: str):
     last = parts[-1]
     return cur, last
 
-def apply_patch(state: dict, patch: dict) -> str:
+def apply_patch(state: dict, patch: dict, allow_protected: bool = False) -> str:
     """
     支持操作：
       replace  → 直接覆盖
@@ -85,10 +87,11 @@ def apply_patch(state: dict, patch: dict) -> str:
     value = patch.get("value")
 
     # ── _ 前缀保护：禁止 LLM 修改任何不可变字段 ──────────────────────────────
-    parts = [p for p in path.strip("/").split("/") if p]
-    for part in parts:
-        if part.startswith("_"):
-            return f"[blocked] 路径 {path!r} 包含受保护的字段 '{part}'（_ 前缀），操作已拒绝。"
+    if not allow_protected:
+        parts = [p for p in path.strip("/").split("/") if p]
+        for part in parts:
+            if part.startswith("_"):
+                return f"[blocked] 路径 {path!r} 包含受保护的字段 '{part}'（_ 前缀），操作已拒绝。"
 
     # add 到数组末尾的特殊路径 /xxx/yyy/-
     if op == "add" and path.endswith("/-"):
@@ -259,9 +262,8 @@ def build_context(world: dict, characters: list, locations: list) -> dict:
     char_summaries = []
     for c in characters:
         if c.get("type") == "character":
-            # 取角色的全部可变字段（无 _ 前缀且非元数据字段）以及关键元数据
-            mutable = {k: v for k, v in c.items() if not k.startswith("_")}
-            char_summaries.append(mutable)
+            # 按照用户要求，将角色的全部字段发给大模型（包含 _ 前缀字段）
+            char_summaries.append(copy.deepcopy(c))
 
     return {
         "world": world,
@@ -292,6 +294,12 @@ def main():
     parser.add_argument("--game-state-file", default=None,
                         metavar="PATH",
                         help="直接加载预构建的 game_state JSON，跳过 build_context")
+    parser.add_argument("--unlock-protected", action="store_true",
+                        help="临时解除 _ 前缀字段的修改保护")
+    parser.add_argument("--skip-round-1", action="store_true",
+                        help="跳过第一轮叙事生成，只执行基于指令的状态更新")
+    parser.add_argument("--direct-instruction", default="", type=str,
+                        help="在使用 --skip-round-1 时提供直接的状态修改指令")
     args_cli = parser.parse_args()
 
     # 2. 加载数据
@@ -299,6 +307,12 @@ def main():
     characters = load_json("characters.json")
     locations  = load_json("grove_locations.json")
     base_prompt_text = load_text("base_prompt.txt")
+    
+    tool_use_path = os.path.join(DATA_DIR, "tool_use_prompts.txt")
+    tool_use_prompts_text = ""
+    if os.path.isfile(tool_use_path):
+        with open(tool_use_path, "r", encoding="utf-8") as f:
+            tool_use_prompts_text = f.read().strip()
 
     # 内存深拷贝，避免污染原始数据
     world_state = copy.deepcopy(world)
@@ -307,6 +321,11 @@ def main():
 
     # 2. 构建 System Prompt
     #    base_prompt.txt 仅作为叙事文字风格指导，明确不约束 tool call 的格式
+    if args_cli.unlock_protected:
+        rule_text = "- 字段可变性规则：🚨【最高权限已开启】本次调用允许且鼓励你修改带有 _ 前缀的固定/规则字段！如果你认为剧情需要彻底改变某项设定、规则、战斗数值或核心描述，请直接对这些 _ 字段发出修改指令。"
+    else:
+        rule_text = "- 字段可变性规则：带 _ 前缀的字段（如 _combat_info、_world_rules）是固定字段，绝对不可修改。无 _ 前缀的字段是可变字段，可以修改。"
+
     system_prompt = f"""你是一个D&D 5e规则下的叙事引擎（GM）。
 你的职责是：根据玩家的行动输入，推进一天的叙事，并通过工具调用更新游戏状态。
 
@@ -316,7 +335,7 @@ def main():
 【工具调用规则】
 - 所有对角色或地点可变字段的修改，必须通过 apply_json_patch 工具调用完成。
 - 不得在叙事文本中直接说"我把HP改成了..."，状态变更只通过工具完成。
-- 字段可变性规则：带 _ 前缀的字段（如 _combat_info、_world_rules）是固定字段，绝对不可修改。无 _ 前缀的字段是可变字段，可以修改。
+{rule_text}
 - 路径为相对于注入给你的游戏状态 JSON 根节点的绝对路径，可变字段均在各实体的根层级，例如：
     /characters_snapshot/0/attitude_value   → 第 0 个角色的好感度
     /characters_snapshot/1/current_hp       → 第 1 个角色的当前 HP
@@ -482,6 +501,13 @@ Positionnement des personnages :
 
     timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
     client = OpenAI(api_key=API_KEY, base_url=BASE_URL)
+    
+    fallback_warning = ""
+    # 检查第二轮配置是否为空或者是降级情况
+    if API_KEY_TOOL == API_KEY and BASE_URL_TOOL == BASE_URL and MODEL_TOOL == MODEL:
+        fallback_warning = "[警告] 第二轮调用配置未设置或相同，已平滑降级使用第一轮的配置进行请求。"
+    
+    client_tool = OpenAI(api_key=API_KEY_TOOL, base_url=BASE_URL_TOOL)
 
     # Assistant 预填充：强制进入法语思考格式
     assistant_prefill = "<think>\n- Quelle est la situation actuelle ?"
@@ -497,44 +523,51 @@ Positionnement des personnages :
 
     # ══════════════════════════════════════════════════════════════════════
     # 第一轮调用：强制纯文本（tool_choice="none"）
-    # 目标：生成完整的法语思考链 + 2000字正文 + summary
     # ══════════════════════════════════════════════════════════════════════
-    print("\n" + "─" * 60)
-    print("【第一轮】纯文本叙事生成（tool_choice=none）")
-    print("─" * 60)
-
-    t0 = time.time()
-    response1 = client.chat.completions.create(
-        model=MODEL,
-        messages=base_messages,
-        tools=TOOLS,
-        tool_choice="none"
-    )
-    t1 = time.time()
-    elapsed1 = t1 - t0
-
-    narrative_content = response1.choices[0].message.content or ""
-    tokens1 = response1.usage
-
-    print(f"⏱  耗时: {elapsed1:.2f}s")
-    print(f"📊 Token 用量: prompt={tokens1.prompt_tokens}, completion={tokens1.completion_tokens}, total={tokens1.total_tokens}")
-    print(f"📄 finish_reason: {response1.choices[0].finish_reason}")
-    print("\n" + narrative_content)
-
-    full_log["steps"].append({
-        "step": 1,
-        "description": "纯文本叙事生成",
-        "tool_choice": "none",
-        "elapsed_seconds": round(elapsed1, 3),
-        "tokens": {
-            "prompt": tokens1.prompt_tokens,
-            "completion": tokens1.completion_tokens,
-            "total": tokens1.total_tokens
-        },
-        "finish_reason": response1.choices[0].finish_reason,
-        "request_messages": base_messages,
-        "response": json.loads(response1.model_dump_json())
-    })
+    if args_cli.skip_round_1:
+        print("\n" + "─" * 60)
+        print("【第一轮】已跳过 (由于 --skip-round-1)")
+        print("─" * 60)
+        elapsed1 = 0
+        tokens1 = type("Tokens", (), {"prompt_tokens": 0, "completion_tokens": 0, "total_tokens": 0})()
+        narrative_content = "(跳过叙事生成，直接进入变量更新)"
+    else:
+        print("\n" + "─" * 60)
+        print("【第一轮】纯文本叙事生成（tool_choice=none）")
+        print("─" * 60)
+    
+        t0 = time.time()
+        response1 = client.chat.completions.create(
+            model=MODEL,
+            messages=base_messages,
+            tools=TOOLS,
+            tool_choice="none"
+        )
+        t1 = time.time()
+        elapsed1 = t1 - t0
+    
+        narrative_content = response1.choices[0].message.content or ""
+        tokens1 = response1.usage
+    
+        print(f"⏱  耗时: {elapsed1:.2f}s")
+        print(f"📊 Token 用量: prompt={tokens1.prompt_tokens}, completion={tokens1.completion_tokens}, total={tokens1.total_tokens}")
+        print(f"📄 finish_reason: {response1.choices[0].finish_reason}")
+        print("\n" + narrative_content)
+    
+        full_log["steps"].append({
+            "step": 1,
+            "description": "纯文本叙事生成",
+            "tool_choice": "none",
+            "elapsed_seconds": round(elapsed1, 3),
+            "tokens": {
+                "prompt": tokens1.prompt_tokens,
+                "completion": tokens1.completion_tokens,
+                "total": tokens1.total_tokens
+            },
+            "finish_reason": response1.choices[0].finish_reason,
+            "request_messages": base_messages,
+            "response": json.loads(response1.model_dump_json())
+        })
 
     # ══════════════════════════════════════════════════════════════════════
     # 第二轮调用：强制工具调用（tool_choice="required"）
@@ -542,27 +575,56 @@ Positionnement des personnages :
     # 目标：基于正文内容输出所有 JSONPatch
     # ══════════════════════════════════════════════════════════════════════
     print("\n" + "─" * 60)
-    print("【第二轮】状态更新工具调用（tool_choice=required）")
+    print("【第二轮】状态更新工具调用（tool_choice=auto）")
+    if fallback_warning:
+        print(fallback_warning)
     print("─" * 60)
 
-    patch_instruction = (
-        "根据你刚才创作的上述互动小说正文内容，"
-        "现在执行所有必要的游戏状态更新。"
-        "仅输出工具调用，不需要任何额外文字。"
-    )
-
-    messages2 = base_messages + [
-        {"role": "assistant", "content": narrative_content},
-        {"role": "user",      "content": patch_instruction},
-    ]
+    if args_cli.skip_round_1:
+        patch_instruction = (
+            "根据以下直接指令，执行所有必要的游戏状态更新。仅输出工具调用，不需要任何额外文字。\n\n"
+            f"【直接更新指令】：\n{args_cli.direct_instruction}"
+        )
+        if tool_use_prompts_text:
+            patch_instruction += f"\n\n【额外工具调用指导】\n{tool_use_prompts_text}"
+        
+        messages2 = base_messages + [
+            {"role": "user", "content": patch_instruction},
+        ]
+    else:
+        patch_instruction = (
+            "根据你刚才创作的上述互动小说正文内容，"
+            "现在执行所有必要的游戏状态更新。"
+            "仅输出工具调用，不需要任何额外文字。"
+        )
+        if tool_use_prompts_text:
+            patch_instruction += f"\n\n【额外工具调用指导】\n{tool_use_prompts_text}"
+    
+        messages2 = base_messages + [
+            {"role": "assistant", "content": narrative_content},
+            {"role": "user",      "content": patch_instruction},
+        ]
 
     t2 = time.time()
-    response2 = client.chat.completions.create(
-        model=MODEL,
-        messages=messages2,
-        tools=TOOLS,
-        tool_choice="required"
-    )
+    max_retries = 3
+    for attempt in range(1, max_retries + 1):
+        try:
+            response2 = client_tool.chat.completions.create(
+                model=MODEL_TOOL,
+                messages=messages2,
+                tools=TOOLS,
+                tool_choice="auto"
+            )
+            break
+        except Exception as e:
+            if attempt < max_retries:
+                print(f"  [警告] 第二轮调用失败 (尝试 {attempt}/{max_retries}): {e}")
+                print("  等待 60 秒后重新发送...")
+                write_log(f"[警告] 第二轮调用失败，等待 60 秒后重试: {e}")
+                time.sleep(60)
+            else:
+                write_log(f"[错误] 第二轮调用达到最大重试次数: {e}")
+                raise e
     t3 = time.time()
     elapsed2 = t3 - t2
 
@@ -616,7 +678,7 @@ Positionnement des personnages :
             print(f"  参数    : {json.dumps(args, ensure_ascii=False)}")
 
             if fn_name == "apply_json_patch":
-                result = apply_patch(game_state, args)
+                result = apply_patch(game_state, args, args_cli.unlock_protected)
                 print(f"  执行结果: {result}")
                 patch_log.append(result)
 
@@ -653,10 +715,14 @@ Positionnement des personnages :
     # ══════════════════════════════════════════════════════════════════════
     # 推进天数 & 打印状态
     # ══════════════════════════════════════════════════════════════════════
-    world_state["day_count"] += 1
-
     print("\n" + "─" * 60)
-    print(f"[系统] 天数推进 → 第 {world_state['day_count']} 天")
+    
+    if args_cli.skip_round_1:
+        print("[系统] 仅执行变量更新，天数未推进")
+    else:
+        # 按照用户要求，禁用“每次对话天数加1”的功能
+        # world_state["day_count"] += 1
+        print(f"[系统] 正常推进流程完毕 → 当前为第 {world_state['day_count']} 天")
 
     print("\n【更新后 world.dynamic 状态】")
     print(json.dumps(world_state.get("dynamic", {}), ensure_ascii=False, indent=2))
@@ -688,8 +754,7 @@ Positionnement des personnages :
         for loc in loc_state:
             if loc.get("id") == fl["id"]:
                 for k, v in fl.items():
-                    if not k.startswith("_"):
-                        loc[k] = v
+                    loc[k] = v
                 break
 
     with open(os.path.join(PKG_DIR, "world.json"), "w", encoding="utf-8") as f:

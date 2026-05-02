@@ -8,28 +8,63 @@
     "summary": "来自东方大陆卡拉图尔寿龙国的游历武僧，头脑冷静而内心复杂，惯以观察代替言语，脑中被植入了夺心魔蝌蚪。",
     "is_locked": false,
     "bound_event_id": null,
-    "location": "loc_ravaged_beach",
+    "location": "goblin_camp_dungeon_stairs",
     "_combat_info": {
       "_Class": "武僧",
       "_Subclass": "四元素之道",
-      "_Level": 1,
-      "_Stats": { "STR": 12, "DEX": 17, "CON": 13, "INT": 12, "WIS": 16, "CHA": 8 },
-      "_Feats": ["无"],
+      "_Level": 2,
+      "_Stats": {
+        "STR": 12,
+        "DEX": 17,
+        "CON": 13,
+        "INT": 12,
+        "WIS": 16,
+        "CHA": 8
+      },
+      "_Feats": [
+        "无"
+      ],
       "_Equipment": {
         "MainHand": "无（徒手）",
         "OffHand": "无",
         "Armor": "无（武僧袍服）"
       },
       "_Actions": [
-        { "name": "徒手打击", "type": "Melee", "effect": "1d4 + DEX调整值 钝击伤害，可以附赠动作再打一次" },
-        { "name": "闪避", "type": "Ability", "effect": "附赠动作，直到下回合开始，所有需要敏捷豁免的攻击对你的优势以及自动失败等效" },
-        { "name": "以气为盾", "type": "Ability", "effect": "消耗1点气，使用反应减少受到的伤害" },
-        { "name": "眩晕打击", "type": "Melee", "effect": "命中后消耗1点气，目标进行体质豁免，失败则被眩晕直到下回合结束" }
+        {
+          "name": "徒手打击",
+          "type": "Melee",
+          "effect": "1d4 + DEX调整值 钝击伤害，可以附赠动作再打一次"
+        },
+        {
+          "name": "闪避",
+          "type": "Ability",
+          "effect": "附赠动作，直到下回合开始，所有需要敏捷豁免的攻击对你的优势以及自动失败等效"
+        },
+        {
+          "name": "以气为盾",
+          "type": "Ability",
+          "effect": "消耗1点气，使用反应减少受到的伤害"
+        },
+        {
+          "name": "眩晕打击",
+          "type": "Melee",
+          "effect": "命中后消耗1点气，目标进行体质豁免，失败则被眩晕直到下回合结束"
+        },
+        {
+          "name": "疾风连击",
+          "type": "Ability",
+          "effect": "消耗1点气，进行一次徒手打击后，以附赠动作发动两次额外的徒手打击"
+        },
+        {
+          "name": "风移步",
+          "type": "Ability",
+          "effect": "消耗1点气，以附赠动作执行疾走(加倍移动力)或撤离(不触发借机攻击)动作"
+        }
       ],
       "_ki_points": 2
     },
     "_level_info": {
-      "_ExpToNextLevel": 300,
+      "_ExpToNextLevel": 900,
       "_ExpRules": "5e标准经验曲线"
     },
     "_story_info": {
@@ -56,12 +91,14 @@
       },
       "_Clothing": "一身洗得发白的深灰色武僧袍服，腰间以布条代替腰带，手肘和膝盖处有磨损的痕迹"
     },
-    "current_hp": 10,
-    "current_exp": 0,
+    "current_hp": 22,
+    "current_exp": 500,
     "attitude_value": null,
     "attitude_desc": "（玩家角色，无好感度系统）",
     "attitude_update_rule": null,
-    "inventory": [],
+    "inventory": [
+      "羊皮纸地图残片"
+    ],
     "agenda": "观察当前局势，在不暴露自身弱点的前提下，逐步与其他幸存者建立可信赖的关系。"
   },
   {
@@ -73,29 +110,71 @@
     "summary": "一名半精灵牧师，[HIDDEN]是莎尔的隐秘信徒，怀抱一个能够抵御夺心魔控制的星界遗物，[HIDDEN]为防泄密被抹去了部分记忆。",
     "is_locked": false,
     "bound_event_id": null,
-    "location": "loc_ravaged_beach",
+    "location": "goblin_camp_dungeon_stairs",
     "_combat_info": {
       "_Class": "牧师",
-      "_Level": 1,
-      "_Stats": { "STR": 13, "DEX": 13, "CON": 14, "INT": 10, "WIS": 15, "CHA": 14 },
-      "_Feats": ["无"],
+      "_Level": 2,
+      "_Stats": {
+        "STR": 13,
+        "DEX": 13,
+        "CON": 14,
+        "INT": 10,
+        "WIS": 15,
+        "CHA": 14
+      },
+      "_Feats": [
+        "无"
+      ],
       "_Equipment": {
         "MainHand": "钉锤",
         "OffHand": "盾牌",
         "Armor": "链甲衫"
       },
       "_Actions": [
-        { "name": "近战攻击 (钉锤)", "type": "Melee", "effect": "1d6 + STR调整值 钝击伤害" },
-        { "name": "远程攻击 (轻弩)", "type": "Ranged", "effect": "1d8 + DEX调整值 穿刺伤害" },
-        { "name": "治愈真言", "type": "Spell", "effect": "附赠动作施放，恢复 1d4 + WIS调整值 生命值" },
-        { "name": "圣火术", "type": "Spell", "effect": "1d8 辐射伤害，目标需进行敏捷豁免对抗，失败则承受全额伤害" },
-        { "name": "曳光弹", "type": "Spell", "effect": "4d6 辐射伤害，命中后使下一个攻击该目标的检定具有优势" },
-        { "name": "祝福术", "type": "Spell", "effect": "专注，使3名友军的攻击检定和豁免检定获得 1d4 加值" },
-        { "name": "引导神力：召唤分身", "type": "Ability", "effect": "创造一个完美的幻象，使攻击幻象周围目标的检定获得优势" }
+        {
+          "name": "近战攻击 (钉锤)",
+          "type": "Melee",
+          "effect": "1d6 + STR调整值 钝击伤害"
+        },
+        {
+          "name": "远程攻击 (轻弩)",
+          "type": "Ranged",
+          "effect": "1d8 + DEX调整值 穿刺伤害"
+        },
+        {
+          "name": "治愈真言",
+          "type": "Spell",
+          "effect": "附赠动作施放，恢复 1d4 + WIS调整值 生命值"
+        },
+        {
+          "name": "圣火术",
+          "type": "Spell",
+          "effect": "1d8 辐射伤害，目标需进行敏捷豁免对抗，失败则承受全额伤害"
+        },
+        {
+          "name": "曳光弹",
+          "type": "Spell",
+          "effect": "4d6 辐射伤害，命中后使下一个攻击该目标的检定具有优势"
+        },
+        {
+          "name": "祝福术",
+          "type": "Spell",
+          "effect": "专注，使3名友军的攻击检定和豁免检定获得 1d4 加值"
+        },
+        {
+          "name": "引导神力：召唤分身",
+          "type": "Ability",
+          "effect": "创造一个完美的幻象，使攻击幻象周围目标的检定获得优势"
+        },
+        {
+          "name": "引导神力：驱散不死生物",
+          "type": "Ability",
+          "effect": "展示圣徽，指定每个30尺内可见不死生物进行感知豁免，失败则被驱散1分钟或被摧毁(若挑战等级低于1/2)"
+        }
       ]
     },
     "_level_info": {
-      "_ExpToNextLevel": 300,
+      "_ExpToNextLevel": 900,
       "_ExpRules": "5e标准经验曲线"
     },
     "_story_info": {
@@ -125,12 +204,16 @@
       },
       "_Clothing": "穿着带有莎尔神圣标志的特制黑紫色锁子甲，头上戴着黑色的额前环饰"
     },
-    "current_hp": 10,
-    "current_exp": 0,
-    "attitude_value": -20,
-    "attitude_desc": "警惕且充满防备，不愿透露过多关于自己的过去，但为了生存愿意暂时同行。",
+    "current_hp": 24,
+    "current_exp": 500,
+    "attitude_value": -9,
+    "attitude_desc": "戒备心依然很重，但对邪念干净利落的杀戮手法和极度务实的战术选择表示了一定程度的认可。",
     "attitude_update_rule": "看重实用主义和谨慎行事，对尊重她隐私、对莎尔教会表现出宽容或感兴趣的言行会增加好感；反感过度刺探隐私、无底线的善良、以及对塞伦涅的赞美。",
-    "inventory": ["item_potion_of_healing", "item_scroll_of_revivify"],
+    "inventory": [
+      "item_potion_of_healing",
+      "item_scroll_of_revivify",
+      "dungeon_iron_keys"
+    ],
     "agenda": "寻找医师移除脑中的夺心魔蝌蚪，寻找前往博德之门的道路，同时保护神秘遗物不被夺走。"
   },
   {
@@ -146,21 +229,58 @@
     "_combat_info": {
       "_Class": "法师",
       "_Level": 1,
-      "_Stats": { "STR": 8, "DEX": 13, "CON": 14, "INT": 17, "WIS": 10, "CHA": 13 },
-      "_Feats": ["无"],
+      "_Stats": {
+        "STR": 8,
+        "DEX": 13,
+        "CON": 14,
+        "INT": 17,
+        "WIS": 10,
+        "CHA": 13
+      },
+      "_Feats": [
+        "无"
+      ],
       "_Equipment": {
         "MainHand": "铁头杖",
         "OffHand": "无",
         "Armor": "法师长袍"
       },
       "_Actions": [
-        { "name": "近战攻击 (铁头杖)", "type": "Melee", "effect": "1d6 + STR调整值 钝击伤害" },
-        { "name": "魔法飞弹", "type": "Spell", "effect": "发射3枚飞弹，每枚造成 1d4+1 力场伤害，必定命中" },
-        { "name": "火炎箭", "type": "Spell", "effect": "远程法术攻击，命中造成 1d10 火焰伤害" },
-        { "name": "护盾术", "type": "Spell_Reaction", "effect": "反应施放，本回合AC获得 +5 加值，并免疫魔法飞弹" },
-        { "name": "睡眠术", "type": "Spell", "effect": "影响 5d8 点当前生命值的生物陷入沉睡，持续1分钟" },
-        { "name": "塔莎狂笑术", "type": "Spell", "effect": "专注，目标感知豁免失败则陷入狂笑并倒地" },
-        { "name": "法师之手", "type": "Spell", "effect": "召唤一只隐形或幽灵般的手进行简单的交互操作" }
+        {
+          "name": "近战攻击 (铁头杖)",
+          "type": "Melee",
+          "effect": "1d6 + STR调整值 钝击伤害"
+        },
+        {
+          "name": "魔法飞弹",
+          "type": "Spell",
+          "effect": "发射3枚飞弹，每枚造成 1d4+1 力场伤害，必定命中"
+        },
+        {
+          "name": "火炎箭",
+          "type": "Spell",
+          "effect": "远程法术攻击，命中造成 1d10 火焰伤害"
+        },
+        {
+          "name": "护盾术",
+          "type": "Spell_Reaction",
+          "effect": "反应施放，本回合AC获得 +5 加值，并免疫魔法飞弹"
+        },
+        {
+          "name": "睡眠术",
+          "type": "Spell",
+          "effect": "影响 5d8 点当前生命值的生物陷入沉睡，持续1分钟"
+        },
+        {
+          "name": "塔莎狂笑术",
+          "type": "Spell",
+          "effect": "专注，目标感知豁免失败则陷入狂笑并倒地"
+        },
+        {
+          "name": "法师之手",
+          "type": "Spell",
+          "effect": "召唤一只隐形或幽灵般的手进行简单的交互操作"
+        }
       ]
     },
     "_level_info": {
@@ -200,7 +320,9 @@
     "attitude_desc": "友好且健谈，急切地寻求合作以应对当前的双重危机（蝌蚪和法阵）。",
     "attitude_update_rule": "欣赏智慧、魔法知识的探讨以及理性的决策，对愿意提供魔法物品帮助他稳定法阵的盟友会极大增加好感；反感愚蠢、残忍或对魔法不敬的行为。",
     "condition": "胸口的耐色瑞尔魔法阵极其饥饿，急需在接下来几天内吸收一件带有魔网能量的魔法物品。",
-    "inventory": ["item_potion_of_healing"],
+    "inventory": [
+      "item_potion_of_healing"
+    ],
     "agenda": "说服主角收留自己，利用自己的魔法知识提供帮助，并试图获取队伍中多余的魔法装备来喂养法阵。"
   },
   {
@@ -216,20 +338,53 @@
     "_combat_info": {
       "_Class": "德鲁伊",
       "_Level": 5,
-      "_Stats": { "STR": 16, "DEX": 14, "CON": 16, "INT": 10, "WIS": 16, "CHA": 14 },
-      "_Feats": ["巨武器大师"],
+      "_Stats": {
+        "STR": 16,
+        "DEX": 14,
+        "CON": 16,
+        "INT": 10,
+        "WIS": 16,
+        "CHA": 14
+      },
+      "_Feats": [
+        "巨武器大师"
+      ],
       "_Equipment": {
         "MainHand": "无",
         "OffHand": "无",
         "Armor": "破损的皮甲"
       },
       "_Actions": [
-        { "name": "荒野形态：洞熊", "type": "Ability", "effect": "变身为熊，获得30点临时生命值，拥有多重攻击能力，使用熊的属性" },
-        { "name": "熊形态爪击", "type": "Melee", "effect": "2d6 + STR调整值 挥砍伤害" },
-        { "name": "橡棍术", "type": "Spell", "effect": "附赠动作，使木棍使用感知作为攻击和伤害加值，伤害变为 1d8" },
-        { "name": "召唤闪电", "type": "Spell", "effect": "专注，指定区域降下闪电，造成 3d10 闪电伤害，目标敏捷豁免减半" },
-        { "name": "治愈伤口", "type": "Spell", "effect": "接触施法，恢复 1d8 + WIS调整值 生命值" },
-        { "name": "纠缠术", "type": "Spell", "effect": "专注，召唤蔓藤缠绕区域内的生物，力量豁免失败则被束缚" }
+        {
+          "name": "荒野形态：洞熊",
+          "type": "Ability",
+          "effect": "变身为熊，获得30点临时生命值，拥有多重攻击能力，使用熊的属性"
+        },
+        {
+          "name": "熊形态爪击",
+          "type": "Melee",
+          "effect": "2d6 + STR调整值 挥砍伤害"
+        },
+        {
+          "name": "橡棍术",
+          "type": "Spell",
+          "effect": "附赠动作，使木棍使用感知作为攻击和伤害加值，伤害变为 1d8"
+        },
+        {
+          "name": "召唤闪电",
+          "type": "Spell",
+          "effect": "专注，指定区域降下闪电，造成 3d10 闪电伤害，目标敏捷豁免减半"
+        },
+        {
+          "name": "治愈伤口",
+          "type": "Spell",
+          "effect": "接触施法，恢复 1d8 + WIS调整值 生命值"
+        },
+        {
+          "name": "纠缠术",
+          "type": "Spell",
+          "effect": "专注，召唤蔓藤缠绕区域内的生物，力量豁免失败则被束缚"
+        }
       ]
     },
     "_level_info": {

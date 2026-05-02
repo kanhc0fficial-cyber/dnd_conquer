@@ -119,6 +119,11 @@ class Handler(BaseHTTPRequestHandler):
             text = open(fp, encoding="utf-8").read() if os.path.isfile(fp) else ""
             self._send_json({"content": text})
 
+        elif p.path == "/api/tool_use_prompt":
+            fp = os.path.join(BASE_DIR, "tool_use_prompts.txt")
+            text = open(fp, encoding="utf-8").read() if os.path.isfile(fp) else ""
+            self._send_json({"content": text})
+
         elif p.path == "/api/job":
             job_id = qs.get("id", [""])[0]
             offset = int(qs.get("offset", ["0"])[0])
@@ -147,6 +152,11 @@ class Handler(BaseHTTPRequestHandler):
 
         if p.path == "/api/base_prompt":
             fp = os.path.join(BASE_DIR, "base_prompt.txt")
+            open(fp, "w", encoding="utf-8").write(body.get("content", ""))
+            self._send_json({"ok": True})
+
+        elif p.path == "/api/tool_use_prompt":
+            fp = os.path.join(BASE_DIR, "tool_use_prompts.txt")
             open(fp, "w", encoding="utf-8").write(body.get("content", ""))
             self._send_json({"ok": True})
 
@@ -197,6 +207,12 @@ class Handler(BaseHTTPRequestHandler):
                 cmd.append(body["player_action"])
             if body.get("char_ids"):
                 cmd += ["--char-ids"] + body["char_ids"]
+            if body.get("unlock_protected"):
+                cmd.append("--unlock-protected")
+            if body.get("skip_round_1"):
+                cmd.append("--skip-round-1")
+            if body.get("direct_instruction"):
+                cmd += ["--direct-instruction", body.get("direct_instruction")]
 
             loc_id = body.get("location_id", "")
             if loc_id:

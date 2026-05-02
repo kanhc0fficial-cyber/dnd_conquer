@@ -16,6 +16,7 @@ from urllib.parse import urlparse, parse_qs, unquote
 
 BASE_DIR  = os.path.dirname(os.path.abspath(__file__))
 PKG_DIR   = os.path.join(BASE_DIR, "package")
+MODES_DIR = os.path.join(PKG_DIR, "modes")
 HTML_FILE = os.path.join(BASE_DIR, "debug.html")
 
 # ── Job store ──────────────────────────────────────────────────────────────────
@@ -114,15 +115,22 @@ class Handler(BaseHTTPRequestHandler):
             except json.JSONDecodeError as e:
                 self._send_json({"error": f"JSON parse error: {e}"}, 500)
 
-        elif p.path == "/api/base_prompt":
-            fp = os.path.join(BASE_DIR, "base_prompt.txt")
-            text = open(fp, encoding="utf-8").read() if os.path.isfile(fp) else ""
-            self._send_json({"content": text})
-
-        elif p.path == "/api/tool_use_prompt":
-            fp = os.path.join(BASE_DIR, "tool_use_prompts.txt")
-            text = open(fp, encoding="utf-8").read() if os.path.isfile(fp) else ""
-            self._send_json({"content": text})
+        elif p.path == "/api/modes":
+            modes = []
+            if os.path.isdir(MODES_DIR):
+                for fname in sorted(os.listdir(MODES_DIR)):
+                    if fname.endswith(".json"):
+                        key = fname[:-5]
+                        try:
+                            m = json.load(open(os.path.join(MODES_DIR, fname), encoding="utf-8"))
+                            modes.append({
+                                "key":         key,
+                                "name":        m.get("name", key),
+                                "description": m.get("description", ""),
+                            })
+                        except Exception:
+                            pass
+            self._send_json(modes)
 
         elif p.path == "/api/job":
             job_id = qs.get("id", [""])[0]
@@ -150,17 +158,7 @@ class Handler(BaseHTTPRequestHandler):
             self._send_json({"error": "invalid JSON"}, 400)
             return
 
-        if p.path == "/api/base_prompt":
-            fp = os.path.join(BASE_DIR, "base_prompt.txt")
-            open(fp, "w", encoding="utf-8").write(body.get("content", ""))
-            self._send_json({"ok": True})
-
-        elif p.path == "/api/tool_use_prompt":
-            fp = os.path.join(BASE_DIR, "tool_use_prompts.txt")
-            open(fp, "w", encoding="utf-8").write(body.get("content", ""))
-            self._send_json({"ok": True})
-
-        elif p.path == "/api/patch_field":
+        if p.path == "/api/patch_field":
             file_name = os.path.basename(body.get("file", ""))
             path      = body.get("path", [])
             value     = body.get("value")
@@ -209,8 +207,8 @@ class Handler(BaseHTTPRequestHandler):
                 cmd += ["--char-ids"] + body["char_ids"]
             if body.get("unlock_protected"):
                 cmd.append("--unlock-protected")
-            if body.get("skip_round_1"):
-                cmd.append("--skip-round-1")
+            if body.get("mode"):
+                cmd += ["--mode", body["mode"]]
             if body.get("direct_instruction"):
                 cmd += ["--direct-instruction", body.get("direct_instruction")]
 

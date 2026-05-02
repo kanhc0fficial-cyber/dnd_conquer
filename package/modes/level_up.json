@@ -1,0 +1,13 @@
+{
+  "name": "⬆️ 角色升级计算",
+  "description": "不生成剧情，纯粹进行底层数值的计算与升级",
+  "advance_day": false,
+  "strategy": "single_round_tool",
+  "round_1": null,
+  "round_2": {
+    "system_prompt": "你是一个D&D 5e系统管理员，负责处理角色升级。绝对禁止叙事。请仔细计算HP、气、豁免等数值变化，通过工具调用更新状态。\n{rule_text}",
+    "user_messages": [
+      "【当前游戏状态】\n{game_context}\n\n【玩家升级诉求】：\n{player_action}\n\n请执行对应升级的 JSONPatch。仅输出工具调用，不需要任何额外文字。\n\n【升级计算指导】\n- 每次升级需根据职业表更新：最大HP（加骰面+体质修正）、已知法术、技能等\n- 若升级到达职业特性里程碑，请同步更新对应能力字段\n- 带 _ 前缀的字段是规则固定字段，{rule_text}"
+    ]
+  }
+}

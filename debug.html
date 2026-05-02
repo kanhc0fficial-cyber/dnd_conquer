@@ -100,18 +100,15 @@ body{font:13px/1.5 Consolas,Menlo,monospace;background:#1e1e1e;color:#d4d4d4;dis
     <div id="sp">
       <div id="sph" onclick="togglePrompt()">
         <span id="sp-tog">▼</span>
-        <span class="lbl">Prompts</span>
-        <button class="btn btn-s" style="font-size:11px;margin-left:auto" onclick="event.stopPropagation();savePrompt()">保存</button>
+        <span class="lbl">运行模式</span>
+        <span id="sph-note" class="note" style="margin-left:6px;color:#555;font-size:10px"></span>
       </div>
-      <div id="spb" style="display:flex;">
-        <div style="flex:1; border-right:1px solid #3c3c3c; display:flex; flex-direction:column;">
-          <div style="font-size:10px; color:#888; padding:2px 8px; background:#1e1e1e;">base_prompt.txt (叙事风格指导, 注入 system prompt)</div>
-          <textarea id="bpt" placeholder="填写叙事风格指导..."></textarea>
-        </div>
-        <div style="flex:1; display:flex; flex-direction:column;">
-          <div style="font-size:10px; color:#888; padding:2px 8px; background:#1e1e1e;">tool_use_prompts.txt (二次请求工具调用指导)</div>
-          <textarea id="tpt" placeholder="填写工具调用指导..."></textarea>
-        </div>
+      <div id="spb" style="display:flex;align-items:center;gap:10px;padding:6px 10px;background:#1e1e1e;border-top:1px solid #3c3c3c;">
+        <label class="lbl">模式</label>
+        <select id="mode-sel" style="background:#1e1e1e;border:1px solid #3c3c3c;color:#d4d4d4;font:12px Consolas,Menlo,monospace;padding:3px 6px;min-width:200px;">
+          <option value="">加载中...</option>
+        </select>
+        <span id="mode-desc" style="font-size:11px;color:#666;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;"></span>
       </div>
     </div>
     <div id="rc">
@@ -135,8 +132,7 @@ body{font:13px/1.5 Consolas,Menlo,monospace;background:#1e1e1e;color:#d4d4d4;dis
           <input type="checkbox" id="unlock-cb" style="margin:0;"> 🔓 本次解锁 `_` 字段写保护
         </label>
         <button class="btn btn-s" onclick="clearPins()">清除固定</button>
-        <button class="btn btn-p" id="run-btn" onclick="run('full')">▶ 推进一天</button>
-        <button class="btn btn-s" id="run-direct-btn" onclick="run('direct')" style="background:#5a3d85;color:#fff;">▶ 仅变量更新</button>
+        <button class="btn btn-p" id="run-btn" onclick="run()">▶ 运行</button>
         <button class="btn btn-s" id="stop-btn" onclick="stopRun()" style="display:none">■ 停止</button>
         <button class="btn btn-s" onclick="clearOut()">清空输出</button>
       </div>
@@ -157,9 +153,16 @@ async function apiPost(url,data){const r=await fetch(url,{method:'POST',headers:
 
 async function init(){
   try{
-    const[files,bp,tp]=await Promise.all([apiFetch('/api/files'),apiFetch('/api/base_prompt'),apiFetch('/api/tool_use_prompt')]);
-    $('bpt').value=bp.content;
-    $('tpt').value=tp.content;
+    const[files,modes]=await Promise.all([apiFetch('/api/files'),apiFetch('/api/modes')]);
+    // Populate mode selector
+    const sel=$('mode-sel');sel.innerHTML='';
+    for(const m of modes){
+      const opt=document.createElement('option');opt.value=m.key;opt.textContent=m.name;
+      opt.dataset.desc=m.description||'';
+      sel.appendChild(opt);
+    }
+    if(modes.length){updateModeDesc();}
+    sel.onchange=updateModeDesc;
     const tabs=$('tabs');tabs.innerHTML='';
     for(const f of files){
       const b=document.createElement('button');
@@ -169,6 +172,14 @@ async function init(){
     if(files.length)await switchFile(files[0]);
     setStatus('就绪');
   }catch(e){setStatus('加载失败: '+e.message,'#f48771');}
+}
+function updateModeDesc(){
+  const sel=$('mode-sel');
+  const opt=sel.options[sel.selectedIndex];
+  $('mode-desc').textContent=opt?opt.dataset.desc||'':'';
+  // Show/hide direct instruction field based on mode
+  const diRow=$('di').closest?$('di').parentElement:null;
+  if(diRow)diRow.style.display=(opt&&opt.value.includes('patch'))||'' ? '':'none';
 }
 async function reload(){S.cache={};S.changedPaths=null;await init();}
 async function switchFile(name){
@@ -336,10 +347,9 @@ function collapseAll(){
   document.querySelectorAll('#jtree .tog').forEach(t=>{if(t.textContent==='▼')t.textContent='▶';});
 }
 
-// ── base_prompt ──
+// ── Mode panel toggle ──
 let promptHidden=false;
-function togglePrompt(){promptHidden=!promptHidden;$('spb').style.display=promptHidden?'none':'';$('sp-tog').textContent=promptHidden?'▶':'▼';}
-async function savePrompt(){await Promise.all([apiPost('/api/base_prompt',{content:$('bpt').value}),apiPost('/api/tool_use_prompt',{content:$('tpt').value})]);setStatus('Prompts 已保存','#89d185');setTimeout(()=>setStatus('就绪'),1500);}
+function togglePrompt(){promptHidden=!promptHidden;$('spb').style.display=promptHidden?'none':'flex';$('sp-tog').textContent=promptHidden?'▶':'▼';}
 
 // ── Output ──
 function appendOut(text,cls){
@@ -370,28 +380,15 @@ function diffValue(b,a,prefix,changed){
 let running=false;
 let pollTimer=null;
 
-async function run(mode = 'full'){
+async function run(){
   if(running)return;
   running=true;
   const btn=$('run-btn');
-  const dbtn=$('run-direct-btn');
-  const isDirect = (mode === 'direct');
-  
-  if(isDirect) {
-      dbtn.disabled=true;dbtn.textContent='⏳ 运行中...';
-      btn.disabled=true;
-  } else {
-      btn.disabled=true;btn.textContent='⏳ 运行中...';
-      dbtn.disabled=true;
-  }
-  
+  btn.disabled=true;btn.textContent='⏳ 运行中...';
   $('stop-btn').style.display='';
   appendOut('','dim');
   appendOut('─'.repeat(54),'dim');
   appendOut('['+new Date().toLocaleTimeString()+'] 启动 demo_advance_day.py ...','i');
-
-  // Save prompts first (quick, independent request)
-  try{ await apiPost('/api/base_prompt',{content:$('bpt').value}); await apiPost('/api/tool_use_prompt',{content:$('tpt').value}); }catch(_){}
 
   const action=$('pa').value.trim();
   const ciRaw=$('ci').value.trim();
@@ -400,19 +397,21 @@ async function run(mode = 'full'){
   const isLocId=locVal&&!/^\d+$/.test(locVal);
   const unlockChecked=$('unlock-cb').checked;
   const directInstruction=$('di').value.trim();
-  
+  const selectedMode=$('mode-sel').value;
+
   const payload={
       player_action:action,
       char_ids:charIds,
       unlock_protected:unlockChecked,
-      skip_round_1: isDirect,
+      mode: selectedMode||undefined,
       direct_instruction: directInstruction
   };
   if(isLocId)payload.location_id=locVal;else payload.location_idx=parseInt(locVal)||0;
-  
+
   // 消耗掉解锁状态，恢复为默认锁定
   $('unlock-cb').checked = false;
 
+  appendOut('  模式  : '+($('mode-sel').options[$('mode-sel').selectedIndex]||{textContent:selectedMode}).textContent,'i');
   appendOut('  角色  : '+(charIds.length?charIds.join(', '):'全部'),'i');
   if(unlockChecked) appendOut('  ⚠️ 警告: 已开启一次性上帝权限，允许修改 _ 字段','warn');
   appendOut('  地点  : '+locVal,'i');
@@ -480,9 +479,7 @@ async function run(mode = 'full'){
 function resetRun(){
   running=false;
   const btn=$('run-btn');
-  const dbtn=$('run-direct-btn');
-  btn.disabled=false;btn.textContent='▶ 推进一天';
-  dbtn.disabled=false;dbtn.textContent='▶ 仅变量更新';
+  btn.disabled=false;btn.textContent='▶ 运行';
   $('stop-btn').style.display='none';
   setStatus('就绪');
 }

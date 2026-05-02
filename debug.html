@@ -177,9 +177,9 @@ function updateModeDesc(){
   const sel=$('mode-sel');
   const opt=sel.options[sel.selectedIndex];
   $('mode-desc').textContent=opt?opt.dataset.desc||'':'';
-  // Show/hide direct instruction field based on mode
-  const diRow=$('di').closest?$('di').parentElement:null;
-  if(diRow)diRow.style.display=(opt&&opt.value.includes('patch'))||'' ? '':'none';
+  // Show direct instruction field only for modes that need manual instructions
+  const diRow=$('di').parentElement;
+  if(diRow)diRow.style.display=(opt&&opt.value.includes('patch'))?'':'none';
 }
 async function reload(){S.cache={};S.changedPaths=null;await init();}
 async function switchFile(name){

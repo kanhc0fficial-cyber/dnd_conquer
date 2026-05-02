@@ -13,6 +13,7 @@ import os
 import sys
 import copy
 import traceback
+import types
 from openai import OpenAI
 
 # ── Windows 控制台 UTF-8 修复 ─────────────────────────────────────────────────
@@ -309,7 +310,7 @@ def main():
                         default="我决定前往翠绿林地，与影心一同出发。途中，我对影心说：你的遗物似乎在颤动，有什么异常吗？",
                         help="玩家本回合的行动描述")
     parser.add_argument("--mode", default=None,
-                        help="运行模式（package/modes/ 下的 JSON 文件名，不含 .json）。默认: narrative")
+                        help="运行模式（package/modes/ 下的 JSON 文件名，不含 .json）。默认: narrative（标准叙事模式）")
     parser.add_argument("--char-ids", nargs="*", default=None,
                         metavar="ID",
                         help="注入的角色 id 列表，空=全部角色")
@@ -431,7 +432,7 @@ def main():
     narrative_content = ""
     round_1_user_messages: list = []  # 用于在第二轮重新注入上下文
     elapsed1 = 0
-    tokens1  = type("Tokens", (), {"prompt_tokens": 0, "completion_tokens": 0, "total_tokens": 0})()
+    tokens1  = types.SimpleNamespace(prompt_tokens=0, completion_tokens=0, total_tokens=0)
 
     if strategy == "two_round":
         round_1_cfg = mode.get("round_1") or {}

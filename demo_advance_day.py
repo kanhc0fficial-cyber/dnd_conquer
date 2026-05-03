@@ -505,7 +505,7 @@ def handle_search_item_price(package_state: dict, args: dict) -> str:
         return json.dumps({"found": True, "count": len(results), "results": results}, ensure_ascii=False)
     return json.dumps({
         "found": False,
-        "message": f"数据库中未找到匹配\"{args.get('keywords', keywords)}\"的物品，请自行根据世界观与物品稀缺度估算价格。",
+        "message": f"数据库中未找到匹配\"{keywords}\"的物品，请自行根据世界观与物品稀缺度估算价格。",
         "results": [],
     }, ensure_ascii=False)
 
@@ -878,11 +878,9 @@ def main():
                         raise e
             elapsed2   += time.time() - t_iter
             last_response = resp_iter
-            tokens2 = types.SimpleNamespace(
-                prompt_tokens    = tokens2.prompt_tokens    + resp_iter.usage.prompt_tokens,
-                completion_tokens= tokens2.completion_tokens + resp_iter.usage.completion_tokens,
-                total_tokens     = tokens2.total_tokens     + resp_iter.usage.total_tokens,
-            )
+            tokens2.prompt_tokens     += resp_iter.usage.prompt_tokens
+            tokens2.completion_tokens += resp_iter.usage.completion_tokens
+            tokens2.total_tokens      += resp_iter.usage.total_tokens
 
             msg_iter     = resp_iter.choices[0].message
             finish_reason = resp_iter.choices[0].finish_reason

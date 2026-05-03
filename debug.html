@@ -85,7 +85,7 @@ body{font:13px/1.5 Consolas,Menlo,monospace;background:#1e1e1e;color:#d4d4d4;dis
       <button class="btn btn-s" onclick="expandAll()">展开全部</button>
       <button class="btn btn-s" onclick="collapseAll()">折叠全部</button>
       <button class="btn btn-s" onclick="reload()">刷新文件</button>
-      <span style="margin-left:auto;font-size:10px;color:#444">Ctrl+单击 → 固定</span>
+        <span style="margin-left:auto;font-size:10px;color:#444">Ctrl+单击 → 固定任意层级</span>
     </div>
     <div id="jtree"><span class="dim">加载中...</span></div>
     <div id="pins-panel" style="display:none">
@@ -121,13 +121,11 @@ body{font:13px/1.5 Consolas,Menlo,monospace;background:#1e1e1e;color:#d4d4d4;dis
         <textarea id="di" placeholder="仅在使用“仅变量更新”时生效，用于直接指导大模型如何修改 JSON 字段..." style="flex:1;height:40px;background:#1e1e1e;border:1px solid #3c3c3c;color:#d4d4d4;font:12px/1.4 Consolas,Menlo,monospace;padding:4px 7px;resize:vertical;"></textarea>
       </div>
       <div class="row">
-        <label class="lbl">角色 ID</label>
-        <input id="ci" placeholder="空=全部；Ctrl+单击角色节点自动填入">
-        <label class="lbl">地点</label>
-        <input id="li" value="0" placeholder="索引数字 或 loc_xxx ID">
+        <span class="lbl">上下文</span>
+        <span id="ctx-summary" style="font-size:11px;color:#777;flex:1">未固定时默认发送 package/*.json 全部内容</span>
       </div>
       <div class="row">
-        <span id="sh" style="font-size:11px;color:#555;flex:1">Ctrl+单击任意树节点可固定到上下文并自动填入角色/地点</span>
+        <span id="sh" style="font-size:11px;color:#555;flex:1">Ctrl+单击任意树节点可固定该层级到上下文</span>
         <label style="font-size:11px; color:#f48771; display:flex; align-items:center; gap:3px; flex-shrink:0;">
           <input type="checkbox" id="unlock-cb" style="margin:0;"> 🔓 本次解锁 `_` 字段写保护
         </label>
@@ -208,6 +206,16 @@ function renderTree(data,filename,changedPaths){
   buildNode(ul,null,data,[],filename,0,changedPaths);
   c.appendChild(ul);
 }
+function isIdKeyedRoot(data){
+  if(!data||Array.isArray(data)||typeof data!=='object')return false;
+  const vals=Object.entries(data);
+  if(!vals.length)return false;
+  let hits=0;
+  for(const [k,v] of vals){
+    if(v&&typeof v==='object'&&!Array.isArray(v)&&v.id===k)hits++;
+  }
+  return hits>0&&hits===vals.length;
+}
 function buildNode(parent,key,value,path,filename,depth,changedPaths){
   const li=document.createElement('li');li.className='jt-node';
   const isArr=Array.isArray(value);
@@ -219,13 +227,12 @@ function buildNode(parent,key,value,path,filename,depth,changedPaths){
     const pk=filename+':'+path.join('/')+'/';
     if(changedPaths.has(pk))row.classList.add('changed');
   }
-  // Pinned highlight (root entities only)
-  const rootIsArr=Array.isArray(S.cache[filename]);
-  const isRoot=(rootIsArr&&path.length===1)||(!rootIsArr&&path.length===0);
-  if(isRoot){
-    const pk=mkPinKey(filename,rootIsArr?[path[0]]:[]);
-    if(S.pins[pk])row.classList.add('pinned');
-  }
+  // Pinned highlight
+  const rootData=S.cache[filename];
+  const rootIsArr=Array.isArray(rootData);
+  const rootIsIdMap=isIdKeyedRoot(rootData);
+  const pkExact=mkPinKey(filename,path);
+  if(S.pins[pkExact])row.classList.add('pinned');
 
   const tog=document.createElement('span');tog.className='tog';row.appendChild(tog);
   if(key!==null){
@@ -241,14 +248,13 @@ function buildNode(parent,key,value,path,filename,depth,changedPaths){
     hint.textContent=isArr?'['+count+' items]':previewObj(value,count);
     hint.onclick=e=>nodeClick(e,filename,path,value,row);
     row.appendChild(hint);
-    if(isRoot){
-      const pk=mkPinKey(filename,rootIsArr?[path[0]]:[]);
-      if(S.pins[pk]){const d=document.createElement('span');d.className='pin-dot';d.textContent='★';row.appendChild(d);}
+    if(S.pins[pkExact]){
+      const d=document.createElement('span');d.className='pin-dot';d.textContent='★';row.appendChild(d);
     }
     const ch=document.createElement('ul');ch.className='jt jt-ch';
     if(isArr)value.forEach((item,i)=>buildNode(ch,i,item,[...path,i],filename,depth+1,changedPaths));
     else Object.entries(value).forEach(([k,v])=>buildNode(ch,k,v,[...path,k],filename,depth+1,changedPaths));
-    const col=rootIsArr?depth>=1:depth>=2;
+    const col=(rootIsArr||rootIsIdMap)?depth>=1:depth>=2;
     if(col){ch.style.display='none';tog.textContent='▶';}else{tog.textContent='▼';}
     tog.onclick=e=>{e.stopPropagation();const h=ch.style.display==='none';ch.style.display=h?'':'none';tog.textContent=h?'▼':'▶';};
     li.appendChild(row);li.appendChild(ch);
@@ -276,11 +282,15 @@ function nodeClick(e,filename,path,value,row){
 
 // ── Pins ──
 function mkPinKey(filename,rootPath){return filename+':'+rootPath.join(',');}
+function getPathValue(data,path){
+  let node=data;
+  for(const key of path)node=node[key];
+  return node;
+}
 function getRootEntity(filename,path){
   const data=S.cache[filename];
   if(!data)return{rootPath:[],rootValue:data};
-  if(Array.isArray(data)&&path.length>=1)return{rootPath:[path[0]],rootValue:data[path[0]]};
-  return{rootPath:[],rootValue:data};
+  return{rootPath:path.slice(),rootValue:getPathValue(data,path)};
 }
 function classifyPin(value,filename){
   if(!value||typeof value!=='object')return 'extra';
@@ -324,17 +334,13 @@ function updatePinsUI(){
 }
 function updateRunFields(){
   const pins=Object.values(S.pins);
-  const charIds=pins.filter(p=>p.type==='char').map(p=>p.value&&p.value.id).filter(Boolean);
-  const locPin=pins.find(p=>p.type==='loc');
-  const ci=$('ci'),li=$('li');
-  if(charIds.length){ci.value=charIds.join(', ');ci.classList.add('af');}else{ci.classList.remove('af');}
-  if(locPin&&locPin.value){li.value=locPin.value.id||'0';li.classList.add('af');}else{li.classList.remove('af');}
   if(pins.length){
-    const parts=[];
-    if(charIds.length)parts.push('角色: '+charIds.join(', '));
-    if(locPin)parts.push('地点: '+(locPin.label||'?'));
-    $('sh').textContent='已固定 → '+(parts.join('  |  ')||'（其他类型，仅展示）');
-  }else{$('sh').textContent='Ctrl+单击树节点可固定到上下文并自动填入角色/地点';}
+    $('ctx-summary').textContent='将发送 '+pins.length+' 个固定片段';
+    $('sh').textContent='已固定 → '+pins.map(p=>p.file+':/'+p.rootPath.join('/')).join('  |  ');
+  }else{
+    $('ctx-summary').textContent='未固定时默认发送 package/*.json 全部内容';
+    $('sh').textContent='Ctrl+单击任意树节点可固定该层级到上下文';
+  }
 }
 
 // ── Expand/Collapse ──
@@ -391,30 +397,25 @@ async function run(){
   appendOut('['+new Date().toLocaleTimeString()+'] 启动 demo_advance_day.py ...','i');
 
   const action=$('pa').value.trim();
-  const ciRaw=$('ci').value.trim();
-  const charIds=ciRaw?ciRaw.split(',').map(s=>s.trim()).filter(Boolean):[];
-  const locVal=$('li').value.trim();
-  const isLocId=locVal&&!/^\d+$/.test(locVal);
   const unlockChecked=$('unlock-cb').checked;
   const directInstruction=$('di').value.trim();
   const selectedMode=$('mode-sel').value;
+  const pins=Object.values(S.pins).map(p=>({file:p.file,path:p.rootPath,label:p.label,type:p.type}));
 
   const payload={
       player_action:action,
-      char_ids:charIds,
       unlock_protected:unlockChecked,
       mode: selectedMode||undefined,
-      direct_instruction: directInstruction
+      direct_instruction: directInstruction,
+      pins:pins
   };
-  if(isLocId)payload.location_id=locVal;else payload.location_idx=parseInt(locVal)||0;
 
   // 消耗掉解锁状态，恢复为默认锁定
   $('unlock-cb').checked = false;
 
   appendOut('  模式  : '+($('mode-sel').options[$('mode-sel').selectedIndex]||{textContent:selectedMode}).textContent,'i');
-  appendOut('  角色  : '+(charIds.length?charIds.join(', '):'全部'),'i');
+  appendOut('  上下文: '+(pins.length?pins.length+' 个固定片段':'全部 package JSON'),'i');
   if(unlockChecked) appendOut('  ⚠️ 警告: 已开启一次性上帝权限，允许修改 _ 字段','warn');
-  appendOut('  地点  : '+locVal,'i');
   appendOut('─'.repeat(54),'dim');
 
   let jobId=null;

@@ -1,0 +1,53 @@
+{
+  "monster_vampire_spawn": {
+    "id": "monster_vampire_spawn", "name": "吸血鬼衍体", "type": "monster", "possible_locations": [], "_combat_info": { "ac": 15, "hp": 82, "challenge_rating": "5", "actions": [{ "name": "吸血" }] }
+  },
+  "monster_shadow": {
+    "id": "monster_shadow", "name": "幽影 (Shadow)", "type": "monster",
+    "appearance": "一种没有实体、活生生的阴影，能在墙壁和地面上自由滑动，双手呈爪状。",
+    "possible_locations": [],
+    "_combat_info": { "ac": 12, "hp": 16, "speed": "40尺", "attributes": { "str": 6, "dex": 14, "con": 13, "int": 6, "wis": 10, "cha": 8 }, "skills": { "stealth": 4 }, "damage_resistances": "酸, 冷, 火, 电, 雷; 非魔法攻击的钝击、穿刺、挥砍", "damage_immunities": "黯蚀, 毒素", "condition_immunities": "企图, 倒地", "senses": "暗视 60尺", "challenge_rating": "1/2", "traits": [{ "name": "无定形", "description": "能穿过宽至1寸的缝隙。" }, { "name": "潜行大师", "description": "在微光或黑暗中可作为附赠动作隐蔽。" }], "actions": [{ "name": "吸取力量", "hit": "+4", "damage": "2d6+2 黯蚀。目标力量减少1d4。" }] }
+  },
+  "monster_wraith": {
+    "id": "monster_wraith", "name": "怨灵 (Wraith)", "type": "monster",
+    "appearance": "由纯粹的负能量和恶意构成的幽体，眼中闪烁着冷酷的红光。",
+    "possible_locations": [],
+    "_combat_info": { "ac": 13, "hp": 67, "speed": "0尺, 飞行 60尺 (悬浮)", "attributes": { "str": 6, "dex": 16, "con": 16, "int": 12, "wis": 14, "cha": 15 }, "damage_resistances": "酸, 冷, 火, 电, 雷; 非魔法攻击的钝击、穿刺、挥砍", "damage_immunities": "黯蚀, 毒素", "condition_immunities": "魅惑, 力竭, 恐惧, 倒地, 中毒", "challenge_rating": "5", "traits": [{ "name": "阳光易伤", "description": "阳光下攻击和感知处于劣势。" }, { "name": "创造幽灵", "description": "杀死生物后可使其作为幽灵升起。" }], "actions": [{ "name": "生命吸取", "hit": "+6", "damage": "4d8+3 黯蚀。目标需DC 14体质豁免，否则最大生命减少。" }] }
+  },
+  "monster_wight": {
+    "id": "monster_wight", "name": "尸妖 (Wight)", "type": "monster",
+    "appearance": "保留了生前理智与残暴的不死战士，双眼燃烧着蓝色的憎恨之火，通常穿着生前的甲胄。",
+    "possible_locations": [],
+    "_combat_info": { "ac": 14, "hp": 45, "speed": "30尺", "attributes": { "str": 15, "dex": 14, "con": 16, "int": 10, "wis": 13, "cha": 15 }, "damage_resistances": "黯蚀; 非魔法、非银质攻击的钝击、穿刺、挥砍", "damage_immunities": "毒素", "challenge_rating": "3", "traits": [{ "name": "阳光敏感", "description": "阳光下攻击检定处于劣势。" }], "actions": [{ "name": "多重攻击", "description": "发动两次长剑攻击或两次长弓攻击。" }, { "name": "生命吸取", "hit": "+4", "damage": "1d6+2 穿刺加上 1d6 黯蚀。" }] }
+  },
+  "monster_quasit": {
+    "id": "monster_quasit", "name": "夸塞魔 (Quasit)", "type": "monster",
+    "appearance": "体型矮小的恶魔，长有弯角和分叉的尾巴，擅长变形成蝙蝠、蜈蚣或蟾蜍。",
+    "possible_locations": [],
+    "_combat_info": { "ac": 13, "hp": 7, "speed": "40尺", "attributes": { "str": 5, "dex": 17, "con": 10, "int": 7, "wis": 10, "cha": 10 }, "skills": { "stealth": 5 }, "damage_resistances": "冷, 火, 电; 非魔法攻击的钝击、穿刺、挥砍", "damage_immunities": "毒素", "challenge_rating": "1", "traits": [{ "name": "变形者", "description": "改变形态为蝙蝠、蜈蚣或蟾蜍。" }, { "name": "隐形术", "description": "以动作隐身。" }], "actions": [{ "name": "爪击", "hit": "+4", "damage": "1d4+3 穿刺。目标需DC 10体质豁免，失败中毒。" }, { "name": "恐惧", "description": "每天1次。迫使生物进行DC 10感知豁免，失败陷入恐惧。" }] }
+  },
+  "monster_succubus": {
+    "id": "monster_succubus", "name": "魅魔 (Succubus)", "type": "monster",
+    "appearance": "美貌绝伦的女性邪魔，拥有蝙蝠般的翅膀和尾巴，能轻易诱惑凡人。",
+    "possible_locations": [],
+    "_combat_info": { "ac": 15, "hp": 66, "speed": "30尺, 飞行 60尺", "attributes": { "str": 8, "dex": 17, "con": 13, "int": 15, "wis": 12, "cha": 20 }, "skills": { "deception": 9, "insight": 5, "perception": 5, "persuasion": 9, "stealth": 7 }, "damage_resistances": "冷, 火, 电, 黯蚀; 非魔法攻击的钝击、穿刺、挥砍", "challenge_rating": "4", "traits": [{ "name": "变身", "description": "变成中型类人生物。" }], "actions": [{ "name": "迷魅之吻", "description": "亲吻一个被魅惑或自愿的生物，造成大量心灵伤害并吸取生命。" }, { "name": "魅惑", "description": "迫使生物进行DC 15感知豁免，失败被魅惑。" }] }
+  },
+  "monster_lemure": {
+    "id": "monster_lemure", "name": "劣魔", "type": "monster", "possible_locations": [], "_combat_info": { "ac": 7, "hp": 13, "challenge_rating": "0", "actions": [{ "name": "拳击" }] }
+  },
+  "monster_dretch": {
+    "id": "monster_dretch", "name": "怯魔", "type": "monster", "possible_locations": [], "_combat_info": { "ac": 11, "hp": 11, "challenge_rating": "1/4", "actions": [{ "name": "恶臭气体" }] }
+  },
+  "monster_imp": {
+    "id": "monster_imp", "name": "小魔鬼", "type": "monster", "possible_locations": [], "_combat_info": { "ac": 13, "hp": 10, "challenge_rating": "1", "actions": [{ "name": "刺击" }] }
+  },
+  "monster_bearded_devil": {
+    "id": "monster_bearded_devil", "name": "须魔", "type": "monster", "possible_locations": [], "_combat_info": { "ac": 13, "hp": 52, "challenge_rating": "3", "actions": [{ "name": "偃月刀" }] }
+  },
+  "monster_bone_devil": {
+    "id": "monster_bone_devil", "name": "骨魔", "type": "monster", "possible_locations": [], "_combat_info": { "ac": 19, "hp": 142, "challenge_rating": "9", "actions": [{ "name": "尾刺" }] }
+  },
+  "monster_beholder": {
+    "id": "monster_beholder", "name": "眼魔", "type": "monster", "possible_locations": [], "_combat_info": { "ac": 18, "hp": 180, "challenge_rating": "13", "actions": [{ "name": "眼射线" }] }
+  }
+}

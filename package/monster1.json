@@ -1,0 +1,62 @@
+{
+  "monster_bandit": {
+    "id": "monster_bandit", "name": "匪徒 (Bandit)", "type": "monster",
+    "appearance": "穿着皮甲，手持各种杂乱武器的人类或类人生物。",
+    "possible_locations": [],
+    "_combat_info": { "ac": 12, "hp": 11, "speed": "30尺", "challenge_rating": "1/8", "actions": [{ "name": "弯刀", "damage": "1d6+1" }] }
+  },
+  "monster_guard": {
+    "id": "monster_guard", "name": "卫兵 (Guard)", "type": "monster",
+    "appearance": "穿着链甲衫，手持长矛和盾牌的职业士兵。",
+    "possible_locations": [],
+    "_combat_info": { "ac": 16, "hp": 11, "speed": "30尺", "attributes": { "str": 13, "dex": 12, "con": 12, "int": 10, "wis": 11, "cha": 10 }, "challenge_rating": "1/8", "actions": [{ "name": "长矛", "hit": "+3", "damage": "1d6+1 穿刺" }] }
+  },
+  "monster_scout": {
+    "id": "monster_scout", "name": "侦察兵 (Scout)", "type": "monster",
+    "appearance": "穿着皮甲，擅长荒野生存的战士，背着长弓。",
+    "possible_locations": [],
+    "_combat_info": { "ac": 13, "hp": 16, "speed": "30尺", "skills": { "nature": 4, "perception": 5, "stealth": 6, "survival": 5 }, "challenge_rating": "1/2", "traits": [{ "name": "敏锐听觉和视觉", "description": "察觉检定具有优势。" }], "actions": [{ "name": "多重攻击", "description": "发动两次近战攻击或两次远程攻击。" }, { "name": "短剑", "hit": "+4", "damage": "1d6+2" }, { "name": "长弓", "hit": "+4", "damage": "1d8+2" }] }
+  },
+  "monster_thug": {
+    "id": "monster_thug", "name": "恶棍 (Thug)", "type": "monster",
+    "appearance": "身材魁梧、面目狰狞的打手，手持沉重的硬头锤。",
+    "possible_locations": [],
+    "_combat_info": { "ac": 11, "hp": 32, "speed": "30尺", "attributes": { "str": 15, "dex": 11, "con": 14, "int": 10, "wis": 10, "cha": 11 }, "challenge_rating": "1/2", "traits": [{ "name": "战术优势", "description": "如果有盟友在目标5尺内，攻击具有优势。" }], "actions": [{ "name": "多重攻击", "description": "发动两次硬头锤攻击。" }, { "name": "硬头锤", "hit": "+4", "damage": "1d6+2" }] }
+  },
+  "monster_cultist": {
+    "id": "monster_cultist", "name": "邪教徒 (Cultist)", "type": "monster",
+    "appearance": "穿着深色兜帽长袍，眼神狂热，挥舞着匕首。",
+    "possible_locations": [],
+    "_combat_info": { "ac": 12, "hp": 9, "speed": "30尺", "challenge_rating": "1/8", "traits": [{ "name": "狂热献身", "description": "对抗被魅惑或恐惧的豁免具有优势。" }], "actions": [{ "name": "匕首", "hit": "+3", "damage": "1d4+1" }] }
+  },
+  "monster_zombie": {
+    "id": "monster_zombie", "name": "僵尸 (Zombie)", "type": "monster",
+    "appearance": "步履蹒跚的死者，皮肤腐烂，散发着恶臭。",
+    "possible_locations": [],
+    "_combat_info": { "ac": 8, "hp": 22, "speed": "20尺", "attributes": { "str": 13, "dex": 6, "con": 16, "int": 3, "wis": 6, "cha": 5 }, "damage_immunities": "毒素", "condition_immunities": "中毒", "challenge_rating": "1/4", "traits": [{ "name": "不死韧性", "description": "生命降至0时，通过DC 5+伤害值的体质豁免可降至1点（除非是光耀伤害或重击）。" }], "actions": [{ "name": "猛击", "hit": "+3", "damage": "1d6+1 钝击" }] }
+  },
+  "monster_gray_ooze": {
+    "id": "monster_gray_ooze", "name": "灰泥怪 (Gray Ooze)", "type": "monster",
+    "appearance": "一滩看起来像湿润石头或水渍的灰色液体，具有极强的腐蚀性。",
+    "possible_locations": [],
+    "_combat_info": { "ac": 8, "hp": 22, "speed": "10尺, 攀爬 10尺", "damage_resistances": "酸, 冷, 火", "condition_immunities": "目盲, 魅惑, 聋眩, 力竭, 恐惧, 倒地", "senses": "盲视 60尺, 被动察觉 8", "challenge_rating": "1/2", "traits": [{ "name": "拟态", "description": "不动时看起来像普通石面。" }, { "name": "腐蚀金属", "description": "接触的非魔法金属武器或防具会受到永久性损毁。" }], "actions": [{ "name": "伪足", "hit": "+3", "damage": "1d6+1 钝击加上 2d6 酸液伤害。" }] }
+  },
+  "monster_kuo_toa": {
+    "id": "monster_kuo_toa", "name": "寇涛鱼人", "type": "monster", "possible_locations": [], "_combat_info": { "ac": 13, "hp": 18, "challenge_rating": "1/4", "actions": [{ "name": "咬", "damage": "1d4+1" }] }
+  },
+  "monster_kuo_toa_whip": {
+    "id": "monster_kuo_toa_whip", "name": "寇涛鱼人鞭笞者", "type": "monster", "possible_locations": [], "_combat_info": { "ac": 11, "hp": 25, "challenge_rating": "1", "actions": [{ "name": "捕网钳", "damage": "1d6+2" }] }
+  },
+  "monster_blink_dog": {
+    "id": "monster_blink_dog", "name": "闪现犬", "type": "monster", "possible_locations": [], "_combat_info": { "ac": 13, "hp": 22, "challenge_rating": "1/4", "actions": [{ "name": "传送" }] }
+  },
+  "monster_dire_wolf": {
+    "id": "monster_dire_wolf", "name": "巨狼", "type": "monster", "possible_locations": [], "_combat_info": { "ac": 14, "hp": 37, "challenge_rating": "1", "actions": [{ "name": "啃咬", "damage": "2d6+3" }] }
+  },
+  "monster_dryad": {
+    "id": "monster_dryad", "name": "树精", "type": "monster", "possible_locations": [], "_combat_info": { "ac": 11, "hp": 22, "challenge_rating": "1", "actions": [{ "name": "妖精迷情" }] }
+  },
+  "monster_ghoul": {
+    "id": "monster_ghoul", "name": "食尸鬼", "type": "monster", "possible_locations": [], "_combat_info": { "ac": 12, "hp": 22, "challenge_rating": "1", "actions": [{ "name": "爪击", "damage": "2d4+2" }] }
+  }
+}

@@ -2,7 +2,7 @@
 demo_advance_day.py
 测试"推进一天"的核心循环：
   - 从 package/modes/ 动态加载模式 JSON（narrative / direct_patch / level_up …）
-  - 读取 world.json + characters.json + grove_locations.json 作为上下文
+  - 读取 package/*.json 作为上下文，可按前端固定路径裁剪
   - 根据模式策略（two_round / single_round_tool）调用 LLM
   - 解析返回的自然语言叙事 + JSONPatch 工具调用指令
   - 将 patch 应用到内存中的游戏状态，并打印结果
@@ -57,6 +57,19 @@ def load_json(filename: str) -> dict | list:
     with open(path, "r", encoding="utf-8") as f:
         return json.load(f)
 
+def list_package_json_files() -> list[str]:
+    """列出 package 根目录下的 JSON 数据文件，不包含 modes 子目录。"""
+    if not os.path.isdir(PKG_DIR):
+        return []
+    return sorted(
+        fname for fname in os.listdir(PKG_DIR)
+        if fname.endswith(".json") and os.path.isfile(os.path.join(PKG_DIR, fname))
+    )
+
+def load_package_jsons() -> dict[str, dict | list]:
+    """加载 package 根目录下全部 JSON 文件。"""
+    return {fname: load_json(fname) for fname in list_package_json_files()}
+
 # ── 模式加载 ────────────────────────────────────────────────────────────────────
 MODES_DIR = os.path.join(PKG_DIR, "modes")
 
@@ -79,9 +92,35 @@ def fill_template(template: str, **kwargs) -> str:
     return template
 
 # ── 简化版 JSONPatch 执行器 ────────────────────────────────────────────────────
+def pointer_unescape(part: str) -> str:
+    return part.replace("~1", "/").replace("~0", "~")
+
+def pointer_escape(part: object) -> str:
+    return str(part).replace("~", "~0").replace("/", "~1")
+
+def parse_pointer(path: str) -> list[str]:
+    if path in ("", "/"):
+        return []
+    return [pointer_unescape(p) for p in path.strip("/").split("/") if p != ""]
+
+def make_pointer(parts: list[object]) -> str:
+    return "/" + "/".join(pointer_escape(p) for p in parts)
+
+def resolve_node(obj: dict | list, path: str):
+    """解析 JSONPointer 并返回目标节点。"""
+    cur = obj
+    for part in parse_pointer(path):
+        if isinstance(cur, list):
+            cur = cur[int(part)]
+        else:
+            cur = cur[part]
+    return cur
+
 def resolve_path(obj: dict | list, path: str):
     """将 '/dynamic/current_hp' 这样的路径解析为 (parent_obj, key)"""
-    parts = [p for p in path.strip("/").split("/") if p]
+    parts = parse_pointer(path)
+    if not parts:
+        raise ValueError("不能对文件根路径本身执行该操作")
     cur = obj
     for part in parts[:-1]:
         if isinstance(cur, list):
@@ -91,7 +130,81 @@ def resolve_path(obj: dict | list, path: str):
     last = parts[-1]
     return cur, last
 
-def apply_patch(state: dict, patch: dict, allow_protected: bool = False) -> str:
+def normalize_selection_paths(raw_pins: list[dict]) -> dict[str, list[str]]:
+    """把前端 pins 归一化为 file -> JSONPointer 列表。"""
+    selections: dict[str, list[str]] = {}
+    for pin in raw_pins or []:
+        file_name = os.path.basename(str(pin.get("file", "")))
+        if not file_name.endswith(".json"):
+            continue
+        raw_path = pin.get("path", [])
+        if not isinstance(raw_path, list):
+            continue
+        pointer = make_pointer(raw_path) if raw_path else "/"
+        selections.setdefault(file_name, [])
+        if pointer not in selections[file_name]:
+            selections[file_name].append(pointer)
+    return selections
+
+def merge_from_source(dst, source, path_parts: list[str]):
+    """从 source 中裁剪 path，同时保留祖先链和对象身份锚点。"""
+    if not path_parts:
+        return copy.deepcopy(source)
+
+    head = path_parts[0]
+    if isinstance(source, list):
+        container = dst if isinstance(dst, list) else []
+        idx = int(head)
+        while len(container) <= idx:
+            container.append(None)
+        container[idx] = merge_from_source(container[idx], source[idx], path_parts[1:])
+        return container
+
+    container = dst if isinstance(dst, dict) else {}
+    if isinstance(source, dict):
+        for meta_key in ("id", "name", "type"):
+            if meta_key in source and meta_key not in container:
+                container[meta_key] = copy.deepcopy(source[meta_key])
+        container[head] = merge_from_source(container.get(head), source[head], path_parts[1:])
+    return container
+
+def build_context(package_state: dict[str, dict | list], selections: dict[str, list[str]]) -> dict:
+    """
+    构建发送给 LLM 的裁剪上下文。
+    原则：
+    - 只删除未选字段，不改名、不包裹实体、不重排数组。
+    - 每个文件仍位于 package["xxx.json"] 下，文件内路径保持真实 JSONPointer。
+    - selections 为空时发送全部 package/*.json。
+    """
+    selected_files = selections or {fname: ["/"] for fname in package_state}
+    context_files: dict[str, dict | list] = {}
+    for fname, paths in selected_files.items():
+        if fname not in package_state:
+            continue
+        if "/" in paths:
+            context_files[fname] = copy.deepcopy(package_state[fname])
+            continue
+        pruned = None
+        for path in paths:
+            pruned = merge_from_source(pruned, package_state[fname], parse_pointer(path))
+        context_files[fname] = pruned
+    return {"package": context_files}
+
+def is_visible_path(file_name: str, path: str, selections: dict[str, list[str]]) -> bool:
+    """判断 path 对应的子树是否完整出现在上下文中。"""
+    if not selections:
+        return True
+    file_paths = selections.get(file_name)
+    if not file_paths:
+        return False
+    target = "/" if path in ("", "/") else path.rstrip("/")
+    for selected in file_paths:
+        selected = "/" if selected in ("", "/") else selected.rstrip("/")
+        if selected == "/" or selected == target or target.startswith(selected + "/"):
+            return True
+    return False
+
+def apply_patch_to_file(package_state: dict[str, dict | list], patch: dict, selections: dict[str, list[str]], allow_protected: bool = False) -> tuple[str, str | None]:
     """
     支持操作：
       replace  → 直接覆盖
@@ -99,16 +212,29 @@ def apply_patch(state: dict, patch: dict, allow_protected: bool = False) -> str:
       add      → 追加到数组（path 以 /- 结尾）或新增字段
       remove   → 删除字段
     """
+    file_name = os.path.basename(str(patch.get("file", "")))
     op    = patch.get("op")
     path  = patch.get("path", "")
     value = patch.get("value")
+    reason = patch.get("reason", "未提供原因")
+
+    if not file_name or file_name not in package_state:
+        return f"[error] 未知或未提供 file: {file_name!r}", None
+    state = package_state[file_name]
 
     # ── _ 前缀保护：禁止 LLM 修改任何不可变字段 ──────────────────────────────
     if not allow_protected:
-        parts = [p for p in path.strip("/").split("/") if p]
+        parts = parse_pointer(path)
         for part in parts:
             if part.startswith("_"):
-                return f"[blocked] 路径 {path!r} 包含受保护的字段 '{part}'（_ 前缀），操作已拒绝。"
+                return f"[blocked] {file_name}:{path!r} 包含受保护的字段 '{part}'（_ 前缀），操作已拒绝。", None
+
+    if op == "replace" and isinstance(value, (dict, list)) and not is_visible_path(file_name, path, selections):
+        return (
+            f"[blocked] {file_name}:{path} 不是完整可见子树，拒绝用裁剪对象整体覆盖。"
+            "请改用更具体的叶子字段路径，或固定该完整对象后重试。",
+            None
+        )
 
     # add 到数组末尾的特殊路径 /xxx/yyy/-
     if op == "add" and path.endswith("/-"):
@@ -118,45 +244,45 @@ def apply_patch(state: dict, patch: dict, allow_protected: bool = False) -> str:
             target = parent[key] if isinstance(parent, dict) else parent[int(key)]
             if isinstance(target, list):
                 target.append(value)
-                return f"[add] {path} ← {value!r}"
+                return f"[add] {file_name}:{path} ← {value!r} (原因: {reason})", file_name
             else:
-                return f"[error] {arr_path} 不是数组，无法 append"
+                return f"[error] {file_name}:{arr_path} 不是数组，无法 append", None
         except (KeyError, IndexError, ValueError) as e:
-            return f"[error] 路径 {arr_path!r} 解析失败: {e}"
+            return f"[error] {file_name}:{arr_path!r} 解析失败: {e}", None
 
     try:
         parent, key = resolve_path(state, path)
     except (KeyError, IndexError, ValueError) as e:
-        return f"[error] 路径 {path!r} 解析失败: {e}  →  请检查路径是否与注入的 JSON 结构匹配"
+        return f"[error] {file_name}:{path!r} 解析失败: {e}  →  请检查路径是否与注入的 JSON 结构匹配", None
 
     try:
         if op == "replace":
             parent[key] = value
-            return f"[replace] {path} = {value!r}"
+            return f"[replace] {file_name}:{path} = {value!r} (原因: {reason})", file_name
 
         elif op == "delta":
             old = parent[key]
             parent[key] = old + value
-            return f"[delta] {path}: {old} → {parent[key]} (Δ{value:+})"
+            return f"[delta] {file_name}:{path}: {old} → {parent[key]} (Δ{value:+}) (原因: {reason})", file_name
 
         elif op == "add":
             if isinstance(parent, list):
                 parent.insert(int(key), value)
             else:
                 parent[key] = value
-            return f"[add] {path} = {value!r}"
+            return f"[add] {file_name}:{path} = {value!r} (原因: {reason})", file_name
 
         elif op == "remove":
             if isinstance(parent, list):
                 parent.pop(int(key))
             else:
                 del parent[key]
-            return f"[remove] {path}"
+            return f"[remove] {file_name}:{path} (原因: {reason})", file_name
 
         else:
-            return f"[error] 未知操作: {op}"
+            return f"[error] 未知操作: {op}", None
     except Exception as e:
-        return f"[error] 执行 {op} 操作失败: {e}"
+        return f"[error] 执行 {file_name}:{path} 的 {op} 操作失败: {e}", None
 
 # ── 工具定义（传给 API）────────────────────────────────────────────────────────
 TOOLS = [
@@ -173,16 +299,11 @@ TOOLS = [
                 "properties": {
                     "target": {
                         "type": "string",
-                        "enum": ["world", "focus_location", "characters_snapshot"],
-                        "description": "要揭示隐藏内容的顶层目标对象"
-                    },
-                    "char_index": {
-                        "type": "integer",
-                        "description": "当 target=characters_snapshot 时，指定角色索引（从0开始）"
+                        "description": "要揭示隐藏内容的文件名，如 characters.json、world.json"
                     },
                     "field_path": {
                         "type": "string",
-                        "description": "可选，指定要揭示的字段路径（如 'summary' 或 '_story_info._Background'）。不填则揭示目标对象中全部 [HIDDEN] 内容"
+                        "description": "JSONPointer 路径，指定文件内要揭示的对象或字段，如 /card_char_shadowheart/summary。不填或 / 则处理整个文件"
                     }
                 },
                 "required": ["target"]
@@ -201,6 +322,14 @@ TOOLS = [
             "parameters": {
                 "type": "object",
                 "properties": {
+                    "reason": {
+                        "type": "string",
+                        "description": "【必须作为生成的第一个字段】一句话说明进行此修改的原因，以确保在下达修改指令前先进行逻辑思考。"
+                    },
+                    "file": {
+                        "type": "string",
+                        "description": "要修改的 package JSON 文件名，如 characters.json、world.json、monster.json"
+                    },
                     "op": {
                         "type": "string",
                         "enum": ["replace", "delta", "add", "remove"],
@@ -213,13 +342,13 @@ TOOLS = [
                     },
                     "path": {
                         "type": "string",
-                        "description": "JSONPointer路径，相对于注入给 LLM 的游戏状态 JSON 根节点。可变字段均无_前缀。示例：/characters_snapshot/0/attitude_value、/focus_location/description/-、/world/major_event_history/-"
+                        "description": "JSONPointer路径，相对于 file 指定的 JSON 文件根。示例：/card_char_shadowheart/current_hp、/loc_shattered_sanctum/history/-、/major_event_history/-"
                     },
                     "value": {
                         "description": "新值（remove 操作时可省略）"
                     }
                 },
-                "required": ["op", "path"]
+                "required": ["reason", "file", "op", "path"]
             }
         }
     }
@@ -267,27 +396,6 @@ def reveal_hidden(obj, field_path: str = None):
         node[last] = _strip(node[last])
     return obj
 
-# ── 构建注入上下文 ────────────────────────────────────────────────────────────
-def build_context(world: dict, characters: list, locations: list) -> dict:
-    """
-    将游戏数据组合为单一字典（game_state）。
-    - 扁平结构：所有字段在各实体的根层级，_ 前缀标记不可变字段
-    - 此字典同时是 prompt 注入源和 apply_patch 寻址根，两者永远一致
-    - 可变字段全部在实体根层级，LLM 写路径时无层级歧义
-    """
-    focus_location = locations[0] if locations else {}
-    char_summaries = []
-    for c in characters:
-        if c.get("type") == "character":
-            # 按照用户要求，将角色的全部字段发给大模型（包含 _ 前缀字段）
-            char_summaries.append(copy.deepcopy(c))
-
-    return {
-        "world": world,
-        "focus_location": focus_location,
-        "characters_snapshot": char_summaries
-    }
-
 # ── 主流程 ────────────────────────────────────────────────────────────────────
 def main():
     print("=" * 60)
@@ -311,17 +419,12 @@ def main():
                         help="玩家本回合的行动描述")
     parser.add_argument("--mode", default=None,
                         help="运行模式（package/modes/ 下的 JSON 文件名，不含 .json）。默认: narrative（标准叙事模式）")
-    parser.add_argument("--char-ids", nargs="*", default=None,
-                        metavar="ID",
-                        help="注入的角色 id 列表，空=全部角色")
-    parser.add_argument("--location-idx", type=int, default=0,
-                        help="焦点地点在 grove_locations.json 中的索引（默认0）")
-    parser.add_argument("--location-id", default=None,
-                        metavar="LOC_ID",
-                        help="按 id 指定焦点地点（优先于 --location-idx）")
     parser.add_argument("--game-state-file", default=None,
                         metavar="PATH",
                         help="直接加载预构建的 game_state JSON，跳过 build_context")
+    parser.add_argument("--context-selection-file", default=None,
+                        metavar="PATH",
+                        help="前端固定的上下文路径列表 JSON；为空则注入 package/*.json 全部内容")
     parser.add_argument("--unlock-protected", action="store_true",
                         help="临时解除 _ 前缀字段的修改保护")
     parser.add_argument("--direct-instruction", default="", type=str,
@@ -346,14 +449,9 @@ def main():
     advance_day = mode.get("advance_day", True)
     print(f"  模式: {mode.get('name', mode_key)}  策略: {strategy}")
 
-    # 3. 加载数据
-    world      = load_json("world.json")
-    characters = load_json("characters.json")
-    locations  = load_json("grove_locations.json")
-
-    world_state = copy.deepcopy(world)
-    char_state  = copy.deepcopy(characters)
-    loc_state   = copy.deepcopy(locations)
+    # 3. 加载 package 根目录下全部 JSON 数据文件
+    package_state = load_package_jsons()
+    dirty_files: set[str] = set()
 
     # 4. 构建 rule_text
     if args_cli.unlock_protected:
@@ -361,34 +459,45 @@ def main():
     else:
         rule_text = "- 字段可变性规则：带 _ 前缀的字段（如 _combat_info、_world_rules）是固定字段，绝对不可修改。无 _ 前缀的字段是可变字段，可以修改。"
 
-    # 5. 注入的角色 & 地点
-    char_filter = args_cli.char_ids
-    chars_to_inject = (
-        [c for c in char_state if c["id"] in char_filter]
-        if char_filter else char_state
-    )
-
-    if args_cli.location_id:
-        loc_idx = next(
-            (i for i, l in enumerate(loc_state) if l.get("id") == args_cli.location_id), 0
-        )
-    else:
-        loc_idx = args_cli.location_idx
-    locs_to_inject = loc_state[loc_idx : loc_idx + 1]
-
+    # 5. 构建裁剪上下文
+    selections: dict[str, list[str]] = {}
+    if args_cli.context_selection_file:
+        with open(args_cli.context_selection_file, "r", encoding="utf-8") as _f:
+            raw_selection = json.load(_f)
+        selections = normalize_selection_paths(raw_selection.get("pins", raw_selection))
     if args_cli.game_state_file:
         with open(args_cli.game_state_file, "r", encoding="utf-8") as _f:
             game_state = json.load(_f)
     else:
-        game_state = build_context(world_state, chars_to_inject, locs_to_inject)
+        game_state = build_context(package_state, selections)
     game_context = json.dumps(game_state, ensure_ascii=False, indent=2)
 
     # 6. 玩家输入 & 玩家角色检测
     player_action = args_cli.player_action
-    player_char = next(
-        (c for c in chars_to_inject if c.get("control") == "player"), None
-    )
+    characters_data = package_state.get("characters.json", {})
+    if isinstance(characters_data, list):
+        all_chars = characters_data
+    elif isinstance(characters_data, dict):
+        all_chars = list(characters_data.values())
+    else:
+        all_chars = []
+    player_char = next((c for c in all_chars if isinstance(c, dict) and c.get("control") == "player"), None)
     player_name = player_char["name"] if player_char else "玩家"
+
+    # 预生成真实骰子结果，传递给所有模式下的 LLM 避免幻觉
+    import random
+    dice_pool = {
+        "d20": [random.randint(1, 20) for _ in range(30)],
+        "d12": [random.randint(1, 12) for _ in range(30)],
+        "d10": [random.randint(1, 10) for _ in range(30)],
+        "d8":  [random.randint(1, 8) for _ in range(30)],
+        "d6":  [random.randint(1, 6) for _ in range(30)],
+        "d4":  [random.randint(1, 4) for _ in range(30)],
+        "d100": [random.randint(1, 100) for _ in range(30)],
+    }
+    pre_rolled_dice = "【系统提供的预生成真实骰子结果池（请严格从左到右依次取用相应的骰子结果，不要自己编造）】\n"
+    for dtype, rolls in dice_pool.items():
+        pre_rolled_dice += f"- {dtype}: {rolls}\n"
 
     # 7. 模板变量
     template_vars = {
@@ -397,6 +506,7 @@ def main():
         "game_context":      game_context,
         "rule_text":         rule_text,
         "direct_instruction": args_cli.direct_instruction or "",
+        "pre_rolled_dice":   pre_rolled_dice,
     }
 
     # 8. 辅助函数：构建一轮的消息列表
@@ -580,35 +690,25 @@ def main():
             print(f"  参数    : {json.dumps(args, ensure_ascii=False)}")
 
             if fn_name == "apply_json_patch":
-                result = apply_patch(game_state, args, args_cli.unlock_protected)
+                result, changed_file = apply_patch_to_file(package_state, args, selections, args_cli.unlock_protected)
                 print(f"  执行结果: {result}")
                 patch_log.append(result)
+                if changed_file:
+                    dirty_files.add(changed_file)
 
             elif fn_name == "reveal_hidden":
-                target     = args.get("target")
-                char_idx   = args.get("char_index")
-                field_path = args.get("field_path")
-                if target == "world":
-                    obj = game_state["world"]
-                    reveal_hidden(obj, field_path)
-                    result = f"[reveal_hidden] world{'.' + field_path if field_path else ''} 已揭示"
-                elif target == "focus_location":
-                    obj = game_state["focus_location"]
-                    reveal_hidden(obj, field_path)
-                    result = f"[reveal_hidden] focus_location{'.' + field_path if field_path else ''} 已揭示"
-                elif target == "characters_snapshot":
-                    if char_idx is None:
-                        result = "[error] reveal_hidden: characters_snapshot 需要 char_index"
-                    else:
-                        snap = game_state.get("characters_snapshot", [])
-                        if 0 <= char_idx < len(snap):
-                            obj = snap[char_idx]
-                            reveal_hidden(obj, field_path)
-                            result = f"[reveal_hidden] characters_snapshot[{char_idx}]{'.' + field_path if field_path else ''} 已揭示"
-                        else:
-                            result = f"[error] reveal_hidden: char_index {char_idx} 越界"
+                target = os.path.basename(str(args.get("target", "")))
+                field_path = args.get("field_path") or "/"
+                if target not in package_state:
+                    result = f"[error] reveal_hidden: 未知文件 {target!r}"
                 else:
-                    result = f"[error] reveal_hidden: 未知 target {target!r}"
+                    try:
+                        obj = resolve_node(package_state[target], field_path)
+                        reveal_hidden(obj)
+                        result = f"[reveal_hidden] {target}:{field_path} 已揭示"
+                        dirty_files.add(target)
+                    except Exception as e:
+                        result = f"[error] reveal_hidden: {target}:{field_path} 解析失败: {e}"
                 print(f"  执行结果: {result}")
                 patch_log.append(result)
     else:
@@ -619,16 +719,23 @@ def main():
     # ══════════════════════════════════════════════════════════════════════
     print("\n" + "─" * 60)
 
-    if advance_day:
-        print(f"[系统] 正常推进流程完毕 → 当前为第 {world_state['day_count']} 天")
+    world_state = package_state.get("world.json", {})
+    if advance_day and isinstance(world_state, dict):
+        print(f"[系统] 正常推进流程完毕 → 当前为第 {world_state.get('day_count', '?')} 天")
     else:
         print("[系统] 此模式不推进天数")
 
     print("\n【更新后 world.dynamic 状态】")
-    print(json.dumps(world_state.get("dynamic", {}), ensure_ascii=False, indent=2))
+    print(json.dumps(world_state.get("dynamic", {}) if isinstance(world_state, dict) else {}, ensure_ascii=False, indent=2))
 
     print("\n【更新后 影心 dynamic 状态】")
-    shadowheart = next((c for c in char_state if c["id"] == "card_char_shadowheart"), None)
+    characters_state = package_state.get("characters.json", {})
+    if isinstance(characters_state, list):
+        shadowheart = next((c for c in characters_state if isinstance(c, dict) and c.get("id") == "card_char_shadowheart"), None)
+    elif isinstance(characters_state, dict):
+        shadowheart = characters_state.get("card_char_shadowheart")
+    else:
+        shadowheart = None
     if shadowheart:
         print(json.dumps(shadowheart.get("dynamic", {}), ensure_ascii=False, indent=2))
 
@@ -638,28 +745,15 @@ def main():
     print("  第二轮（Patch）: {:.2f}s".format(elapsed2))
 
     # ── 写回更新后状态到 package/*.json ──────────────────────────────────────
-    snap_map = {s.get("id"): s for s in game_state.get("characters_snapshot", []) if s.get("id")}
-    for c in char_state:
-        if c.get("id") in snap_map:
-            snap = snap_map[c["id"]]
-            for k, v in snap.items():
-                c[k] = v
-
-    fl = game_state.get("focus_location", {})
-    if fl.get("id"):
-        for loc in loc_state:
-            if loc.get("id") == fl["id"]:
-                for k, v in fl.items():
-                    loc[k] = v
-                break
-
-    with open(os.path.join(PKG_DIR, "world.json"), "w", encoding="utf-8") as f:
-        json.dump(world_state, f, ensure_ascii=False, indent=2)
-    with open(os.path.join(PKG_DIR, "characters.json"), "w", encoding="utf-8") as f:
-        json.dump(char_state, f, ensure_ascii=False, indent=2)
-    with open(os.path.join(PKG_DIR, "grove_locations.json"), "w", encoding="utf-8") as f:
-        json.dump(loc_state, f, ensure_ascii=False, indent=2)
-    write_log("[系统] 状态已写回 package/*.json")
+    for fname in sorted(dirty_files):
+        if fname not in package_state:
+            continue
+        with open(os.path.join(PKG_DIR, fname), "w", encoding="utf-8") as f:
+            json.dump(package_state[fname], f, ensure_ascii=False, indent=2)
+    if dirty_files:
+        write_log(f"[系统] 状态已写回: {', '.join(sorted(dirty_files))}")
+    else:
+        write_log("[系统] 无 JSON 文件需要写回")
     print("=== STATE_UPDATED ===")
 
     print("\n" + "=" * 60)

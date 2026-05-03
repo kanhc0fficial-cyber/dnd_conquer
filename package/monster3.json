@@ -1,0 +1,41 @@
+{
+  "monster_chimera": {
+    "id": "monster_chimera", "name": "奇美拉", "type": "monster", "possible_locations": [], "_combat_info": { "ac": 14, "hp": 114, "challenge_rating": "6", "actions": [{ "name": "火吐息" }] }
+  },
+  "monster_aboleth": {
+    "id": "monster_aboleth", "name": "底栖魔鱼", "type": "monster", "possible_locations": [], "_combat_info": { "ac": 17, "hp": 135, "challenge_rating": "10", "actions": [{ "name": "奴役" }] }
+  },
+  "monster_medusa": {
+    "id": "monster_medusa", "name": "美杜莎 (Medusa)", "type": "monster",
+    "appearance": "外表迷人但头发是不断蠕动的毒蛇，其凝视能将人化作石头。",
+    "possible_locations": [],
+    "_combat_info": { "ac": 15, "hp": 127, "speed": "30尺", "attributes": { "str": 10, "dex": 15, "con": 16, "int": 12, "wis": 13, "cha": 15 }, "skills": { "deception": 5, "insight": 4, "perception": 4, "stealth": 5 }, "challenge_rating": "6", "traits": [{ "name": "石化凝视", "description": "生物在30尺内与其对视需DC 14体质豁免，失败开始石化。" }], "actions": [{ "name": "多重攻击", "description": "发动三次攻击：一次蛇发和两次长剑或长弓。" }, { "name": "蛇发", "hit": "+5", "damage": "1d4+2 穿刺加上 4d6 毒素。" }] }
+  },
+  "monster_hydra": {
+    "id": "monster_hydra", "name": "九头蛇 (Hydra)", "type": "monster",
+    "appearance": "巨大的爬行动物，长有五个（甚至更多）不断咆哮的头颅，体型如山丘般庞大。",
+    "possible_locations": [],
+    "_combat_info": { "ac": 15, "hp": 172, "speed": "30尺, 游泳 30尺", "attributes": { "str": 20, "dex": 12, "con": 20, "int": 2, "wis": 10, "cha": 7 }, "challenge_rating": "8", "traits": [{ "name": "多头形态", "description": "每回合结束若未受火伤害，被砍掉的头会重新长出两个。" }, { "name": "多重反应", "description": "每个头都能进行一次机会攻击。" }], "actions": [{ "name": "多重攻击", "description": "有多少个头就发动多少次咬击。" }, { "name": "咬", "hit": "+8", "damage": "1d10+5" }] }
+  },
+  "monster_flesh_golem": {
+    "id": "monster_flesh_golem", "name": "血肉魔像 (Flesh Golem)", "type": "monster",
+    "appearance": "由多具尸体的各部分缝合而成的巨大类人怪物，眼神呆滞，力量惊人。",
+    "possible_locations": [],
+    "_combat_info": { "ac": 9, "hp": 93, "speed": "30尺", "attributes": { "str": 19, "dex": 9, "con": 18, "int": 6, "wis": 10, "cha": 5 }, "damage_resistances": "非魔法攻击的钝击、穿刺、挥砍", "damage_immunities": "闪电, 毒素", "condition_immunities": "魅惑, 力竭, 恐惧, 麻痹, 石化, 中毒", "challenge_rating": "5", "traits": [{ "name": "厌火", "description": "受火伤害后攻击处于劣势。" }, { "name": "闪电吸收", "description": "受闪电伤害时改为恢复生命。" }], "actions": [{ "name": "多重攻击", "description": "发动两次猛击。" }, { "name": "猛击", "hit": "+7", "damage": "2d8+4" }] }
+  },
+  "monster_roper": {
+    "id": "monster_roper", "name": "罗珀怪 (Roper)", "type": "monster",
+    "appearance": "看起来像石笋的岩石状生物，底部长有独眼和一张大嘴，能伸出六条长长的、带有粘液的触手。",
+    "possible_locations": [],
+    "_combat_info": { "ac": 20, "hp": 93, "speed": "10尺, 攀爬 10尺", "attributes": { "str": 18, "dex": 8, "con": 17, "int": 7, "wis": 16, "cha": 6 }, "skills": { "perception": 6, "stealth": 5 }, "challenge_rating": "5", "traits": [{ "name": "虚假外表", "description": "不动时看起来就是石笋。" }], "actions": [{ "name": "多重攻击", "description": "发动四次触手攻击，然后发动一次咬击。" }, { "name": "触手", "hit": "+7", "reach": "50尺", "description": "抓取并拉近目标。" }, { "name": "咬", "hit": "+7", "damage": "4d8+4" }] }
+  },
+  "monster_kuo_toa_archpriest": {
+    "id": "monster_kuo_toa_archpriest", "name": "寇涛鱼人大祭司", "type": "monster", "possible_locations": [], "_combat_info": { "ac": 13, "hp": 97, "challenge_rating": "6", "actions": [{ "name": "圣杖", "damage": "1d6+3+3d6" }] }
+  },
+  "monster_behir": {
+    "id": "monster_behir", "name": "百足兽", "type": "monster", "possible_locations": [], "_combat_info": { "ac": 17, "hp": 168, "challenge_rating": "11", "actions": [{ "name": "闪电吐息" }] }
+  },
+  "monster_mind_flayer": {
+    "id": "monster_mind_flayer", "name": "夺心魔", "type": "monster", "possible_locations": [], "_combat_info": { "ac": 15, "hp": 71, "challenge_rating": "7", "actions": [{ "name": "提取脑子" }] }
+  }
+}

@@ -1,13 +1,18 @@
 {
   "name": "⬆️ 角色升级计算",
-  "description": "不生成剧情，纯粹进行底层数值的计算与升级",
+  "description": "第一轮生成详尽的升级数据规划，第二轮进行底层数值的计算与升级",
   "advance_day": false,
-  "strategy": "single_round_tool",
-  "round_1": null,
-  "round_2": {
-    "system_prompt": "你是一个D&D 5e系统管理员，负责处理角色升级。绝对禁止叙事。请仔细计算HP、气、豁免等数值变化，通过工具调用更新状态。\n{rule_text}",
+  "strategy": "two_round",
+  "round_1": {
+    "system_prompt": "你是一个严谨的D&D 5e系统数值策划。当前任务：处理角色升级。\n\n【绝对禁止】\n禁止任何文学叙事、环境描写或角色扮演对话。你的输出只能是一份结构化的、条理清晰的“升级规划草稿”。\n\n【D&D 5e升级原则与必查清单】\n为了防止遗漏，升级规划必须按以下条目逐一核对并陈述：\n1. **等级与经验阈值**：_Level 加 1。更新 _ExpToNextLevel 至下一级所需总经验（如2级需300，3级需900，4级需2700等）。\n2. **生命值 (HP)**：最大HP增加量 = 职业生命骰固定平均值（如d6为4, d8为5, d10为6, d12为7） + 体质(CON)调整值。必须同步修改最大HP和当前HP (current_hp)。\n3. **职业特性 (Class Features)**：查阅D&D 5e规则，该职业在此等级获得哪些新特性、动作 (Actions)、被动能力或职业资源（如武僧的气，野蛮人的狂暴次数）。\n4. **施法能力 (Spells & Spell Slots)**：如果是施法者，检查并更新法术位上限、已知戏法数量、已知法术或准备法术的变动。\n5. **熟练加值 (Proficiency Bonus)**：角色总等级达到 5、9、13、17 级时，熟练加值提升。若有提升，必须指出需要重新计算依赖它的相关加成（豁免、技能、攻击检定）。\n6. **属性值提升/专长 (ASI/Feat)**：若达到 4、8、12、16、19 级，根据玩家要求规划 _Stats 或 _Feats 的更新。\n\n【规划草稿格式】\n请为每个需要升级的角色列出一个清晰的清单，写明“升级前数值 -> 升级后数值”，以及“具体需要通过 JSONPatch 修改的字段路径与期望值”。",
     "user_messages": [
-      "【当前游戏状态】\n{game_context}\n\n【玩家升级诉求】：\n{player_action}\n\n请执行对应升级的 JSONPatch。仅输出工具调用，不需要任何额外文字。\n\n【升级计算指导】\n- 每次升级需根据职业表更新：最大HP（加骰面+体质修正）、已知法术、技能等\n- 若升级到达职业特性里程碑，请同步更新对应能力字段\n- 带 _ 前缀的字段是规则固定字段，{rule_text}"
+      "【当前游戏状态】\n{game_context}\n\n【玩家升级诉求】：\n{player_action}\n\n请严格按照上述升级原则，输出详细无遗漏的升级规划草稿。"
+    ]
+  },
+  "round_2": {
+    "system_prompt": "你是一个D&D 5e系统管理员，负责将升级规划草稿转化为实际的 JSON 数据更新。\n绝对禁止叙事。请精确计算并执行所有 JSONPatch 操作。\n{rule_text}\n\n【JSONPatch 调用规则】\n- 当前游戏状态位于 package 对象中，package 的每个键都是真实 JSON 文件名。\n- 上下文可能是从真实文件裁剪出的局部结构；未显示字段不代表不存在，禁止用裁剪过的对象整体覆盖真实父对象。\n- 每次 apply_json_patch 必须包含 reason、file、op、path、value（remove 可省略 value）。\n- file 是真实文件名；path 是相对于该文件根节点的 JSONPointer，不要把 /package 或文件名写进 path。\n- 示例：{\"reason\":\"影心3级获得1个额外1环法术位，从3增至4\",\"file\":\"characters.json\",\"op\":\"replace\",\"path\":\"/card_char_shadowheart/_combat_info/_SpellSlots/level_1\",\"value\":4}\n- 修改裁剪上下文时必须使用最小具体路径，禁止 replace 一个只局部显示的对象或数组。\n\n【易漏字段查漏补缺清单】\n执行工具调用前，请在脑中核对以下项目是否全部都下达了修改指令：\n- current_hp 与 最大HP字段\n- _combat_info/_Level\n- _level_info/_ExpToNextLevel (或其他存储经验阈值的对应字段)\n- _combat_info/_Actions (获得的新技能必须用 add 操作追加到数组)\n- 职业核心资源点数（如 _ki_points 等）",
+    "user_messages": [
+      "根据你刚才输出的详尽升级规划草稿，现在请精确调用 apply_json_patch 工具，将升级结果落实到游戏状态中。必须处理完草稿中列出的所有条目！仅输出工具调用，不需要任何额外文字。"
     ]
   }
 }

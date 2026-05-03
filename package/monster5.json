@@ -1,0 +1,44 @@
+{
+  "monster_young_red_dragon": {
+    "id": "monster_young_red_dragon", "name": "青少年红龙", "type": "monster", "possible_locations": [], "_combat_info": { "ac": 18, "hp": 178, "challenge_rating": "10", "actions": [{ "name": "火焰吐息" }] }
+  },
+  "monster_hill_giant": {
+    "id": "monster_hill_giant", "name": "山丘巨人 (Hill Giant)", "type": "monster",
+    "appearance": "体型极其庞大且臃肿的类人生物，穿着粗制滥造的兽皮，手持一根巨大的、未经修饰的树干。",
+    "possible_locations": [],
+    "_combat_info": { "ac": 13, "hp": 105, "speed": "40尺", "attributes": { "str": 21, "dex": 8, "con": 19, "int": 5, "wis": 9, "cha": 6 }, "challenge_rating": "5", "actions": [{ "name": "多重攻击", "description": "发动两次巨棒攻击。" }, { "name": "巨棒", "hit": "+8", "damage": "3d8+5" }, { "name": "投石", "hit": "+8", "damage": "3d10+5" }] }
+  },
+  "monster_stone_giant": {
+    "id": "monster_stone_giant", "name": "石巨人 (Stone Giant)", "type": "monster",
+    "appearance": "肤色如灰岩，身材修长且肌肉发达，眼神中透露着一种远超其外表的宁静与古老感。",
+    "possible_locations": [],
+    "_combat_info": { "ac": 17, "hp": 126, "speed": "40尺", "attributes": { "str": 23, "dex": 15, "con": 20, "int": 10, "wis": 12, "cha": 9 }, "skills": { "athletics": 12, "perception": 4, "stealth": 5 }, "challenge_rating": "7", "actions": [{ "name": "多重攻击", "description": "发动两次巨棒攻击。" }, { "name": "巨棒", "hit": "+9", "damage": "3d8+6" }, { "name": "投石", "hit": "+9", "damage": "4d10+6" }] }
+  },
+  "monster_earth_elemental": {
+    "id": "monster_earth_elemental", "name": "土元素 (Earth Elemental)", "type": "monster",
+    "appearance": "由岩石、土壤和矿物构成的巨大类人轮廓，每走一步地面都会震动。",
+    "possible_locations": [],
+    "_combat_info": { "ac": 17, "hp": 126, "speed": "30尺, 掘进 30尺", "attributes": { "str": 20, "dex": 8, "con": 20, "int": 5, "wis": 10, "cha": 5 }, "damage_resistances": "非魔法攻击的钝击、穿刺、挥砍", "damage_immunities": "毒素", "condition_immunities": "力竭, 擒抱, 麻痹, 石化, 中毒, 倒地, 束缚", "senses": "暗视 60尺, 震动感知 60尺", "challenge_rating": "5", "traits": [{ "name": "地行", "description": "能在未修饰的泥土或石头中挖掘而不扰动其所处。 " }], "actions": [{ "name": "多重攻击", "description": "发动两次猛击。" }, { "name": "猛击", "hit": "+8", "damage": "2d10+5" }] }
+  },
+  "monster_water_elemental": {
+    "id": "monster_water_elemental", "name": "水元素 (Water Elemental)", "type": "monster",
+    "appearance": "一股在陆地上奔涌、成型的活水，能够随意改变自己的形态。",
+    "possible_locations": [],
+    "_combat_info": { "ac": 14, "hp": 114, "speed": "30尺, 游泳 90尺", "attributes": { "str": 18, "dex": 14, "con": 18, "int": 5, "wis": 10, "cha": 8 }, "damage_resistances": "酸; 非魔法攻击的钝击、穿刺、挥砍", "damage_immunities": "毒素", "condition_immunities": "力竭, 擒抱, 麻痹, 石化, 中毒, 倒地, 束缚", "challenge_rating": "5", "traits": [{ "name": "水体", "description": "能进入并停留在敌对生物的空间。" }], "actions": [{ "name": "多重攻击", "description": "发动两次猛击。" }, { "name": "猛击", "hit": "+7", "damage": "2d8+4" }, { "name": "掀波", "description": "方块内生物DC 15强度豁免。失败受2d8+4钝击并可能被困。" }] }
+  },
+  "monster_vrock": {
+    "id": "monster_vrock", "name": "迷诱魔", "type": "monster", "possible_locations": [], "_combat_info": { "ac": 15, "hp": 104, "challenge_rating": "6", "actions": [{ "name": "惊恐尖鸣" }] }
+  },
+  "monster_chain_devil": {
+    "id": "monster_chain_devil", "name": "链魔", "type": "monster", "possible_locations": [], "_combat_info": { "ac": 16, "hp": 85, "challenge_rating": "8", "actions": [{ "name": "活化链条" }] }
+  },
+  "monster_glabrezu": {
+    "id": "monster_glabrezu", "name": "迷诱魔", "type": "monster", "possible_locations": [], "_combat_info": { "ac": 17, "hp": 157, "challenge_rating": "9", "actions": [{ "name": "螯肢" }] }
+  },
+  "monster_fire_elemental": {
+    "id": "monster_fire_elemental", "name": "火元素", "type": "monster", "possible_locations": [], "_combat_info": { "ac": 13, "hp": 102, "challenge_rating": "5", "actions": [{ "name": "触碰" }] }
+  },
+  "monster_air_elemental": {
+    "id": "monster_air_elemental", "name": "气元素", "type": "monster", "possible_locations": [], "_combat_info": { "ac": 15, "hp": 90, "challenge_rating": "5", "actions": [{ "name": "猛击" }] }
+  }
+}

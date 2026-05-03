@@ -1,0 +1,43 @@
+{
+  "gear_backpack": { "id": "gear_backpack", "name": "背包 (Backpack)", "type": "item", "subtype": "冒险装备", "cost": "2 gp", "weight": "5 lb." },
+  "gear_bedroll": { "id": "gear_bedroll", "name": "睡卷 (Bedroll)", "type": "item", "subtype": "冒险装备", "cost": "1 gp", "weight": "7 lb." },
+  "gear_caltrops": { "id": "gear_caltrops", "name": "铁蒺藜 (Caltrops, 20包)", "type": "item", "subtype": "冒险装备", "cost": "1 gp", "weight": "2 lb." },
+  "gear_crowbar": { "id": "gear_crowbar", "name": "撬棍 (Crowbar)", "type": "item", "subtype": "冒险装备", "cost": "2 gp", "weight": "5 lb." },
+  "gear_grappling_hook": { "id": "gear_grappling_hook", "name": "抓钩 (Grappling hook)", "type": "item", "subtype": "冒险装备", "cost": "2 gp", "weight": "4 lb." },
+  "gear_lantern_bullseye": { "id": "gear_lantern_bullseye", "name": "牛眼提灯 (Lantern, bullseye)", "type": "item", "subtype": "冒险装备", "cost": "10 gp", "weight": "2 lb." },
+  "gear_lock": { "id": "gear_lock", "name": "锁 (Lock)", "type": "item", "subtype": "冒险装备", "cost": "10 gp", "weight": "1 lb." },
+  "gear_rations": { "id": "gear_rations", "name": "口粮 (Rations, 1天)", "type": "item", "subtype": "冒险装备", "cost": "5 sp", "weight": "2 lb." },
+  "gear_rope_hempen": { "id": "gear_rope_hempen", "name": "麻绳 (Rope, hempen, 50尺)", "type": "item", "subtype": "冒险装备", "cost": "1 gp", "weight": "10 lb." },
+  "gear_rope_silk": { "id": "gear_rope_silk", "name": "丝绳 (Rope, silk, 50尺)", "type": "item", "subtype": "冒险装备", "cost": "10 gp", "weight": "5 lb." },
+  "gear_tent": { "id": "gear_tent", "name": "帐篷 (Tent, 双人)", "type": "item", "subtype": "冒险装备", "cost": "2 gp", "weight": "20 lb." },
+  "gear_torch": { "id": "gear_torch", "name": "火把 (Torch)", "type": "item", "subtype": "冒险装备", "cost": "1 cp", "weight": "1 lb." },
+  "gear_waterskin": { "id": "gear_waterskin", "name": "水袋 (Waterskin)", "type": "item", "subtype": "冒险装备", "cost": "2 sp", "weight": "5 lb. (满)" },
+
+  "magic_potion_healing": { "id": "magic_potion_healing", "name": "治疗药水 (Potion of Healing)", "type": "item", "subtype": "消耗品", "rarity": "普通", "cost": "50 gp", "description": "饮用后恢复 2d4+2 点生命值。" },
+  "magic_potion_greater_healing": { "id": "magic_potion_greater_healing", "name": "强效治疗药水 (Potion of Greater Healing)", "type": "item", "subtype": "消耗品", "rarity": "非普通", "cost": "约 150 gp", "description": "饮用后恢复 4d4+4 点生命值。" },
+  "magic_potion_superior_healing": { "id": "magic_potion_superior_healing", "name": "极效治疗药水 (Potion of Superior Healing)", "type": "item", "subtype": "消耗品", "rarity": "珍稀", "cost": "约 450 gp", "description": "饮用后恢复 8d4+8 点生命值。" },
+  "magic_potion_supreme_healing": { "id": "magic_potion_supreme_healing", "name": "无上治疗药水 (Potion of Supreme Healing)", "type": "item", "subtype": "消耗品", "rarity": "极珍稀", "cost": "约 1350 gp", "description": "饮用后恢复 10d4+20 点生命值。" },
+  "magic_scroll_magic_missile": { "id": "magic_scroll_magic_missile", "name": "魔法飞弹卷轴 (Scroll of Magic Missile)", "type": "item", "subtype": "消耗品", "rarity": "普通", "cost": "约 50 gp", "description": "允许施法者释放一次1环魔法飞弹。" },
+  "magic_scroll_fireball": { "id": "magic_scroll_fireball", "name": "火球术卷轴 (Scroll of Fireball)", "type": "item", "subtype": "消耗品", "rarity": "非普通", "cost": "约 250 gp", "description": "允许施法者释放一次3环火球术。" },
+
+  "magic_bag_of_holding": { "id": "magic_bag_of_holding", "name": "次元袋 (Bag of Holding)", "type": "item", "subtype": "奇物", "rarity": "非普通", "cost": "约 250 gp", "description": "内部空间远大于外部，最大容纳 500 磅重量和 64 立方尺体积的物品，自身固定重 15 磅。" },
+  "magic_boots_of_elvenkind": { "id": "magic_boots_of_elvenkind", "name": "精灵靴 (Boots of Elvenkind)", "type": "item", "subtype": "奇物", "rarity": "非普通", "cost": "约 250 gp", "description": "无论走在什么表面上，脚步都不会发出声响，敏捷（隐匿）检定具有优势。" },
+  "magic_cloak_of_protection": { "id": "magic_cloak_of_protection", "name": "防护斗篷 (Cloak of Protection)", "type": "item", "subtype": "奇物", "rarity": "非普通", "cost": "约 250 gp", "description": "需要同调。护甲等级 (AC) 和所有豁免检定获得 +1 加值。" },
+  "magic_gauntlets_of_ogre_power": { "id": "magic_gauntlets_of_ogre_power", "name": "食人魔力量护手 (Gauntlets of Ogre Power)", "type": "item", "subtype": "奇物", "rarity": "非普通", "cost": "约 250 gp", "description": "需要同调。装备后力量变为 19。若原力量已达19或更高，则无额外效果。" },
+  "magic_pearl_of_power": { "id": "magic_pearl_of_power", "name": "力量珍珠 (Pearl of Power)", "type": "item", "subtype": "奇物", "rarity": "非普通", "cost": "约 250 gp", "description": "需要同调。每天一次，你可以用动作恢复一个不超过3环的消耗掉的法术位。" },
+  "magic_winged_boots": { "id": "magic_winged_boots", "name": "飞翼靴 (Winged Boots)", "type": "item", "subtype": "奇物", "rarity": "非普通", "cost": "约 250 gp", "description": "需要同调。每天可提供总计4小时的飞行速度（等同于步行速度）。" },
+
+  "magic_belt_of_giant_strength": { "id": "magic_belt_of_giant_strength", "name": "巨人力量腰带 (Belt of Giant Strength - Hill)", "type": "item", "subtype": "奇物", "rarity": "珍稀", "cost": "约 4,000 gp", "description": "需要同调。装备后力量变为 21 (山丘巨人级别)。" },
+  "magic_boots_of_speed": { "id": "magic_boots_of_speed", "name": "速度之靴 (Boots of Speed)", "type": "item", "subtype": "奇物", "rarity": "珍稀", "cost": "约 4,000 gp", "description": "需要同调。以附赠动作激活，步行速度翻倍，且针对你的借机攻击检定处于劣势，持续最多10分钟。" },
+  "magic_bracers_of_defense": { "id": "magic_bracers_of_defense", "name": "防御护腕 (Bracers of Defense)", "type": "item", "subtype": "奇物", "rarity": "珍稀", "cost": "约 4,000 gp", "description": "需要同调。如果你未穿戴护甲且未使用盾牌，你的护甲等级 (AC) 获得 +2 加值。" },
+  "magic_cloak_of_displacement": { "id": "magic_cloak_of_displacement", "name": "位移斗篷 (Cloak of Displacement)", "type": "item", "subtype": "奇物", "rarity": "珍稀", "cost": "约 4,000 gp", "description": "需要同调。投射出你的幻影，所有对你的攻击检定处于劣势。如果你受到伤害，该属性失效直到你下个回合开始。" },
+  "magic_flame_tongue": { "id": "magic_flame_tongue", "name": "火焰舌 (Flame Tongue)", "type": "weapon", "subtype": "魔法武器", "rarity": "珍稀", "cost": "约 4,000 gp", "description": "需要同调。你可以用附赠动作使其燃烧，在命中时额外造成 2d6 火焰伤害。提供亮光和微光照明。" },
+  "magic_ring_of_protection": { "id": "magic_ring_of_protection", "name": "防护戒指 (Ring of Protection)", "type": "item", "subtype": "魔法戒指", "rarity": "珍稀", "cost": "约 4,000 gp", "description": "需要同调。你的护甲等级 (AC) 和所有豁免检定获得 +1 加值。" },
+  "magic_wand_of_fireballs": { "id": "magic_wand_of_fireballs", "name": "火球术法杖 (Wand of Fireballs)", "type": "item", "subtype": "法杖", "rarity": "珍稀", "cost": "约 4,000 gp", "description": "需要由施法者同调。包含7发充能，消耗1发或更多充能以施展火球术。每天黎明恢复 1d6+1 发充能。" },
+
+  "magic_vorpal_sword": { "id": "magic_vorpal_sword", "name": "斩首剑 (Vorpal Sword)", "type": "weapon", "subtype": "魔法武器", "rarity": "传说", "cost": "约 50,000+ gp", "description": "需要同调。攻击检定与伤害检定+3。如果你在攻击掷骰中投出20，直接砍下目标的头颅，如果它有头且不能无头存活则立即死亡。" },
+  "magic_holy_avenger": { "id": "magic_holy_avenger", "name": "神圣复仇者 (Holy Avenger)", "type": "weapon", "subtype": "魔法武器", "rarity": "传说", "cost": "约 100,000 gp", "description": "需要由圣武士同调。攻击和伤害+3，对不死生物和邪魔额外造成 2d10 光耀伤害，散发提供对抗法术豁免优势的光环。" },
+  "magic_robe_of_the_archmagi": { "id": "magic_robe_of_the_archmagi", "name": "大法师之袍 (Robe of the Archmagi)", "type": "armor", "subtype": "奇物/衣物", "rarity": "传说", "cost": "约 100,000 gp", "description": "需要由术士、邪术师或法师同调。提供 15+敏捷调整值 的基础AC，对抗法术的豁免检定优势，法术攻击和豁免DC获得+2加值。" },
+  "magic_staff_of_the_magi": { "id": "magic_staff_of_the_magi", "name": "大法师法杖 (Staff of the Magi)", "type": "item", "subtype": "法杖", "rarity": "传说", "cost": "约 50,000+ gp", "description": "需要由术士、邪术师或法师同调。法术攻击+2，可吸收法术转化为充能，消耗充能可施展多种强力法术（如火球、闪电束、冰墙、时停等）。" },
+  "magic_armor_of_invulnerability": { "id": "magic_armor_of_invulnerability", "name": "无敌甲 (Armor of Invulnerability)", "type": "armor", "subtype": "魔法重甲", "rarity": "传说", "cost": "约 50,000+ gp", "description": "需要同调。这件全身板甲使你对非魔法攻击具有伤害抗性。每天可以用动作激活它，在10分钟内免疫所有非魔法伤害。" }
+}

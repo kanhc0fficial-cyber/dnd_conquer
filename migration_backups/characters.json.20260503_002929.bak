@@ -1,5 +1,5 @@
-{
-  "card_char_xie_nian": {
+[
+  {
     "id": "card_char_xie_nian",
     "name": "邪念",
     "type": "character",
@@ -8,7 +8,7 @@
     "summary": "来自东方大陆卡拉图尔寿龙国的游历武僧，头脑冷静而内心复杂，惯以观察代替言语，脑中被植入了夺心魔蝌蚪。",
     "is_locked": false,
     "bound_event_id": null,
-    "location": "loc_the_hollow",
+    "location": "shattered_sanctum_gut_private_room",
     "_combat_info": {
       "_Class": "武僧",
       "_Subclass": "散打宗",
@@ -97,8 +97,8 @@
       },
       "_Clothing": "一身洗得发白的深灰色武僧袍服，腰间以布条代替腰带，手肘和膝盖处有磨损的痕迹"
     },
-    "current_hp": 17,
-    "current_exp": 3151,
+    "current_hp": 27,
+    "current_exp": 1925,
     "attitude_value": null,
     "attitude_desc": "（玩家角色，无好感度系统）",
     "attitude_update_rule": null,
@@ -107,7 +107,7 @@
     ],
     "agenda": "观察当前局势，在不暴露自身弱点的前提下，逐步与其他幸存者建立可信赖的关系。"
   },
-  "card_char_shadowheart": {
+  {
     "id": "card_char_shadowheart",
     "name": "影心",
     "type": "character",
@@ -116,7 +116,7 @@
     "summary": "一名半精灵牧师，[HIDDEN]是莎尔的隐秘信徒，怀抱一个能够抵御夺心魔控制的星界遗物，[HIDDEN]为防泄密被抹去了部分记忆。",
     "is_locked": false,
     "bound_event_id": null,
-    "location": "loc_the_hollow",
+    "location": "shattered_sanctum_gut_private_room",
     "_combat_info": {
       "_Class": "牧师",
       "_Level": 3,
@@ -230,9 +230,9 @@
       "_Clothing": "穿着带有莎尔神圣标志的特制黑紫色锁子甲，头上戴着黑色的额前环饰"
     },
     "current_hp": 31,
-    "current_exp": 3126,
-    "attitude_value": -2,
-    "attitude_desc": "对邪念在暗杀明萨拉及护送哈尔辛撤退全过程中表现出的冷静沉稳与战术默契表示认可，认为其是不可多得的可靠盟友。在当前治疗寄生虫的共同目标前，暂时放下对德鲁伊的偏见配合行动。",
+    "current_exp": 1900,
+    "attitude_value": -6,
+    "attitude_desc": "对邪念用看似简单粗暴实则极具技术性的徒手破坏方式解决困境表示认同，认为其实用主义作风很对胃口，戒备心略有降低。",
     "attitude_update_rule": "看重实用主义和谨慎行事，对尊重她隐私、对莎尔教会表现出宽容或感兴趣的言行会增加好感；反感过度刺探隐私、无底线的善良、以及对塞伦涅的赞美。",
     "inventory": [
       "item_potion_of_healing",
@@ -242,7 +242,7 @@
     ],
     "agenda": "寻找医师移除脑中的夺心魔蝌蚪，寻找前往博德之门的道路，同时保护神秘遗物不被夺走。"
   },
-  "card_char_gale": {
+  {
     "id": "card_char_gale",
     "name": "盖尔",
     "type": "character",
@@ -351,7 +351,7 @@
     ],
     "agenda": "说服主角收留自己，利用自己的魔法知识提供帮助，并试图获取队伍中多余的魔法装备来喂养法阵。"
   },
-  "card_char_halsin": {
+  {
     "id": "card_char_halsin",
     "name": "哈尔辛",
     "type": "character",
@@ -454,7 +454,7 @@
     "inventory": [],
     "agenda": "与邪念和影心组成临时同盟，利用熊形态的战斗力深入破碎圣所，依次消灭地精三大头目(明萨拉、德罗尔、古特)，根除绝对真神教团对这片区域的威胁。"
   },
-  "card_item_mysterious_artefact": {
+  {
     "id": "card_item_mysterious_artefact",
     "name": "神秘遗物",
     "type": "item",
@@ -482,4 +482,4 @@
     "binding": "影心",
     "current_effect": "当你靠近它时，脑中的夺心魔蝌蚪会变得极其安静，仿佛被屏蔽了大部分的精神联系。"
   }
-}
+]

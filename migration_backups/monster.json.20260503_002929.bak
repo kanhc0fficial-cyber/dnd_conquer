@@ -1,5 +1,5 @@
-{
-  "monster_goblin": {
+[
+  {
     "id": "monster_goblin",
     "name": "地精 (Goblin)",
     "type": "monster",
@@ -15,20 +15,10 @@
       "hp": 7,
       "speed": "30尺",
       "attributes": {
-        "str": 8,
-        "dex": 14,
-        "con": 10,
-        "int": 10,
-        "wis": 8,
-        "cha": 8
+        "str": 8, "dex": 14, "con": 10, "int": 10, "wis": 8, "cha": 8
       },
       "saving_throws": {
-        "str": -1,
-        "dex": 2,
-        "con": 0,
-        "int": 0,
-        "wis": -1,
-        "cha": -1
+        "str": -1, "dex": 2, "con": 0, "int": 0, "wis": -1, "cha": -1
       },
       "skills": {
         "stealth": 6
@@ -59,7 +49,7 @@
       ]
     }
   },
-  "monster_bugbear": {
+  {
     "id": "monster_bugbear",
     "name": "熊地精 (Bugbear)",
     "type": "monster",
@@ -74,24 +64,13 @@
       "hp": 27,
       "speed": "30尺",
       "attributes": {
-        "str": 15,
-        "dex": 14,
-        "con": 13,
-        "int": 8,
-        "wis": 11,
-        "cha": 9
+        "str": 15, "dex": 14, "con": 13, "int": 8, "wis": 11, "cha": 9
       },
       "saving_throws": {
-        "str": 2,
-        "dex": 2,
-        "con": 1,
-        "int": -1,
-        "wis": 0,
-        "cha": -1
+        "str": 2, "dex": 2, "con": 1, "int": -1, "wis": 0, "cha": -1
       },
       "skills": {
-        "stealth": 6,
-        "survival": 2
+        "stealth": 6, "survival": 2
       },
       "senses": "暗视 60尺, 被动察觉 10",
       "challenge_rating": "1",
@@ -123,7 +102,7 @@
       ]
     }
   },
-  "monster_intellect_devourer": {
+  {
     "id": "monster_intellect_devourer",
     "name": "噬脑怪 (Intellect Devourer)",
     "type": "monster",
@@ -137,24 +116,13 @@
       "hp": 21,
       "speed": "40尺",
       "attributes": {
-        "str": 6,
-        "dex": 14,
-        "con": 13,
-        "int": 12,
-        "wis": 11,
-        "cha": 10
+        "str": 6, "dex": 14, "con": 13, "int": 12, "wis": 11, "cha": 10
       },
       "saving_throws": {
-        "str": -2,
-        "dex": 2,
-        "con": 1,
-        "int": 1,
-        "wis": 0,
-        "cha": 0
+        "str": -2, "dex": 2, "con": 1, "int": 1, "wis": 0, "cha": 0
       },
       "skills": {
-        "perception": 2,
-        "stealth": 4
+        "perception": 2, "stealth": 4
       },
       "damage_resistances": "非魔法攻击的钝击、穿刺、挥砍",
       "condition_immunities": "目盲",
@@ -185,7 +153,7 @@
       ]
     }
   },
-  "monster_phase_spider": {
+  {
     "id": "monster_phase_spider",
     "name": "相位蜘蛛 (Phase Spider)",
     "type": "monster",
@@ -199,20 +167,10 @@
       "hp": 32,
       "speed": "30尺, 攀爬 30尺",
       "attributes": {
-        "str": 15,
-        "dex": 15,
-        "con": 12,
-        "int": 6,
-        "wis": 10,
-        "cha": 6
+        "str": 15, "dex": 15, "con": 12, "int": 6, "wis": 10, "cha": 6
       },
       "saving_throws": {
-        "str": 2,
-        "dex": 2,
-        "con": 1,
-        "int": -2,
-        "wis": 0,
-        "cha": -2
+        "str": 2, "dex": 2, "con": 1, "int": -2, "wis": 0, "cha": -2
       },
       "skills": {
         "stealth": 6
@@ -244,7 +202,7 @@
       ]
     }
   },
-  "monster_worg": {
+  {
     "id": "monster_worg",
     "name": "座狼 (Worg)",
     "type": "monster",
@@ -258,20 +216,10 @@
       "hp": 26,
       "speed": "50尺",
       "attributes": {
-        "str": 16,
-        "dex": 13,
-        "con": 13,
-        "int": 7,
-        "wis": 11,
-        "cha": 8
+        "str": 16, "dex": 13, "con": 13, "int": 7, "wis": 11, "cha": 8
       },
       "saving_throws": {
-        "str": 3,
-        "dex": 1,
-        "con": 1,
-        "int": -2,
-        "wis": 0,
-        "cha": -1
+        "str": 3, "dex": 1, "con": 1, "int": -2, "wis": 0, "cha": -1
       },
       "skills": {
         "perception": 4
@@ -295,7 +243,7 @@
       ]
     }
   },
-  "monster_harpy": {
+  {
     "id": "monster_harpy",
     "name": "鹰身女妖 (Harpy)",
     "type": "monster",
@@ -308,20 +256,10 @@
       "hp": 38,
       "speed": "20尺, 飞行 40尺",
       "attributes": {
-        "str": 12,
-        "dex": 13,
-        "con": 12,
-        "int": 7,
-        "wis": 10,
-        "cha": 13
+        "str": 12, "dex": 13, "con": 12, "int": 7, "wis": 10, "cha": 13
       },
       "saving_throws": {
-        "str": 1,
-        "dex": 1,
-        "con": 1,
-        "int": -2,
-        "wis": 0,
-        "cha": 1
+        "str": 1, "dex": 1, "con": 1, "int": -2, "wis": 0, "cha": 1
       },
       "senses": "被动察觉 10",
       "challenge_rating": "1",
@@ -352,7 +290,7 @@
       ]
     }
   },
-  "monster_gnoll": {
+  {
     "id": "monster_gnoll",
     "name": "豺狼人 (Gnoll)",
     "type": "monster",
@@ -365,20 +303,10 @@
       "hp": 22,
       "speed": "30尺",
       "attributes": {
-        "str": 14,
-        "dex": 12,
-        "con": 11,
-        "int": 6,
-        "wis": 10,
-        "cha": 7
+        "str": 14, "dex": 12, "con": 11, "int": 6, "wis": 10, "cha": 7
       },
       "saving_throws": {
-        "str": 2,
-        "dex": 1,
-        "con": 0,
-        "int": -2,
-        "wis": 0,
-        "cha": -2
+        "str": 2, "dex": 1, "con": 0, "int": -2, "wis": 0, "cha": -2
       },
       "senses": "暗视 60尺, 被动察觉 10",
       "challenge_rating": "1/2",
@@ -413,7 +341,7 @@
       ]
     }
   },
-  "monster_ogre": {
+  {
     "id": "monster_ogre",
     "name": "食人魔 (Ogre)",
     "type": "monster",
@@ -427,20 +355,10 @@
       "hp": 59,
       "speed": "40尺",
       "attributes": {
-        "str": 19,
-        "dex": 8,
-        "con": 16,
-        "int": 5,
-        "wis": 7,
-        "cha": 7
+        "str": 19, "dex": 8, "con": 16, "int": 5, "wis": 7, "cha": 7
       },
       "saving_throws": {
-        "str": 4,
-        "dex": -1,
-        "con": 3,
-        "int": -3,
-        "wis": -2,
-        "cha": -2
+        "str": 4, "dex": -1, "con": 3, "int": -3, "wis": -2, "cha": -2
       },
       "senses": "暗视 60尺, 被动察觉 8",
       "challenge_rating": "2",
@@ -463,7 +381,7 @@
       ]
     }
   },
-  "monster_minotaur": {
+  {
     "id": "monster_minotaur",
     "name": "牛头人 (Minotaur)",
     "type": "monster",
@@ -476,20 +394,10 @@
       "hp": 76,
       "speed": "40尺",
       "attributes": {
-        "str": 18,
-        "dex": 11,
-        "con": 16,
-        "int": 6,
-        "wis": 16,
-        "cha": 9
+        "str": 18, "dex": 11, "con": 16, "int": 6, "wis": 16, "cha": 9
       },
       "saving_throws": {
-        "str": 4,
-        "dex": 0,
-        "con": 3,
-        "int": -2,
-        "wis": 3,
-        "cha": -1
+        "str": 4, "dex": 0, "con": 3, "int": -2, "wis": 3, "cha": -1
       },
       "skills": {
         "perception": 7
@@ -528,7 +436,7 @@
       ]
     }
   },
-  "monster_duergar": {
+  {
     "id": "monster_duergar",
     "name": "灰矮人 (Duergar)",
     "type": "monster",
@@ -542,20 +450,10 @@
       "hp": 26,
       "speed": "25尺",
       "attributes": {
-        "str": 14,
-        "dex": 11,
-        "con": 14,
-        "int": 11,
-        "wis": 10,
-        "cha": 9
+        "str": 14, "dex": 11, "con": 14, "int": 11, "wis": 10, "cha": 9
       },
       "saving_throws": {
-        "str": 2,
-        "dex": 0,
-        "con": 2,
-        "int": 0,
-        "wis": 0,
-        "cha": -1
+        "str": 2, "dex": 0, "con": 2, "int": 0, "wis": 0, "cha": -1
       },
       "damage_resistances": "毒素",
       "condition_immunities": "中毒",
@@ -597,7 +495,7 @@
       ]
     }
   },
-  "monster_spectator": {
+  {
     "id": "monster_spectator",
     "name": "观察者眼魔 (Spectator)",
     "type": "monster",
@@ -610,20 +508,10 @@
       "hp": 39,
       "speed": "0尺, 悬浮 30尺",
       "attributes": {
-        "str": 8,
-        "dex": 14,
-        "con": 14,
-        "int": 13,
-        "wis": 14,
-        "cha": 11
+        "str": 8, "dex": 14, "con": 14, "int": 13, "wis": 14, "cha": 11
       },
       "saving_throws": {
-        "str": -1,
-        "dex": 2,
-        "con": 2,
-        "int": 1,
-        "wis": 2,
-        "cha": 0
+        "str": -1, "dex": 2, "con": 2, "int": 1, "wis": 2, "cha": 0
       },
       "skills": {
         "perception": 6
@@ -656,7 +544,7 @@
       ]
     }
   },
-  "monster_skeleton": {
+  {
     "id": "monster_skeleton",
     "name": "骷髅 (Skeleton)",
     "type": "monster",
@@ -671,20 +559,10 @@
       "hp": 13,
       "speed": "30尺",
       "attributes": {
-        "str": 10,
-        "dex": 14,
-        "con": 15,
-        "int": 6,
-        "wis": 8,
-        "cha": 5
+        "str": 10, "dex": 14, "con": 15, "int": 6, "wis": 8, "cha": 5
       },
       "saving_throws": {
-        "str": 0,
-        "dex": 2,
-        "con": 2,
-        "int": -2,
-        "wis": -1,
-        "cha": -3
+        "str": 0, "dex": 2, "con": 2, "int": -2, "wis": -1, "cha": -3
       },
       "damage_vulnerabilities": "钝击",
       "damage_immunities": "毒素",
@@ -710,7 +588,7 @@
       ]
     }
   },
-  "monster_redcap": {
+  {
     "id": "monster_redcap",
     "name": "红帽子 (Redcap)",
     "type": "monster",
@@ -724,24 +602,13 @@
       "hp": 45,
       "speed": "25尺",
       "attributes": {
-        "str": 18,
-        "dex": 13,
-        "con": 14,
-        "int": 10,
-        "wis": 12,
-        "cha": 9
+        "str": 18, "dex": 13, "con": 14, "int": 10, "wis": 12, "cha": 9
       },
       "saving_throws": {
-        "str": 4,
-        "dex": 1,
-        "con": 2,
-        "int": 0,
-        "wis": 1,
-        "cha": -1
+        "str": 4, "dex": 1, "con": 2, "int": 0, "wis": 1, "cha": -1
       },
       "skills": {
-        "athletics": 6,
-        "perception": 3
+        "athletics": 6, "perception": 3
       },
       "senses": "暗视 60尺, 被动察觉 13",
       "challenge_rating": "3",
@@ -773,7 +640,7 @@
       ]
     }
   },
-  "monster_green_hag": {
+  {
     "id": "monster_green_hag",
     "name": "绿鬼婆 (Green Hag)",
     "type": "monster",
@@ -787,26 +654,13 @@
       "hp": 82,
       "speed": "30尺",
       "attributes": {
-        "str": 18,
-        "dex": 12,
-        "con": 16,
-        "int": 13,
-        "wis": 14,
-        "cha": 14
+        "str": 18, "dex": 12, "con": 16, "int": 13, "wis": 14, "cha": 14
       },
       "saving_throws": {
-        "str": 4,
-        "dex": 1,
-        "con": 3,
-        "int": 1,
-        "wis": 2,
-        "cha": 2
+        "str": 4, "dex": 1, "con": 3, "int": 1, "wis": 2, "cha": 2
       },
       "skills": {
-        "arcana": 3,
-        "deception": 4,
-        "perception": 4,
-        "stealth": 3
+        "arcana": 3, "deception": 4, "perception": 4, "stealth": 3
       },
       "senses": "暗视 60尺, 被动察觉 14",
       "challenge_rating": "3",
@@ -835,7 +689,7 @@
       ]
     }
   },
-  "monster_priestess_gut": {
+  {
     "id": "monster_priestess_gut",
     "name": "女祭司古特 (Priestess Gut)",
     "type": "monster",
@@ -849,25 +703,13 @@
       "hp": 40,
       "speed": "30尺",
       "attributes": {
-        "str": 12,
-        "dex": 14,
-        "con": 14,
-        "int": 10,
-        "wis": 16,
-        "cha": 12
+        "str": 12, "dex": 14, "con": 14, "int": 10, "wis": 16, "cha": 12
       },
       "saving_throws": {
-        "str": 1,
-        "dex": 2,
-        "con": 2,
-        "int": 0,
-        "wis": 5,
-        "cha": 3
+        "str": 1, "dex": 2, "con": 2, "int": 0, "wis": 5, "cha": 3
       },
       "skills": {
-        "perception": 5,
-        "religion": 2,
-        "stealth": 4
+        "perception": 5, "religion": 2, "stealth": 4
       },
       "senses": "暗视 60尺, 被动察觉 15",
       "challenge_rating": "2",
@@ -911,4 +753,4 @@
       ]
     }
   }
-}
+]

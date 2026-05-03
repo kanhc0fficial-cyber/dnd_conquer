@@ -1,0 +1,15 @@
+{
+  "armor_padded": { "id": "armor_padded", "name": "厚布甲 (Padded)", "type": "armor", "subtype": "轻甲", "cost": "5 gp", "weight": "8 lb.", "attributes": { "ac": "11 + 敏捷调整值", "stealth": "劣势", "strength_req": null } },
+  "armor_leather": { "id": "armor_leather", "name": "皮甲 (Leather)", "type": "armor", "subtype": "轻甲", "cost": "10 gp", "weight": "10 lb.", "attributes": { "ac": "11 + 敏捷调整值", "stealth": "正常", "strength_req": null } },
+  "armor_studded_leather": { "id": "armor_studded_leather", "name": "镶钉皮甲 (Studded leather)", "type": "armor", "subtype": "轻甲", "cost": "45 gp", "weight": "13 lb.", "attributes": { "ac": "12 + 敏捷调整值", "stealth": "正常", "strength_req": null } },
+  "armor_hide": { "id": "armor_hide", "name": "兽皮甲 (Hide)", "type": "armor", "subtype": "中甲", "cost": "10 gp", "weight": "12 lb.", "attributes": { "ac": "12 + 敏捷调整值 (最大 2)", "stealth": "正常", "strength_req": null } },
+  "armor_chain_shirt": { "id": "armor_chain_shirt", "name": "链甲衫 (Chain shirt)", "type": "armor", "subtype": "中甲", "cost": "50 gp", "weight": "20 lb.", "attributes": { "ac": "13 + 敏捷调整值 (最大 2)", "stealth": "正常", "strength_req": null } },
+  "armor_scale_mail": { "id": "armor_scale_mail", "name": "鳞甲 (Scale mail)", "type": "armor", "subtype": "中甲", "cost": "50 gp", "weight": "45 lb.", "attributes": { "ac": "14 + 敏捷调整值 (最大 2)", "stealth": "劣势", "strength_req": null } },
+  "armor_breastplate": { "id": "armor_breastplate", "name": "胸甲 (Breastplate)", "type": "armor", "subtype": "中甲", "cost": "400 gp", "weight": "20 lb.", "attributes": { "ac": "14 + 敏捷调整值 (最大 2)", "stealth": "正常", "strength_req": null } },
+  "armor_half_plate": { "id": "armor_half_plate", "name": "半身板甲 (Half plate)", "type": "armor", "subtype": "中甲", "cost": "750 gp", "weight": "40 lb.", "attributes": { "ac": "15 + 敏捷调整值 (最大 2)", "stealth": "劣势", "strength_req": null } },
+  "armor_ring_mail": { "id": "armor_ring_mail", "name": "环甲 (Ring mail)", "type": "armor", "subtype": "重甲", "cost": "30 gp", "weight": "40 lb.", "attributes": { "ac": "14", "stealth": "劣势", "strength_req": null } },
+  "armor_chain_mail": { "id": "armor_chain_mail", "name": "链甲 (Chain mail)", "type": "armor", "subtype": "重甲", "cost": "75 gp", "weight": "55 lb.", "attributes": { "ac": "16", "stealth": "劣势", "strength_req": "13" } },
+  "armor_splint": { "id": "armor_splint", "name": "板条甲 (Splint)", "type": "armor", "subtype": "重甲", "cost": "200 gp", "weight": "60 lb.", "attributes": { "ac": "17", "stealth": "劣势", "strength_req": "15" } },
+  "armor_plate": { "id": "armor_plate", "name": "全身板甲 (Plate)", "type": "armor", "subtype": "重甲", "cost": "1500 gp", "weight": "65 lb.", "attributes": { "ac": "18", "stealth": "劣势", "strength_req": "15" } },
+  "armor_shield": { "id": "armor_shield", "name": "盾牌 (Shield)", "type": "armor", "subtype": "盾牌", "cost": "10 gp", "weight": "6 lb.", "attributes": { "ac": "+2", "stealth": "正常", "strength_req": null } }
+}

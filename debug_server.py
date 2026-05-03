@@ -10,6 +10,7 @@ import subprocess
 import sys
 import threading
 import uuid
+import tempfile
 import socketserver
 from http.server import HTTPServer, BaseHTTPRequestHandler
 from urllib.parse import urlparse, parse_qs, unquote
@@ -28,6 +29,10 @@ def _run_job(job_id, cmd):
     job = JOBS[job_id]
     env = os.environ.copy()
     env["PYTHONUNBUFFERED"] = "1"
+    temp_files = []
+    for i, part in enumerate(cmd[:-1]):
+        if part == "--context-selection-file":
+            temp_files.append(cmd[i + 1])
     try:
         proc = subprocess.Popen(
             cmd,
@@ -51,6 +56,13 @@ def _run_job(job_id, cmd):
         with job["lock"]:
             job["lines"].append(f"[服务器错误] {e}")
             job["status"] = "error"
+    finally:
+        for path in temp_files:
+            try:
+                if os.path.abspath(path).startswith(os.path.abspath(BASE_DIR) + os.sep):
+                    os.remove(path)
+            except Exception:
+                pass
 
 
 class Handler(BaseHTTPRequestHandler):
@@ -203,8 +215,6 @@ class Handler(BaseHTTPRequestHandler):
             cmd = [sys.executable, "-u", script]
             if body.get("player_action"):
                 cmd.append(body["player_action"])
-            if body.get("char_ids"):
-                cmd += ["--char-ids"] + body["char_ids"]
             if body.get("unlock_protected"):
                 cmd.append("--unlock-protected")
             if body.get("mode"):
@@ -212,16 +222,19 @@ class Handler(BaseHTTPRequestHandler):
             if body.get("direct_instruction"):
                 cmd += ["--direct-instruction", body.get("direct_instruction")]
 
-            loc_id = body.get("location_id", "")
-            if loc_id:
+            pins = body.get("pins")
+            if isinstance(pins, list) and pins:
+                fd, sel_path = tempfile.mkstemp(prefix="dnd_context_", suffix=".json", dir=BASE_DIR, text=True)
                 try:
-                    locs = json.load(open(os.path.join(PKG_DIR, "grove_locations.json"), encoding="utf-8"))
-                    loc_idx = next((i for i, l in enumerate(locs) if isinstance(l, dict) and l.get("id") == loc_id), 0)
+                    with os.fdopen(fd, "w", encoding="utf-8") as f:
+                        json.dump({"pins": pins}, f, ensure_ascii=False, indent=2)
+                    cmd += ["--context-selection-file", sel_path]
                 except Exception:
-                    loc_idx = 0
-                cmd += ["--location-idx", str(loc_idx)]
-            else:
-                cmd += ["--location-idx", str(body.get("location_idx", 0))]
+                    try:
+                        os.close(fd)
+                    except Exception:
+                        pass
+                    raise
 
             if body.get("game_state_file"):
                 cmd += ["--game-state-file", body["game_state_file"]]

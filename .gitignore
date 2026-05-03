@@ -1,3 +1,16 @@
-logs/
+# Environments and Logs
 __pycache__/
 *.pyc
+logs/
+
+# Ignore typically large files (e.g. >100MB)
+*.iso
+*.mp4
+*.mkv
+*.tar.gz
+*.zip
+*.rar
+*.7z
+*.pak
+*.vmdk
+*.qcow2

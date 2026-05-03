@@ -105,6 +105,7 @@
     "inventory": [
       "羊皮纸地图残片"
     ],
+    "gold": 42,
     "agenda": "观察当前局势，在不暴露自身弱点的前提下，逐步与其他幸存者建立可信赖的关系。"
   },
   "card_char_shadowheart": {
@@ -240,6 +241,7 @@
       "dungeon_iron_keys",
       "gut_room_keys"
     ],
+    "gold": 28,
     "agenda": "寻找医师移除脑中的夺心魔蝌蚪，寻找前往博德之门的道路，同时保护神秘遗物不被夺走。"
   },
   "card_char_gale": {
@@ -349,6 +351,7 @@
     "inventory": [
       "item_potion_of_healing"
     ],
+    "gold": 55,
     "agenda": "说服主角收留自己，利用自己的魔法知识提供帮助，并试图获取队伍中多余的魔法装备来喂养法阵。"
   },
   "card_char_halsin": {
@@ -452,6 +455,7 @@
     "status": "已从兽栏铁笼中脱困，与邪念和影心组成了临时同盟，正准备深入圣所清剿地精三大头目。",
     "current_form": "熊形态",
     "inventory": [],
+    "gold": 8,
     "agenda": "与邪念和影心组成临时同盟，利用熊形态的战斗力深入破碎圣所，依次消灭地精三大头目(明萨拉、德罗尔、古特)，根除绝对真神教团对这片区域的威胁。"
   },
   "card_item_mysterious_artefact": {

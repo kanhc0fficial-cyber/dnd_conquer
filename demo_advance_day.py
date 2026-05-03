@@ -354,6 +354,84 @@ TOOLS = [
     }
 ]
 
+# ── 交易专用工具定义 ─────────────────────────────────────────────────────────
+TRADE_TOOLS = [
+    {
+        "type": "function",
+        "function": {
+            "name": "search_item_price",
+            "description": (
+                "在数据库中按关键词搜索物品的官方参考价格。"
+                "调用后服务端会在所有 items_*.json 文件中检索，返回匹配物品的 id、名称与标准市价（cost 字段，如 '15 gp'）。"
+                "若未找到，服务端会明确告知，此时请自行根据世界观与物品稀缺度估算合理价格，不要放弃交易。"
+            ),
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "keywords": {
+                        "type": "string",
+                        "description": "搜索关键词，可以是物品名称的一部分（中文或英文均可），例如：'长剑'、'皮甲'、'longbow'"
+                    }
+                },
+                "required": ["keywords"]
+            }
+        }
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "execute_trade",
+            "description": (
+                "原子性地完成一笔或多笔购买/出售交易：自动扣除或增加金币，并从背包移入或移出物品。"
+                "此工具同时处理金币与物品栏的所有变动，无需再调用 apply_json_patch 处理金币或物品。"
+                "购买时若金币不足、出售时若物品不在背包中，该条交易会返回失败原因，其余条目仍继续执行。"
+            ),
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "transactions": {
+                        "type": "array",
+                        "description": "交易明细列表，每条为一笔独立交易",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "type": {
+                                    "type": "string",
+                                    "enum": ["buy", "sell"],
+                                    "description": "buy=购买（扣金币、放物品入背包）；sell=出售（移除背包物品、增加金币）"
+                                },
+                                "character_id": {
+                                    "type": "string",
+                                    "description": "执行交易的角色 ID，如 card_char_xie_nian"
+                                },
+                                "item_name": {
+                                    "type": "string",
+                                    "description": "物品名称。buy 时将以此名称写入背包；sell 时须与背包中的字符串完全一致"
+                                },
+                                "quantity": {
+                                    "type": "integer",
+                                    "description": "交易数量，默认 1",
+                                    "default": 1
+                                },
+                                "unit_price": {
+                                    "type": "number",
+                                    "description": "每件成交价（金币 gp），可含折扣/溢价系数后的最终价格"
+                                },
+                                "reason": {
+                                    "type": "string",
+                                    "description": "交易原因描述，用于日志，例如：'玩家在格罗夫市场向商人 Arron 购买皮甲，享受九折优惠'"
+                                }
+                            },
+                            "required": ["type", "character_id", "item_name", "unit_price", "reason"]
+                        }
+                    }
+                },
+                "required": ["transactions"]
+            }
+        }
+    }
+]
+
 # ── [HIDDEN] 字段揭示 ────────────────────────────────────────────────────────
 def reveal_hidden(obj, field_path: str = None):
     """
@@ -395,6 +473,130 @@ def reveal_hidden(obj, field_path: str = None):
     if last in node:
         node[last] = _strip(node[last])
     return obj
+
+# ── 物品价格搜索 ──────────────────────────────────────────────────────────────
+def handle_search_item_price(package_state: dict, args: dict) -> str:
+    """在所有 items_*.json 文件中按关键词搜索物品参考价格。"""
+    keywords = str(args.get("keywords", "")).strip().lower()
+    if not keywords:
+        return json.dumps({"found": False, "message": "未提供搜索关键词", "results": []}, ensure_ascii=False)
+
+    results = []
+    item_files = sorted(f for f in package_state if f.startswith("items_"))
+    for fname in item_files:
+        items = package_state.get(fname, {})
+        if not isinstance(items, dict):
+            continue
+        for item_id, item in items.items():
+            if not isinstance(item, dict):
+                continue
+            name = item.get("name", "")
+            if keywords in name.lower() or keywords in item_id.lower():
+                results.append({
+                    "id": item_id,
+                    "name": name,
+                    "type": item.get("type"),
+                    "subtype": item.get("subtype"),
+                    "cost": item.get("cost"),
+                    "source_file": fname,
+                })
+
+    if results:
+        return json.dumps({"found": True, "count": len(results), "results": results}, ensure_ascii=False)
+    return json.dumps({
+        "found": False,
+        "message": f"数据库中未找到匹配\"{keywords}\"的物品，请自行根据世界观与物品稀缺度估算价格。",
+        "results": [],
+    }, ensure_ascii=False)
+
+
+# ── 原子性交易执行 ────────────────────────────────────────────────────────────
+def handle_execute_trade(package_state: dict, args: dict, dirty_files: set) -> str:
+    """
+    原子性地处理购买/出售交易：直接修改 package_state 中的 gold 与 inventory，
+    无需通过 apply_json_patch。
+    """
+    transactions = args.get("transactions", [])
+    if not isinstance(transactions, list) or not transactions:
+        return json.dumps({"all_success": False, "message": "未提供有效的交易明细", "results": []}, ensure_ascii=False)
+
+    characters = package_state.get("characters.json", {})
+    results = []
+
+    for txn in transactions:
+        txn_type   = txn.get("type", "")
+        char_id    = str(txn.get("character_id", "")).strip()
+        item_name  = str(txn.get("item_name", "")).strip()
+        quantity   = max(1, int(txn.get("quantity", 1)))
+        unit_price = float(txn.get("unit_price", 0))
+        reason     = txn.get("reason", "")
+        total_cost = round(unit_price * quantity, 4)
+
+        if not char_id or not item_name:
+            results.append({"success": False, "message": "character_id 或 item_name 为空"})
+            continue
+
+        char = characters.get(char_id) if isinstance(characters, dict) else None
+        if char is None:
+            results.append({"success": False, "character_id": char_id,
+                            "message": f"未找到角色 {char_id!r}"})
+            continue
+
+        # 确保 inventory 和 gold 字段存在（兼容旧角色数据）
+        if "inventory" not in char or not isinstance(char["inventory"], list):
+            char["inventory"] = []
+        if "gold" not in char:
+            char["gold"] = 0
+        current_gold = float(char["gold"])
+        inventory    = char["inventory"]
+
+        if txn_type == "buy":
+            if current_gold < total_cost:
+                results.append({
+                    "success": False, "type": "buy",
+                    "character_id": char_id, "item": item_name,
+                    "message": f"金币不足：现有 {current_gold:.2f} gp，购买需 {total_cost:.2f} gp",
+                })
+                continue
+            char["gold"] = round(current_gold - total_cost, 4)
+            for _ in range(quantity):
+                inventory.append(item_name)
+            dirty_files.add("characters.json")
+            results.append({
+                "success": True, "type": "buy",
+                "character_id": char_id, "item": item_name,
+                "quantity": quantity, "unit_price": unit_price, "total_cost": total_cost,
+                "gold_before": current_gold, "gold_after": char["gold"],
+                "reason": reason,
+            })
+
+        elif txn_type == "sell":
+            count_in_bag = inventory.count(item_name)
+            if count_in_bag < quantity:
+                results.append({
+                    "success": False, "type": "sell",
+                    "character_id": char_id, "item": item_name,
+                    "message": f"背包中 '{item_name}' 仅有 {count_in_bag} 件，需出售 {quantity} 件",
+                })
+                continue
+            for _ in range(quantity):
+                inventory.remove(item_name)
+            char["gold"] = round(current_gold + total_cost, 4)
+            dirty_files.add("characters.json")
+            results.append({
+                "success": True, "type": "sell",
+                "character_id": char_id, "item": item_name,
+                "quantity": quantity, "unit_price": unit_price, "total_cost": total_cost,
+                "gold_before": current_gold, "gold_after": char["gold"],
+                "reason": reason,
+            })
+
+        else:
+            results.append({"success": False, "message": f"未知交易类型 {txn_type!r}"})
+
+    all_ok = all(r.get("success", False) for r in results)
+    return json.dumps({"all_success": all_ok, "results": results}, ensure_ascii=False)
+
 
 # ── 主流程 ────────────────────────────────────────────────────────────────────
 def main():
@@ -613,55 +815,187 @@ def main():
         for tmpl in round_2_user_templates:
             messages2.append({"role": "user", "content": fill_template(tmpl, **template_vars)})
     else:
-        # single_round_tool：直接用第二轮配置构建完整消息
+        # single_round_tool / agentic_tool：直接用第二轮配置构建完整消息
         messages2 = [{"role": "system", "content": round_2_system}]
         for tmpl in round_2_user_templates:
             messages2.append({"role": "user", "content": fill_template(tmpl, **template_vars)})
 
-    t2 = time.time()
+    # ── 辅助：分发单次工具调用（非 search/execute_trade 的通用工具）─────────────
+    def _dispatch_common_tool(fn_name: str, args: dict) -> tuple[str, str | None]:
+        """执行 apply_json_patch / reveal_hidden，返回 (result_str, changed_file_or_None)。"""
+        if fn_name == "apply_json_patch":
+            result, changed_file = apply_patch_to_file(
+                package_state, args, selections, args_cli.unlock_protected)
+            return result, changed_file
+        elif fn_name == "reveal_hidden":
+            target = os.path.basename(str(args.get("target", "")))
+            fp     = args.get("field_path") or "/"
+            if target not in package_state:
+                return f"[error] reveal_hidden: 未知文件 {target!r}", None
+            try:
+                obj = resolve_node(package_state[target], fp)
+                reveal_hidden(obj)
+                return f"[reveal_hidden] {target}:{fp} 已揭示", target
+            except Exception as exc:
+                return f"[error] reveal_hidden: {target}:{fp} 解析失败: {exc}", None
+        else:
+            return f"[error] 未知工具: {fn_name}", None
+
+    # ══════════════════════════════════════════════════════════════════════
+    # 第二轮执行（agentic_tool：多轮循环；其他：单次调用）
+    # ══════════════════════════════════════════════════════════════════════
+    elapsed2   = 0.0
+    tokens2    = types.SimpleNamespace(prompt_tokens=0, completion_tokens=0, total_tokens=0)
+    patch_message = None   # agentic 路径工具调用在循环内处理，无需二次处理
+    patch_log: list[str] = []
     max_retries = 3
-    for attempt in range(1, max_retries + 1):
-        try:
-            response2 = client_tool.chat.completions.create(
-                model=MODEL_TOOL,
-                messages=messages2,
-                tools=TOOLS,
-                tool_choice="auto"
-            )
-            break
-        except Exception as e:
-            if attempt < max_retries:
-                print(f"  [警告] 第二轮调用失败 (尝试 {attempt}/{max_retries}): {e}")
-                print("  等待 60 秒后重新发送...")
-                write_log(f"[警告] 第二轮调用失败，等待 60 秒后重试: {e}")
-                time.sleep(60)
-            else:
-                write_log(f"[错误] 第二轮调用达到最大重试次数: {e}")
-                raise e
-    t3 = time.time()
-    elapsed2 = t3 - t2
 
-    tokens2 = response2.usage
-    patch_message = response2.choices[0].message
+    if strategy == "agentic_tool":
+        # ── 多轮工具调用循环（用于交易模式） ────────────────────────────────
+        all_trade_tools = TOOLS + TRADE_TOOLS
+        max_iterations  = 10
+        last_response   = None
 
-    print(f"⏱  耗时: {elapsed2:.2f}s")
-    print(f"📊 Token 用量: prompt={tokens2.prompt_tokens}, completion={tokens2.completion_tokens}, total={tokens2.total_tokens}")
-    print(f"📄 finish_reason: {response2.choices[0].finish_reason}")
+        for iteration in range(1, max_iterations + 1):
+            print(f"\n  [交易引擎 迭代 {iteration}/{max_iterations}]")
+            t_iter = time.time()
+            for attempt in range(1, max_retries + 1):
+                try:
+                    resp_iter = client_tool.chat.completions.create(
+                        model=MODEL_TOOL,
+                        messages=messages2,
+                        tools=all_trade_tools,
+                        tool_choice="auto"
+                    )
+                    break
+                except Exception as e:
+                    if attempt < max_retries:
+                        print(f"  [警告] 迭代{iteration}调用失败({attempt}/{max_retries}): {e}")
+                        write_log(f"[警告] 交易迭代{iteration}失败，等待60秒后重试: {e}")
+                        time.sleep(60)
+                    else:
+                        write_log(f"[错误] 交易迭代{iteration}达到最大重试次数: {e}")
+                        raise e
+            elapsed2   += time.time() - t_iter
+            last_response = resp_iter
+            tokens2.prompt_tokens     += resp_iter.usage.prompt_tokens
+            tokens2.completion_tokens += resp_iter.usage.completion_tokens
+            tokens2.total_tokens      += resp_iter.usage.total_tokens
 
-    full_log["steps"].append({
-        "step": 2,
-        "description": "状态更新工具调用",
-        "tool_choice": "auto",
-        "elapsed_seconds": round(elapsed2, 3),
-        "tokens": {
-            "prompt": tokens2.prompt_tokens,
-            "completion": tokens2.completion_tokens,
-            "total": tokens2.total_tokens
-        },
-        "finish_reason": response2.choices[0].finish_reason,
-        "request_messages": messages2,
-        "response": json.loads(response2.model_dump_json())
-    })
+            msg_iter     = resp_iter.choices[0].message
+            finish_reason = resp_iter.choices[0].finish_reason
+
+            if msg_iter.content:
+                print(msg_iter.content)
+
+            # 将本轮 assistant 消息写入对话历史
+            assistant_dict: dict = {"role": "assistant", "content": msg_iter.content}
+            if msg_iter.tool_calls:
+                assistant_dict["tool_calls"] = [
+                    {
+                        "id": tc.id, "type": "function",
+                        "function": {"name": tc.function.name, "arguments": tc.function.arguments}
+                    }
+                    for tc in msg_iter.tool_calls
+                ]
+            messages2.append(assistant_dict)
+
+            if finish_reason != "tool_calls" or not msg_iter.tool_calls:
+                # LLM 已完成推理，退出循环
+                break
+
+            # 处理本轮所有工具调用，收集结果后注入对话历史
+            for tc in msg_iter.tool_calls:
+                fn_name  = tc.function.name
+                args_tc  = json.loads(tc.function.arguments)
+                print(f"\n  调用工具: {fn_name}")
+                print(f"  参数    : {json.dumps(args_tc, ensure_ascii=False)}")
+
+                if fn_name == "search_item_price":
+                    tool_result = handle_search_item_price(package_state, args_tc)
+                    print(f"  搜索结果: {tool_result}")
+                    patch_log.append(f"[search_item_price] keywords={args_tc.get('keywords')!r}")
+                elif fn_name == "execute_trade":
+                    tool_result = handle_execute_trade(package_state, args_tc, dirty_files)
+                    print(f"  交易结果: {tool_result}")
+                    patch_log.append(f"[execute_trade] {tool_result}")
+                else:
+                    # apply_json_patch / reveal_hidden 等通用工具
+                    tool_result, changed_file = _dispatch_common_tool(fn_name, args_tc)
+                    print(f"  执行结果: {tool_result}")
+                    patch_log.append(tool_result)
+                    if changed_file:
+                        dirty_files.add(changed_file)
+
+                messages2.append({
+                    "role": "tool",
+                    "tool_call_id": tc.id,
+                    "content": tool_result
+                })
+
+        print(f"⏱  耗时（全部迭代）: {elapsed2:.2f}s")
+        print(f"📊 Token 用量（累计）: prompt={tokens2.prompt_tokens}, "
+              f"completion={tokens2.completion_tokens}, total={tokens2.total_tokens}")
+
+        full_log["steps"].append({
+            "step": 2,
+            "description": "交易多轮工具调用（agentic_tool）",
+            "tool_choice": "auto",
+            "elapsed_seconds": round(elapsed2, 3),
+            "tokens": {
+                "prompt": tokens2.prompt_tokens,
+                "completion": tokens2.completion_tokens,
+                "total": tokens2.total_tokens
+            },
+            "finish_reason": last_response.choices[0].finish_reason if last_response else "n/a",
+            "patch_log": patch_log,
+        })
+
+    else:
+        # ── 标准单次调用（two_round / single_round_tool） ────────────────────
+        t2 = time.time()
+        for attempt in range(1, max_retries + 1):
+            try:
+                response2 = client_tool.chat.completions.create(
+                    model=MODEL_TOOL,
+                    messages=messages2,
+                    tools=TOOLS,
+                    tool_choice="auto"
+                )
+                break
+            except Exception as e:
+                if attempt < max_retries:
+                    print(f"  [警告] 第二轮调用失败 (尝试 {attempt}/{max_retries}): {e}")
+                    print("  等待 60 秒后重新发送...")
+                    write_log(f"[警告] 第二轮调用失败，等待 60 秒后重试: {e}")
+                    time.sleep(60)
+                else:
+                    write_log(f"[错误] 第二轮调用达到最大重试次数: {e}")
+                    raise e
+        t3 = time.time()
+        elapsed2 = t3 - t2
+
+        tokens2       = response2.usage
+        patch_message = response2.choices[0].message
+
+        print(f"⏱  耗时: {elapsed2:.2f}s")
+        print(f"📊 Token 用量: prompt={tokens2.prompt_tokens}, completion={tokens2.completion_tokens}, total={tokens2.total_tokens}")
+        print(f"📄 finish_reason: {response2.choices[0].finish_reason}")
+
+        full_log["steps"].append({
+            "step": 2,
+            "description": "状态更新工具调用",
+            "tool_choice": "auto",
+            "elapsed_seconds": round(elapsed2, 3),
+            "tokens": {
+                "prompt": tokens2.prompt_tokens,
+                "completion": tokens2.completion_tokens,
+                "total": tokens2.total_tokens
+            },
+            "finish_reason": response2.choices[0].finish_reason,
+            "request_messages": messages2,
+            "response": json.loads(response2.model_dump_json())
+        })
 
     # 汇总计时
     total_elapsed = elapsed1 + elapsed2
@@ -675,13 +1009,12 @@ def main():
     print(f"\n[系统] 完整请求与返回已记录至 logs/{log_filename}")
 
     # ══════════════════════════════════════════════════════════════════════
-    # 执行 JSONPatch
+    # 执行 JSONPatch（仅非 agentic_tool 策略，agentic 在循环内已处理）
     # ══════════════════════════════════════════════════════════════════════
     print("\n" + "─" * 60)
     print("【工具调用解析 & 状态更新】")
 
-    patch_log = []
-    if patch_message.tool_calls:
+    if patch_message is not None and patch_message.tool_calls:
         for tc in patch_message.tool_calls:
             fn_name = tc.function.name
             args    = json.loads(tc.function.arguments)
@@ -689,29 +1022,13 @@ def main():
             print(f"\n  调用工具: {fn_name}")
             print(f"  参数    : {json.dumps(args, ensure_ascii=False)}")
 
-            if fn_name == "apply_json_patch":
-                result, changed_file = apply_patch_to_file(package_state, args, selections, args_cli.unlock_protected)
-                print(f"  执行结果: {result}")
-                patch_log.append(result)
-                if changed_file:
-                    dirty_files.add(changed_file)
+            result, changed_file = _dispatch_common_tool(fn_name, args)
+            print(f"  执行结果: {result}")
+            patch_log.append(result)
+            if changed_file:
+                dirty_files.add(changed_file)
 
-            elif fn_name == "reveal_hidden":
-                target = os.path.basename(str(args.get("target", "")))
-                field_path = args.get("field_path") or "/"
-                if target not in package_state:
-                    result = f"[error] reveal_hidden: 未知文件 {target!r}"
-                else:
-                    try:
-                        obj = resolve_node(package_state[target], field_path)
-                        reveal_hidden(obj)
-                        result = f"[reveal_hidden] {target}:{field_path} 已揭示"
-                        dirty_files.add(target)
-                    except Exception as e:
-                        result = f"[error] reveal_hidden: {target}:{field_path} 解析失败: {e}"
-                print(f"  执行结果: {result}")
-                patch_log.append(result)
-    else:
+    elif not patch_log:
         print("  (第二轮响应未触发任何工具调用)")
 
     # ══════════════════════════════════════════════════════════════════════

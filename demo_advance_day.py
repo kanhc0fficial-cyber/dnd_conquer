@@ -541,6 +541,80 @@ TRADE_TOOLS = [
     }
 ]
 
+# ── 创建实体专用工具定义 ──────────────────────────────────────────────────────
+CREATE_TOOLS = [
+    {
+        "type": "function",
+        "function": {
+            "name": "create_entity",
+            "description": (
+                "在指定的 package JSON 文件中，按给定的 key 插入一个全新的完整 JSON 对象（角色、地点等）。"
+                "若 key 已存在则返回错误，不会覆盖现有数据。"
+                "创建完成后会自动将 key 同步写入对象内的 id 字段（如果对象中有 id 字段或你在 data 里提供了 id）。"
+            ),
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "reason": {
+                        "type": "string",
+                        "description": "【必须作为第一个字段】一句话说明创建此实体的原因。"
+                    },
+                    "file": {
+                        "type": "string",
+                        "description": "目标 JSON 文件名，如 characters.json、grove_locations.json"
+                    },
+                    "key": {
+                        "type": "string",
+                        "description": (
+                            "新对象在文件中使用的唯一键名。"
+                            "角色使用 card_char_<拼音或英文标识> 格式（如 card_char_halsin）；"
+                            "地点使用 loc_<拼音或英文标识> 格式（如 loc_goblin_camp）。"
+                        )
+                    },
+                    "data": {
+                        "type": "object",
+                        "description": (
+                            "完整的新对象内容，必须严格遵循同类对象的结构模板。"
+                            "角色模板字段：name, type('character'), image_path, control('npc'/'player'), "
+                            "summary, is_locked, bound_event_id, location, "
+                            "_combat_info(_Class,_Subclass,_Level,_Stats,_Feats,_Equipment,_Actions,_MaxHP), "
+                            "_level_info(_ExpToNextLevel,_ExpRules), "
+                            "_story_info(_Background,_Goal,_Relationships), "
+                            "_appearance(_Race,_Body_and_Face,_Clothing), "
+                            "current_hp, current_exp, attitude_value, attitude_desc, "
+                            "attitude_update_rule, gold, inventory, history, agenda。"
+                            "地点模板字段：name, coordinates([x,y]), _Description(固定描述数组), "
+                            "card_ids(初始为[]), character_activities(初始为{}), "
+                            "description(当前状态数组), latest_narrative, history(初始为[])。"
+                        )
+                    }
+                },
+                "required": ["reason", "file", "key", "data"]
+            }
+        }
+    }
+]
+
+# ── 工具集注册表 ──────────────────────────────────────────────────────────────
+TOOL_SETS: dict[str, list] = {
+    "core":   TOOLS,
+    "trade":  TRADE_TOOLS,
+    "create": CREATE_TOOLS,
+}
+
+def resolve_tools(mode: dict) -> list:
+    """根据模式 JSON 中的 tool_sets 字段组合工具列表，默认只包含 core 工具集。"""
+    tool_sets = mode.get("tool_sets", ["core"])
+    result: list = []
+    seen: set[str] = set()
+    for ts_name in tool_sets:
+        for tool in TOOL_SETS.get(ts_name, []):
+            name = tool["function"]["name"]
+            if name not in seen:
+                result.append(tool)
+                seen.add(name)
+    return result
+
 # ── [HIDDEN] 字段揭示 ────────────────────────────────────────────────────────
 def reveal_hidden(obj, field_path: str = None):
     """
@@ -920,6 +994,37 @@ def handle_record_event(package_state: dict, args: dict, dirty_files: set) -> st
     return json.dumps({"results": results, "reason": reason}, ensure_ascii=False)
 
 
+# ── 创建新实体 ────────────────────────────────────────────────────────────────
+def handle_create_entity(package_state: dict, args: dict, dirty_files: set) -> tuple[str, str | None]:
+    """
+    在目标 JSON 文件的根字典中，以给定 key 插入一个完整的新对象。
+    同时将 key 同步写入对象内的 id 字段以保持一致性。
+    """
+    reason    = args.get("reason", "未提供原因")
+    file_name = os.path.basename(str(args.get("file", "")))
+    key       = str(args.get("key", "")).strip()
+    data      = args.get("data")
+
+    if not file_name or file_name not in package_state:
+        return f"[error] create_entity: 未知或未提供 file: {file_name!r}", None
+    if not key:
+        return "[error] create_entity: key 不能为空", None
+    if not isinstance(data, dict):
+        return "[error] create_entity: data 必须是一个 JSON 对象", None
+
+    target = package_state[file_name]
+    if not isinstance(target, dict):
+        return f"[error] create_entity: {file_name} 的根不是字典结构，无法按 key 插入", None
+    if key in target:
+        return f"[error] create_entity: {file_name} 中已存在 key={key!r}，若要修改请使用 apply_json_patch", None
+
+    # 保持 id 字段与 key 一致
+    data["id"] = key
+    target[key] = data
+    dirty_files.add(file_name)
+    return f"[create_entity] {file_name}[{key!r}] 已创建 (原因: {reason})", file_name
+
+
 # ── 主流程 ────────────────────────────────────────────────────────────────────
 def main():
     print("=" * 60)
@@ -1082,7 +1187,7 @@ def main():
         response1 = client.chat.completions.create(
             model=MODEL,
             messages=round_1_messages,
-            tools=TOOLS,
+            tools=resolve_tools(mode),
             tool_choice="none"
         )
         t1 = time.time()
@@ -1170,6 +1275,8 @@ def main():
         elif fn_name == "record_event":
             result_str = handle_record_event(package_state, args, dirty_files)
             return f"[record_event] {result_str}", None
+        elif fn_name == "create_entity":
+            return handle_create_entity(package_state, args, dirty_files)
         else:
             return f"[error] 未知工具: {fn_name}", None
 
@@ -1184,9 +1291,9 @@ def main():
 
     if strategy == "agentic_tool":
         # ── 多轮工具调用循环（用于交易模式） ────────────────────────────────
-        all_trade_tools = TOOLS + TRADE_TOOLS
-        max_iterations  = 10
-        last_response   = None
+        active_tools   = resolve_tools(mode)
+        max_iterations = 10
+        last_response  = None
 
         for iteration in range(1, max_iterations + 1):
             print(f"\n  [交易引擎 迭代 {iteration}/{max_iterations}]")
@@ -1196,7 +1303,7 @@ def main():
                     resp_iter = client_tool.chat.completions.create(
                         model=MODEL_TOOL,
                         messages=messages2,
-                        tools=all_trade_tools,
+                        tools=active_tools,
                         tool_choice="auto"
                     )
                     break
@@ -1277,6 +1384,7 @@ def main():
     else:
         # ── 标准单次调用（two_round / single_round_tool） ────────────────────
         # 连续失败 TOOL_ROUND2_FALLBACK_THRESHOLD 次后，自动切换到第一轮的 API（client / MODEL）
+        active_tools = resolve_tools(mode)
         t2 = time.time()
         for attempt in range(1, max_retries + 1):
             use_fallback = attempt > TOOL_ROUND2_FALLBACK_THRESHOLD
@@ -1289,7 +1397,7 @@ def main():
                 response2 = active_client.chat.completions.create(
                     model=active_model,
                     messages=messages2,
-                    tools=TOOLS,
+                    tools=active_tools,
                     tool_choice="auto"
                 )
                 break

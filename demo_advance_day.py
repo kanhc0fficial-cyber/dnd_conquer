@@ -37,6 +37,9 @@ LOGS_DIR  = os.path.join(DATA_DIR, "logs")
 os.makedirs(LOGS_DIR, exist_ok=True)
 LOG_FILE  = os.path.join(LOGS_DIR, "run_log.txt")
 
+# 第二轮工具调用失败容忍次数：超过此数后自动切换到第一轮 API 重试
+TOOL_ROUND2_FALLBACK_THRESHOLD = 2
+
 # ── 文件日志：所有输出和错误同时写入 run_log.txt ─────────────────────────────
 import datetime as _dt
 
@@ -1273,15 +1276,14 @@ def main():
 
     else:
         # ── 标准单次调用（two_round / single_round_tool） ────────────────────
-        # 连续失败 TOOL_FALLBACK_THRESHOLD 次后，自动切换到第一轮的 API（client / MODEL）
-        TOOL_FALLBACK_THRESHOLD = 2
+        # 连续失败 TOOL_ROUND2_FALLBACK_THRESHOLD 次后，自动切换到第一轮的 API（client / MODEL）
         t2 = time.time()
         for attempt in range(1, max_retries + 1):
-            use_fallback = attempt > TOOL_FALLBACK_THRESHOLD
+            use_fallback = attempt > TOOL_ROUND2_FALLBACK_THRESHOLD
             active_client = client if use_fallback else client_tool
             active_model  = MODEL  if use_fallback else MODEL_TOOL
             if use_fallback:
-                print(f"  [备用] 第二轮已连续失败 {TOOL_FALLBACK_THRESHOLD} 次，切换至第一轮 API（{BASE_URL}）重试…")
+                print(f"  [备用] 第二轮已连续失败 {TOOL_ROUND2_FALLBACK_THRESHOLD} 次，切换至第一轮 API（{BASE_URL}）重试…")
                 write_log(f"[备用] 第二轮切换至第一轮 API 重试 (attempt={attempt})")
             try:
                 response2 = active_client.chat.completions.create(

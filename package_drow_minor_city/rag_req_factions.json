@@ -1,0 +1,54 @@
+{
+  "requests": [
+    {
+      "search_purpose": "Researching Jaezred Chaulssin",
+      "what_i_will_do_with_result": "Incorporate themes of shadow assassination and Vhaeraunite rebellion into the faction description.",
+      "query": "Shadow assassins, Vhaeraun worship, drow males rebelling against matriarchy"
+    },
+    {
+      "search_purpose": "Researching Bregan Daerthe",
+      "what_i_will_do_with_result": "Define the pragmatic and mercenary nature of this drow faction.",
+      "query": "Elite drow mercenaries, Jarlaxle Baenre, pragmatic drow outcasts"
+    },
+    {
+      "search_purpose": "Researching Oryndoll Illithids",
+      "what_i_will_do_with_result": "Shape the motives of an Illithid expedition force in the Underdark.",
+      "query": "Illithid city expansion, mind flayers expedition, elder brain influence"
+    },
+    {
+      "search_purpose": "Researching Deep Dragons",
+      "what_i_will_do_with_result": "Develop a unique personality and agenda for a deep dragon living near the city.",
+      "query": "Underdark dragons, hoarders of secrets, manipulation from the shadows"
+    },
+    {
+      "search_purpose": "Researching Corrupt Minor Official",
+      "what_i_will_do_with_result": "Create a faction representing a single but influential bureaucrat.",
+      "query": "Petty bureaucrat with disproportionate power, corrupt administrator"
+    },
+    {
+      "search_purpose": "Researching Duergar Merchants",
+      "what_i_will_do_with_result": "Define the relationship between the drow city and gray dwarf traders.",
+      "query": "Stoic underdark merchants, deep gnome rivals, duergar economy"
+    },
+    {
+      "search_purpose": "Researching Ghaunadaur Cult",
+      "what_i_will_do_with_result": "Establish a chaotic and dangerous religious threat within the city.",
+      "query": "Slime and ooze worship, chaotic underdark cult, Ghaunadaur"
+    },
+    {
+      "search_purpose": "Researching Eilistraee Followers",
+      "what_i_will_do_with_result": "Introduce a faction of good-aligned drow working in secret.",
+      "query": "Good drow surface-reachers, secret worship of the moon goddess Eilistraee"
+    },
+    {
+      "search_purpose": "Researching Myconid Colony",
+      "what_i_will_do_with_result": "Create a non-drow faction with a hive-mind and unique goals.",
+      "query": "Fungal hive mind, peaceful but xenophobic colony, myconid circle"
+    },
+    {
+      "search_purpose": "Researching Zhentarim Influence in Underdark",
+      "what_i_will_do_with_result": "Add a surface-world criminal organization trying to gain a foothold.",
+      "query": "Black Network expansion, surface spies in underdark, Zhentarim drow operations"
+    }
+  ]
+}

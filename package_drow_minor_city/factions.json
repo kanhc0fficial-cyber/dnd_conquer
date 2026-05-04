@@ -1,0 +1,142 @@
+{
+  "fac_house_nasadra": {
+    "id": "fac_house_nasadra",
+    "name": "纳萨德拉家族 (House Nasadra)",
+    "type": "贵族家族",
+    "description": "城市的统治家族，占据着最高层。以对罗丝的绝对忠诚和铁腕统治著称。",
+    "fundamental_scarcity": "安全感——虽然位居第一，但随时担心被下位家族篡夺，以及蛛网结构的稳定性。",
+    "agenda": "巩固统治，清洗潜在的异议者，并确保蛛丝升降梯的绝对控制权。",
+    "future": "如果不加干预，纳萨德拉家族将发动一场大清洗，导致中下层蛛网的大规模断裂，城市陷入内战并可能崩塌。",
+    "current_progress": 2
+  },
+  "fac_deep_blood_resistance": {
+    "id": "fac_deep_blood_resistance",
+    "name": "“黑血”反抗军 (The Deep Blood Resistance)",
+    "type": "地下反抗军",
+    "description": "由底层的地精奴隶和部分厌倦压迫的平民组成，潜伏在谷底和贫民窟。",
+    "fundamental_scarcity": "自由与尊严——他们在恶劣的环境中寻求生存和反击的机会。",
+    "agenda": "破坏上层设施（如升降梯和水源），收集武器，等待一个足以颠覆城市结构的契机。",
+    "future": "如果不加干预，他们将引发一次规模巨大的奴隶起义，推翻贵族的压迫，但也将导致城市结构的大范围破坏，迫使幸存者在废墟中重建家园。",
+    "current_progress": 3
+  },
+  "fac_web_smugglers": {
+    "id": "fac_web_smugglers",
+    "name": "蛛丝走私者联盟 (The Web Smugglers Guild)",
+    "type": "犯罪辛迪加",
+    "description": "掌控着中下层黑市和毒蘑菇贸易，与外邦人（灰矮人、兽人）有密切联系。",
+    "fundamental_scarcity": "资源与通道——在严密的税务和军事封锁中寻找暴利。",
+    "agenda": "渗透税务机构，开辟新的走私通道，保持城市权力的平衡以便于贸易。",
+    "future": "如果不加干预，他们在积累了巨额财富后，会良心发现，利用其隐秘的走私网络将数千名被困的奴隶和平民安全转移出即将崩溃的城市。",
+    "current_progress": 2
+  },
+  "fac_jaezred_chaulssin": {
+    "id": "fac_jaezred_chaulssin",
+    "name": "杰兹雷·乔森 (Jaezred Chaulssin)",
+    "type": "阴影刺客同盟",
+    "description": "由崇拜维瑞恩（Vhaeraun）的卓尔男性刺客和阴影生物组成。他们致力于推翻罗丝的母系氏族统治，通过暗杀、渗透和煽动叛乱来达成目的。",
+    "fundamental_scarcity": "认可与主权——作为卓尔社会的底层，他们渴望彻底颠覆现有的性别阶级，建立男性主导的新秩序。",
+    "agenda": "暗杀纳萨德拉家族的关键高层，并在卓尔男性中传播异端思想。",
+    "future": "如果不加干预，他们将引发一场血腥的内部屠杀，削弱贵族的同时，也会导致整座城市陷入永恒的阴影位面裂隙中。",
+    "current_progress": 2
+  },
+  "fac_bregan_daerthe": {
+    "id": "fac_bregan_daerthe",
+    "name": "达耶特佣兵团 (Bregan D'aerthe)",
+    "type": "精英佣兵组织",
+    "description": "由被流放的卓尔流氓和精英战士组成的精英佣兵团。他们不仅从事战斗，还掌控着通往地表的秘密贸易路线。务实、冷酷且只看重利益。",
+    "fundamental_scarcity": "稳定的领地与合法性——尽管富有且强大，但他们始终是城市的局外人，处于被贵族利用和排斥的夹缝中。",
+    "agenda": "在各家族冲突中左右逢源，最大限度地获取金币和魔法物资，同时保护其秘密贸易节点。",
+    "future": "如果不加干预，他们将通过经济垄断和武力威慑，在各家族间建立一种冷酷而稳定的“雇佣兵和平”，使城市免于全面内战。",
+    "current_progress": 3
+  },
+  "fac_oryndoll_expedition": {
+    "id": "fac_oryndoll_expedition",
+    "name": "奥灵多尔夺心魔远征军 (Oryndoll Expeditionary Force)",
+    "type": "夺心魔调查团",
+    "description": "来自遥远灵吸怪城市奥灵多尔的远征小队。他们潜伏在城市附近的幽暗裂隙中，通过心灵感应监控城市动向，寻找值得“转化”的目标。",
+    "fundamental_scarcity": "知识与宿主——他们需要新鲜的大脑来维持主脑的运作，并寻找对抗某种未知地底威胁的方法。",
+    "agenda": "绑架具有高智力的城市官员和施法者，通过心灵控制将其转化为内部间谍。",
+    "future": "如果不加干预，整座城市的一半高层将被转化为脑噬者傀儡，城市将变成奥灵多尔的养殖场。",
+    "current_progress": 1
+  },
+  "fac_deep_dragon_shadowfire": {
+    "id": "fac_deep_dragon_shadowfire",
+    "name": "深龙 - “影火” (Shadowfire)",
+    "type": "古老生物",
+    "description": "一条潜伏在城市下方熔岩裂缝中的成年深龙。它极度贪婪且热衷于收集秘密。它并不直接统治，但许多家族的兴衰都与其背后的交易有关。",
+    "fundamental_scarcity": "娱乐与新颖的秘密——在漫长的寿命中，它对普通的金银已失去兴趣，只有足以颠覆世界的禁忌知识能让它动容。",
+    "agenda": "操纵小家族之间的冲突，以便在其毁灭后搜刮其密室中的远古遗物。",
+    "future": "如果不加干预，它将诱导城市触发某种禁忌机关，将整座城市拖入它的巢穴，成为它收藏的一部分。",
+    "current_progress": 2
+  },
+  "fac_minor_official_veldrin": {
+    "id": "fac_minor_official_veldrin",
+    "name": "税务官维尔德林 (Tax Collector Veldrin)",
+    "type": "个人派系",
+    "description": "一个看似不起眼的中层官僚，负责管理蛛丝升降梯的通行税。通过贪污、勒索和精准的信息买卖，他实际上掌握了城市底层的物资流通。",
+    "fundamental_scarcity": "豁免权与更高的地位——他知道自己所做的事一旦暴露必死无疑，因此拼命积攒足以保命的秘密。",
+    "agenda": "通过设置行政障碍勒索“黑血”反抗军和走私者，同时向贵族提供经过篡改的财务报告。",
+    "future": "如果不加干预，他在潜逃时将意外遗落记录了贵族所有贪腐与勾结证据的黑账本，这些文件将落入平民手中，意外引发一场针对腐败体制的成功维权运动。",
+    "current_progress": 4
+  },
+  "fac_clan_iron_hard": {
+    "id": "fac_clan_iron_hard",
+    "name": "铁石氏族 (Clan Iron-Hard)",
+    "type": "灰矮人贸易团",
+    "description": "来自深山的灰矮人氏族，以精湛的锻造技术和坚韧的性格著称。他们在卓尔城市的外围拥有一个受保护的贸易区，供应高质量的冷铁武器。",
+    "fundamental_scarcity": "领地安全与神圣矿石——他们极度厌恶卓尔的傲慢，但为了获取只有此地才产出的特殊真菌而不得不进行贸易。",
+    "agenda": "排挤竞争对手（如地底侏儒商人），并寻找机会夺回数百年前被卓尔占领的一座神庙遗迹。",
+    "future": "如果不加干预，他们将积攒足够的财富和军备，和平买下或通过决斗赢回曾经属于他们的神庙区，并在那里建立一个严守中立的繁荣贸易特区。",
+    "current_progress": 2
+  },
+  "fac_slime_cult": {
+    "id": "fac_slime_cult",
+    "name": "粘液教派 (The Slime Cult)",
+    "type": "疯狂教派",
+    "description": "崇拜粘液之神关纳德（Ghaunadaur）的疯子集合体。成员包括变异的卓尔、被腐蚀的怪物和有意识的史莱姆。他们潜伏在下水道和废弃的坑洞中。",
+    "fundamental_scarcity": "熵与消解——他们追求万物的腐烂与回归最初的混沌，对权力和财富毫无兴趣。",
+    "agenda": "在城市的供水系统中散播具有腐蚀性的神力粘液，将城市结构慢慢溶化。",
+    "future": "如果不加干预，城市的基石将被彻底溶化，整座城市将坠入深不见底的关纳德泥沼中。",
+    "current_progress": 2
+  },
+  "fac_moon_dancers": {
+    "id": "fac_moon_dancers",
+    "name": "月舞者 (The Moon-Dancers)",
+    "type": "地下信仰",
+    "description": "秘密崇拜幽暗少女依莉丝翠（Eilistraee）的卓尔群体。他们向往地表世界，试图引导同族摆脱邪恶和仇恨。在城市中这是绝对的死罪。",
+    "fundamental_scarcity": "生存空间与希望——他们在罗丝的恐怖统治下如履薄冰，极度缺乏安全的避难所和通往地表的向导。",
+    "agenda": "营救被判处死刑的囚犯，协助那些想要逃离城市的卓尔，并在暗处传播依莉丝翠的悦耳乐声。",
+    "future": "如果不加干预，他们将成功打通一条被遗忘的“地下铁路”，不仅能安全地将受压迫的卓尔护送到地表，还将在光芒照耀的隐秘山谷中建立一个和平的庇护所。",
+    "current_progress": 1
+  },
+  "fac_myconid_glow_cap": {
+    "id": "fac_myconid_glow_cap",
+    "name": "“荧光伞”蕈人群落 (Glow-Cap Myconid Circle)",
+    "type": "原始族群",
+    "description": "定居在城市远端蘑菇林的蕈人。由蕈人王领衔，通过孢子建立集体意识。他们是自然平衡的维护者，对外部的纷争持排斥态度。",
+    "fundamental_scarcity": "纯净的土壤——卓尔城市的化学废料和死灵魔法正在污染他们的孢子云，威胁其种族的生存。",
+    "agenda": "利用幻觉孢子在森林周围建立屏障，驱逐所有卓尔，并试图寻找净化土壤的古老魔法。",
+    "future": "如果不加干预，他们将释放一种特殊的净化孢子云，不仅中和了卓尔的化学废料，还将城市外围变成了一片散发生机与荧光的宁静生态绿洲。",
+    "current_progress": 3
+  },
+  "fac_zhentarim_spies": {
+    "id": "fac_zhentarim_spies",
+    "name": "散塔林会幽暗分部 (Zhentarim Underdark Outpost)",
+    "type": "跨位面谍报网",
+    "description": "地表犯罪组织散塔林会在幽暗地域的据点。他们以“远方贸易商”的名义活动，实际上是在编织一张覆盖所有种族的间谍和刺杀网络。",
+    "fundamental_scarcity": "情报的垄断与主导地位——他们在寻找足以控制整个幽暗地域北部的战略支点。",
+    "agenda": "向不同家族兜售情报，挑拨离间，同时暗中测绘整座城市的防御弱点，为未来的大规模入侵做准备。",
+    "future": "如果不加干预，散塔林会将利用一次贵族内战的机会发动斩首行动，将整座城市据为己有，作为进军地表的跳板。",
+    "current_progress": 2
+  },
+  "fac_house_baenre_exile": {
+    "id": "fac_house_baenre_exile",
+    "name": "班瑞流放者纳尔芬 (Nalfein, Baenre Exile)",
+    "type": "个人派系",
+    "description": "曾是魔索布莱城班瑞家族的一名高阶法师，因政治阴谋被剥夺一切并流放到此。虽然孤身一人，但他掌握的禁忌奥术和政治手腕足以改变局势。",
+    "fundamental_scarcity": "复仇的工具与合法的身份——他急需在这座城市建立自己的势力，以便有一天能杀回魔索布莱城。",
+    "agenda": "寻找可以控制的高层代理人，利用其奥术知识为筹码，在城市阴影中构建一个效忠于他个人的地下网络。",
+    "future": "如果不加干预，他将利用城市的所有资源为代价，召唤出一支影魔大军去冲击他的仇敌，而这座城市将作为炮灰被彻底牺牲。",
+    "current_progress": 1
+  }
+}

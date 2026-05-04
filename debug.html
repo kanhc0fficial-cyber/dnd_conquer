@@ -251,6 +251,12 @@ function buildNode(parent,key,value,path,filename,depth,changedPaths){
     if(S.pins[pkExact]){
       const d=document.createElement('span');d.className='pin-dot';d.textContent='★';row.appendChild(d);
     }
+    if(isArr){
+      const addBtn=document.createElement('span');addBtn.className='pin-dot';addBtn.textContent='[+]';addBtn.style.cursor='pointer';
+      addBtn.title='添加项到数组';
+      addBtn.onclick=e=>{e.stopPropagation();promptAddArrayItem(filename,path);};
+      row.appendChild(addBtn);
+    }
     const ch=document.createElement('ul');ch.className='jt jt-ch';
     if(isArr)value.forEach((item,i)=>buildNode(ch,i,item,[...path,i],filename,depth+1,changedPaths));
     else Object.entries(value).forEach(([k,v])=>buildNode(ch,k,v,[...path,k],filename,depth+1,changedPaths));
@@ -488,6 +494,28 @@ function stopRun(){
   if(pollTimer){clearTimeout(pollTimer);pollTimer=null;}
   appendOut('[用户中断]','warn');
   resetRun();
+}
+
+// ── Array Append ──
+function promptAddArrayItem(filename, path) {
+  const raw = prompt(`为 ` + (path.join('/') || '根数组') + ` 添加新项:\n(请输入合法的 JSON，例如 "物品名称", 123, true, 或 {"key":"val"})\n如果不合法将作为纯字符串添加。`);
+  if (raw === null) return;
+  let val;
+  try {
+    val = JSON.parse(raw);
+  } catch (e) {
+    val = raw; // fallback to string
+  }
+  apiPost('/api/patch_field', {file: filename, path: [...path, '-'], value: val})
+    .then(() => {
+      let node = S.cache[filename];
+      for (const p of path) node = node[p];
+      node.push(val);
+      renderTree(S.cache[filename], filename, S.changedPaths);
+      setStatus('已成功添加新项', '#89d185');
+      setTimeout(() => setStatus('就绪'), 2000);
+    })
+    .catch(e => setStatus('添加失败: ' + e.message, '#f48771'));
 }
 
 // ── Inline edit ──

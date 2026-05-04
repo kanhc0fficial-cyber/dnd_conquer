@@ -1,0 +1,1054 @@
+{
+  "loc_moss_farm_1": {
+    "id": "loc_moss_farm_1",
+    "name": "“微光”发光苔藓一号采集场",
+    "controlling_faction": "fac_house_nasadra",
+    "contested_by": [
+      "fac_deep_blood_resistance"
+    ],
+    "core_tension": "残酷的劳动条件让奴隶们精疲力竭，而监工们却在克扣利润。",
+    "gravity_hooks": [
+      "一个濒死的地精在低声谈论一条秘密隧道。",
+      "这里的苔藓散发着不自然的红光，而不是绿色。"
+    ],
+    "clues_hidden_here": [],
+    "clues_pointing_elsewhere": [],
+    "history_relevant_to_present": "在卓尔精灵将其工业化之前，这里曾是一片肥沃的狩猎场。"
+  },
+  "loc_moss_farm_2": {
+    "id": "loc_moss_farm_2",
+    "name": "“幽绿”发光苔藓二号采集场",
+    "controlling_faction": "fac_house_nasadra",
+    "contested_by": [
+      "fac_web_smugglers"
+    ],
+    "core_tension": "走私者正在利用茂密的苔藓掩藏他们的违禁品。",
+    "gravity_hooks": [
+      "奇怪的脚印延伸进最茂密的苔藓丛中。",
+      "一名卓尔监工正在接受一个连帽人物的贿赂。"
+    ],
+    "clues_hidden_here": [],
+    "clues_pointing_elsewhere": [],
+    "history_relevant_to_present": "这里曾发生过一次塌方，恰好掩埋了一支调查队。"
+  },
+  "loc_rothe_pen_1": {
+    "id": "loc_rothe_pen_1",
+    "name": "碎骨者洛斯兽一号畜场",
+    "controlling_faction": "fac_house_nasadra",
+    "contested_by": [
+      "fac_deep_blood_resistance"
+    ],
+    "core_tension": "为了省钱，野兽们没有得到充足的喂养，这使得它们对奴隶来说极具攻击性和危险性。",
+    "gravity_hooks": [
+      "其中一头洛斯兽身上有一个与纳萨德拉家族不符的奇怪烙印。",
+      "奴隶们正在偷偷抽取洛斯兽的血液。"
+    ],
+    "clues_hidden_here": [],
+    "clues_pointing_elsewhere": [],
+    "history_relevant_to_present": "这里曾培育出一头传奇野兽，现在被用于角斗场。"
+  },
+  "loc_rothe_pen_2": {
+    "id": "loc_rothe_pen_2",
+    "name": "碎骨者洛斯兽二号畜场",
+    "controlling_faction": "fac_house_nasadra",
+    "contested_by": [
+      "fac_deep_blood_resistance"
+    ],
+    "core_tension": "一种疾病正在野兽中蔓延，但监工们强迫奴隶隐瞒此事。",
+    "gravity_hooks": [
+      "生病的野兽在夜间被偷偷运走。",
+      "一个绝望的奴隶向你乞求药物。"
+    ],
+    "clues_hidden_here": [],
+    "clues_pointing_elsewhere": [],
+    "history_relevant_to_present": "这个畜场最近进行了扩建，侵占了古代矮人的废墟。"
+  },
+  "loc_orc_huts": {
+    "id": "loc_orc_huts",
+    "name": "兽人苦力棚屋区",
+    "controlling_faction": "fac_deep_blood_resistance",
+    "contested_by": [
+      "fac_house_nasadra"
+    ],
+    "core_tension": "兽人们在床下囤积简易武器，等待信号。",
+    "gravity_hooks": [
+      "一个魁梧的兽人挑战任何进入这里的人进行力量比拼。",
+      "深夜可以听到有节奏的鼓声。"
+    ],
+    "clues_hidden_here": [],
+    "clues_pointing_elsewhere": [],
+    "history_relevant_to_present": "这里的兽人是来自上层幽暗地域的一个被征服部落的后裔。"
+  },
+  "loc_bottom_corpse_pit": {
+    "id": "loc_bottom_corpse_pit",
+    "name": "深渊腐殖质堆肥坑",
+    "controlling_faction": "fac_deep_blood_resistance",
+    "contested_by": [
+      "fac_silken_heresy"
+    ],
+    "core_tension": "奴隶们将死者扔在这里，但邪教徒们正在秘密利用尸体进行仪式。",
+    "gravity_hooks": [
+      "一只手从堆肥中伸出，紧紧抓着一个奇怪的护身符。",
+      "气味令人难以忍受，但居然有人住在下面。"
+    ],
+    "clues_hidden_here": [],
+    "clues_pointing_elsewhere": [],
+    "history_relevant_to_present": "这个坑深入幽暗地域的程度超出了任何地图的标记。",
+    "NPC第一次出场": [
+      {
+        "id": "card_char_yvanna_slime_druid",
+        "name": "伊万娜·腐缚者",
+        "activity": "在堆肥深处研究如何将尸体转化为腐烂的原始汤。"
+      }
+    ]
+  },
+  "loc_mushroom_smuggler_cave": {
+    "id": "loc_mushroom_smuggler_cave",
+    "name": "毒蘑菇走私者藏匿洞穴",
+    "controlling_faction": "fac_web_smugglers",
+    "contested_by": [
+      "fac_house_nasadra"
+    ],
+    "core_tension": "走私者利用有毒孢子作为防御机制，但这也在慢慢毒害他们自己。",
+    "gravity_hooks": [
+      "进入这里的空气会引起轻微的幻觉。",
+      "一名走私者正在出售一种可以治愈石化的罕见蘑菇。"
+    ],
+    "clues_hidden_here": [],
+    "clues_pointing_elsewhere": [],
+    "history_relevant_to_present": "在卓尔精灵消灭他们之前，这里曾是一个德鲁伊飞地。"
+  },
+  "loc_water_wheel_1": {
+    "id": "loc_water_wheel_1",
+    "name": "谷底第一过滤水车",
+    "controlling_faction": "fac_house_nasadra",
+    "contested_by": [
+      "fac_deep_blood_resistance"
+    ],
+    "core_tension": "反抗军计划破坏水车，以切断上层城市的供水。",
+    "gravity_hooks": [
+      "水车的齿轮发出可怕的摩擦声。",
+      "一名破坏者被卡在了机械装置中。"
+    ],
+    "clues_hidden_here": [],
+    "clues_pointing_elsewhere": [],
+    "history_relevant_to_present": "这里的水是从上方城市的污水中过滤出来的。"
+  },
+  "loc_waste_dump": {
+    "id": "loc_waste_dump",
+    "name": "废料与尸体抛弃坑",
+    "controlling_faction": "fac_deep_blood_resistance",
+    "contested_by": [
+      "fac_house_nasadra"
+    ],
+    "core_tension": "奴隶敢死队的聚集地，但来自深渊的食腐动物有时会爬到这里。",
+    "gravity_hooks": [
+      "垃圾堆中躺着一把角斗士折断的武器。",
+      "从下方的黑暗中传来奇怪的咔嗒声。"
+    ],
+    "clues_hidden_here": [],
+    "clues_pointing_elsewhere": [],
+    "history_relevant_to_present": "纳萨德拉家族许多失败的实验品最终都流落到这里。"
+  },
+  "loc_broken_web_slum_1": {
+    "id": "loc_broken_web_slum_1",
+    "name": "断网贫民窟一巷",
+    "controlling_faction": "fac_web_smugglers",
+    "contested_by": [
+      "fac_house_nasadra"
+    ],
+    "core_tension": "蛛网正一根根断裂，居民们不顾一切地想用偷来的蛛丝修复它。",
+    "gravity_hooks": [
+      "一个卓尔乞丐提出用一块面包换取一个贵族的秘密。",
+      "当你走过时，部分蛛网在你的重量下发出不祥的呻吟声。"
+    ],
+    "clues_hidden_here": [],
+    "clues_pointing_elsewhere": [],
+    "history_relevant_to_present": "多年前这里发生过一次大坍塌，导致数百人死亡。",
+    "NPC第一次出场": [
+      {
+        "id": "card_char_myconid_princess",
+        "name": "微光",
+        "activity": "散发着微光，躲在阴暗角落里用孢子汁液治愈濒死的地精，面临被猎杀的风险。"
+      }
+    ]
+  },
+  "loc_broken_web_slum_2": {
+    "id": "loc_broken_web_slum_2",
+    "name": "断网贫民窟二巷",
+    "controlling_faction": "fac_web_smugglers",
+    "contested_by": [
+      "fac_silken_heresy"
+    ],
+    "core_tension": "邪教徒们以救赎的承诺招募绝望和一贫如洗的人。",
+    "gravity_hooks": [
+      "一个街头传教士正在宣扬异端邪说并分发口粮。",
+      "居民们因为恐惧而用路障封住了他们的门。"
+    ],
+    "clues_hidden_here": [],
+    "clues_pointing_elsewhere": [],
+    "history_relevant_to_present": "这条小巷以极高的失踪率而闻名。"
+  },
+  "loc_broken_tooth_tavern": {
+    "id": "loc_broken_tooth_tavern",
+    "name": "“断牙”骑乘蜥蜴酒馆",
+    "controlling_faction": "fac_web_smugglers",
+    "contested_by": [
+      "fac_house_nasadra"
+    ],
+    "core_tension": "一个走私者和腐败守卫一起喝酒的中立地带，在暴力的刀尖上摇摇欲坠。",
+    "gravity_hooks": [
+      "一个喝醉的蜘蛛骑士正在吹嘘即将到来的一场突袭。",
+      "酒保正在秘密传递消息。"
+    ],
+    "clues_hidden_here": [],
+    "clues_pointing_elsewhere": [],
+    "history_relevant_to_present": "这家酒馆建在一只巨大的死去的地下蜥蜴头骨内。"
+  },
+  "loc_lower_scavenger_market": {
+    "id": "loc_lower_scavenger_market",
+    "name": "下层蛛丝清道夫集市",
+    "controlling_faction": "fac_web_smugglers",
+    "contested_by": [
+      "fac_house_nasadra"
+    ],
+    "core_tension": "清道夫出售从上层城市掉落的物品，但贵族经常派暴徒来索回他们的‘财产’。",
+    "gravity_hooks": [
+      "一个清道夫正试图撬开一个上了锁的贵族箱子。",
+      "一个暴徒正在勒索一个小贩。"
+    ],
+    "clues_hidden_here": [],
+    "clues_pointing_elsewhere": [],
+    "history_relevant_to_present": "这个市场的繁荣完全建立在上方富人的粗心大意之上。"
+  },
+  "loc_duergar_fence": {
+    "id": "loc_duergar_fence",
+    "name": "独眼灰矮人赃物销账铺",
+    "controlling_faction": "fac_web_smugglers",
+    "contested_by": [
+      "fac_house_melarn"
+    ],
+    "core_tension": "销账者（沃恩）在两边都吃得开，但梅拉恩家族对他越来越起疑。",
+    "gravity_hooks": [
+      "如果你愿意替他‘解决’一个间谍，沃恩会给你打折。",
+      "柜台后面有一扇暗门。"
+    ],
+    "clues_hidden_here": [],
+    "clues_pointing_elsewhere": [],
+    "history_relevant_to_present": "沃恩用一次失败的梅拉恩家族远征留下的废品建起了这家店。",
+    "NPC第一次出场": [
+      {
+        "id": "card_char_helga_iron_hard",
+        "name": "赫尔加·铁石",
+        "activity": "在隐秘铁砧前开出极高价码，雇佣“死了也没人在乎”的飞贼去偷秘银。"
+      },
+      {
+        "id": "card_char_vorn_one_eye",
+        "name": "独眼沃恩",
+        "activity": "在前台两头吃回扣，倒卖一些次品或赃物。"
+      }
+    ]
+  },
+  "loc_blind_alley_black_market": {
+    "id": "loc_blind_alley_black_market",
+    "name": "盲目巷黑市交易点",
+    "controlling_faction": "fac_web_smugglers",
+    "contested_by": [
+      "fac_house_nasadra"
+    ],
+    "core_tension": "非法法术和毒药的首选地点，经常遭到‘铁丝清洗’行动的突袭。",
+    "gravity_hooks": [
+      "一个小贩正在出售几瓶高度不稳定的强酸。",
+      "当你正在浏览商品时，突袭突然开始。"
+    ],
+    "clues_hidden_here": [],
+    "clues_pointing_elsewhere": [],
+    "history_relevant_to_present": "这条巷子被魔法隐蔽着，这是一个被摧毁的次级家族留下的遗迹。",
+    "NPC第一次出场": [
+      {
+        "id": "card_char_kaelen_smuggler",
+        "name": "凯伦",
+        "activity": "在黑市指挥走私网络。"
+      },
+      {
+        "id": "card_char_ilx_oryndoll",
+        "name": "伊尔克斯",
+        "activity": "操纵盲女化身在黑市边缘买醉，寻找有感情的猎物体验“约会”。"
+      }
+    ]
+  },
+  "loc_infected_quarantine": {
+    "id": "loc_infected_quarantine",
+    "name": "底层感染者隔离网茧",
+    "controlling_faction": "fac_silken_heresy",
+    "contested_by": [
+      "fac_house_nasadra"
+    ],
+    "core_tension": "感染了奇怪真菌疾病的人被任由其等死，但邪教正在秘密‘治愈’并转化他们。",
+    "gravity_hooks": [
+      "一个被隔离的人乞求被放出来，声称自己已经痊愈了。",
+      "网茧内传出奇怪的诵经声。"
+    ],
+    "clues_hidden_here": [],
+    "clues_pointing_elsewhere": [],
+    "history_relevant_to_present": "隔离区由纳萨德拉家族建立，但现在他们似乎已经放弃了这里。"
+  },
+  "loc_lift_1": {
+    "id": "loc_lift_1",
+    "name": "一号石化网升降梯（平民用）",
+    "controlling_faction": "fac_house_nasadra",
+    "contested_by": [
+      "fac_web_smugglers"
+    ],
+    "core_tension": "税收沉重且守卫森严，导致严重的拥堵，也给扒手创造了机会。",
+    "gravity_hooks": [
+      "一名守卫正在勒索一个可怜的商人。",
+      "一个扒手在你脚边掉落了一枚偷来的图章戒指。"
+    ],
+    "clues_hidden_here": [],
+    "clues_pointing_elsewhere": [],
+    "history_relevant_to_present": "这部升降梯以不可靠著称，经常发生故障。"
+  },
+  "loc_lift_2": {
+    "id": "loc_lift_2",
+    "name": "二号石化网升降梯（重型货运机括）",
+    "controlling_faction": "fac_house_nasadra",
+    "contested_by": [
+      "fac_deep_blood_resistance"
+    ],
+    "core_tension": "深血大起义切断城市物流的主要目标。",
+    "gravity_hooks": [
+      "主承重缆绳上有明显的酸液腐蚀痕迹。",
+      "一群地精在附近紧张地徘徊。"
+    ],
+    "clues_hidden_here": [],
+    "clues_pointing_elsewhere": [],
+    "history_relevant_to_present": "这部升降梯运送所有食物；没有它，城市就会挨饿。",
+    "NPC第一次出场": [
+      {
+        "id": "card_char_zzik_zzik",
+        "name": "吱吱",
+        "activity": "暗中监视被强酸腐蚀的承重网，准备收买撞破计划的维修工。"
+      }
+    ]
+  },
+  "loc_foreigner_registry": {
+    "id": "loc_foreigner_registry",
+    "name": "外邦人临时许可登记处",
+    "controlling_faction": "fac_house_nasadra",
+    "contested_by": [
+      "fac_web_smugglers"
+    ],
+    "core_tension": "签证费用高昂，迫使许多外国人投向走私者的怀抱以获取伪造文件。",
+    "gravity_hooks": [
+      "一个绝望的地表居民正在乞求签证延期。",
+      "一名职员向你提供一份需要支付高额贿赂的加急通行证。"
+    ],
+    "clues_hidden_here": [],
+    "clues_pointing_elsewhere": [],
+    "history_relevant_to_present": "该登记处是纳萨德拉家族监视潜在威胁的掩护。"
+  },
+  "loc_lower_torture_rack": {
+    "id": "loc_lower_torture_rack",
+    "name": "下层区公共拷问架",
+    "controlling_faction": "fac_house_nasadra",
+    "contested_by": [
+      "fac_deep_blood_resistance"
+    ],
+    "core_tension": "这里被用来杀鸡儆猴，是公众愤怒和恐惧的焦点。",
+    "gravity_hooks": [
+      "一名被怀疑是叛乱分子的人正在被严刑拷打以获取情报。",
+      "人群正在聚集，看起来随时准备暴动。"
+    ],
+    "clues_hidden_here": [],
+    "clues_pointing_elsewhere": [],
+    "history_relevant_to_present": "许多反抗军的英雄死在这里，使它成为了一个殉道地。"
+  },
+  "loc_poison_sting_weapons": {
+    "id": "loc_poison_sting_weapons",
+    "name": "“毒刺”定制兵器铺",
+    "controlling_faction": "fac_house_melarn",
+    "contested_by": [
+      "fac_house_nasadra"
+    ],
+    "core_tension": "铁匠正在秘密为梅拉恩家族的政变打造武器。",
+    "gravity_hooks": [
+      "你一进门，铁匠就急忙藏起一把定制匕首。",
+      "一个贵族正在因为一笔延迟的订单而争吵。"
+    ],
+    "clues_hidden_here": [],
+    "clues_pointing_elsewhere": [],
+    "history_relevant_to_present": "这家锻造厂使用从地下深处引来的罕见岩浆喷口。"
+  },
+  "loc_adamantine_armor": {
+    "id": "loc_adamantine_armor",
+    "name": "第一精金制式防具店",
+    "controlling_faction": "fac_house_nasadra",
+    "contested_by": [
+      "fac_web_smugglers"
+    ],
+    "core_tension": "走私者正在截获精金货运，使它们无法到达商店。",
+    "gravity_hooks": [
+      "对于一家‘顶级’商店来说，货架出奇地空旷。",
+      "店主正在疯狂地核对库存日志。"
+    ],
+    "clues_hidden_here": [],
+    "clues_pointing_elsewhere": [],
+    "history_relevant_to_present": "只有纳萨德拉家族合法允许穿着全套精金板甲。"
+  },
+  "loc_assassin_tools": {
+    "id": "loc_assassin_tools",
+    "name": "第二奇门武器与刺客工具店",
+    "controlling_faction": "fac_house_melarn",
+    "contested_by": [
+      "fac_house_nasadra"
+    ],
+    "core_tension": "这家店是雇佣刺客的掩护，由于暗影黑市战争，目前需求量很高。",
+    "gravity_hooks": [
+      "一个戴面具的身影在柜台上留下一个沉重的钱袋，一言不发地离开了。",
+      "店主向你提供一份‘特别’的合同。"
+    ],
+    "clues_hidden_here": [],
+    "clues_pointing_elsewhere": [],
+    "history_relevant_to_present": "这家店今年已经五次易主，每次都是通过暗杀完成的。",
+    "NPC第一次出场": [
+      {
+        "id": "card_char_syl_shadow_dancer",
+        "name": "希尔·影舞者",
+        "activity": "在刺客工具店伪装成冷酷的男性战士，准备下一次暗杀。"
+      }
+    ]
+  },
+  "loc_phantom_dance_scrolls": {
+    "id": "loc_phantom_dance_scrolls",
+    "name": "“幻象之舞”魔法卷轴店",
+    "controlling_faction": "fac_silken_heresy",
+    "contested_by": [
+      "fac_house_nasadra"
+    ],
+    "core_tension": "店主正在秘密散发隐藏在普通法术卷轴中的异端文本。",
+    "gravity_hooks": [
+      "当你阅读一卷卷轴时，文本短暂地变成了某种无法理解的东西。",
+      "一名审判官正在气势汹汹地审问店主。"
+    ],
+    "clues_hidden_here": [],
+    "clues_pointing_elsewhere": [],
+    "history_relevant_to_present": "这家店建在一个次级地脉连接点上，可以增强幻术魔法。",
+    "NPC第一次出场": [
+      {
+        "id": "card_char_lyra_moon_dancer",
+        "name": "莱拉·星眼",
+        "activity": "在卷轴店的伪装下，寻找身手敏捷的人去刑场上空切断承重网救人。"
+      }
+    ]
+  },
+  "loc_gem_appraisal": {
+    "id": "loc_gem_appraisal",
+    "name": "深暗高阶宝石鉴定所",
+    "controlling_faction": "fac_house_melarn",
+    "contested_by": [
+      "fac_house_nasadra"
+    ],
+    "core_tension": "被梅拉恩家族用来洗钱并为他们的暗影战争提供资金。",
+    "gravity_hooks": [
+      "一名鉴定师在检查一颗据称无瑕的钻石时大汗淋漓。",
+      "一本账本显示巨额资金流向无法追踪的账户。"
+    ],
+    "clues_hidden_here": [],
+    "clues_pointing_elsewhere": [],
+    "history_relevant_to_present": "这里的公会会长最近在可疑的情况下被替换了。",
+    "NPC第一次出场": [
+      {
+        "id": "card_char_shadowfire_dragon",
+        "name": "盲影",
+        "activity": "以脆弱盲眼精灵先知的伪装，引诱贪婪的维修工去送致命的伪造预言。"
+      }
+    ]
+  },
+  "loc_poison_shop": {
+    "id": "loc_poison_shop",
+    "name": "卓尔毒药与解毒剂专卖店",
+    "controlling_faction": "fac_house_nasadra",
+    "contested_by": [
+      "fac_house_melarn"
+    ],
+    "core_tension": "在计划中的毒气袭击之前，两个家族都在试图垄断解毒剂的供应。",
+    "gravity_hooks": [
+      "基础解毒剂的价格一夜之间暴涨。",
+      "一名贵族在店外中毒倒地。"
+    ],
+    "clues_hidden_here": [],
+    "clues_pointing_elsewhere": [],
+    "history_relevant_to_present": "这家店的地基浸透了几个世纪以来意外泄漏的毒药。"
+  },
+  "loc_silk_tailor": {
+    "id": "loc_silk_tailor",
+    "name": "“魅影蛛丝”高档裁缝铺",
+    "controlling_faction": "fac_house_melarn",
+    "contested_by": [
+      "fac_web_smugglers"
+    ],
+    "core_tension": "裁缝使用偷来的贫民窟蛛丝制作廉价商品，冒着激怒贵族和走私者的双重风险。",
+    "gravity_hooks": [
+      "一位女贵族正在为一处‘不合格’的编织大发雷霆。",
+      "一名走私者正在后面的房间里等着收钱。"
+    ],
+    "clues_hidden_here": [],
+    "clues_pointing_elsewhere": [],
+    "history_relevant_to_present": "这里使用的蜘蛛丝经过魔法处理，可以抵抗轻微法术。"
+  },
+  "loc_purple_amber_inn": {
+    "id": "loc_purple_amber_inn",
+    "name": "“紫珀荧光”高级客栈",
+    "controlling_faction": "fac_house_melarn",
+    "contested_by": [
+      "fac_house_nasadra"
+    ],
+    "core_tension": "高风险谈判的中立场所，布满了每个派系的间谍安置的窃听器。",
+    "gravity_hooks": [
+      "你发现了一个伪装成发光飞蛾的探知传感器。",
+      "两名对立的贵族正在进行紧张而低声的交谈。"
+    ],
+    "clues_hidden_here": [],
+    "clues_pointing_elsewhere": [],
+    "history_relevant_to_present": "这家客栈悬挂在一根巨大的古老蛛丝上。",
+    "NPC第一次出场": [
+      {
+        "id": "card_char_lydia_zhentarim",
+        "name": "莉迪亚·暗星",
+        "activity": "伪装成高阶香料商人，在高级客栈用致幻香气色诱底层工人去安放窃听器。"
+      }
+    ]
+  },
+  "loc_arena_1": {
+    "id": "loc_arena_1",
+    "name": "第一角斗场（奴隶死斗）",
+    "controlling_faction": "fac_house_nasadra",
+    "contested_by": [
+      "fac_deep_blood_resistance"
+    ],
+    "core_tension": "角斗士们在战斗中秘密地向反抗军传达战斗战术。",
+    "gravity_hooks": [
+      "一名角斗士在打出致命一击之前做了一个奇怪的手势。",
+      "人群的欢呼声似乎出奇地同步，像是一种暗号。"
+    ],
+    "clues_hidden_here": [],
+    "clues_pointing_elsewhere": [],
+    "history_relevant_to_present": "这里的沙子永远被染成红色；这被奴隶们视为神圣之地。",
+    "NPC第一次出场": [
+      {
+        "id": "card_char_grom_gladiator",
+        "name": "格罗姆",
+        "activity": "在场上连胜，不知道自己的饮水碗即将被维修工高空投毒。"
+      }
+    ]
+  },
+  "loc_arena_2": {
+    "id": "loc_arena_2",
+    "name": "第二角斗场（猛兽搏杀）",
+    "controlling_faction": "fac_house_melarn",
+    "contested_by": [
+      "fac_house_nasadra"
+    ],
+    "core_tension": "梅拉恩家族故意输掉野兽，以破坏纳萨德拉家族的娱乐收入。",
+    "gravity_hooks": [
+      "一只据称凶猛的移位兽就这么躺下死去了。",
+      "有人看到一名驯兽师将粉末偷偷倒进饲料槽中。"
+    ],
+    "clues_hidden_here": [],
+    "clues_pointing_elsewhere": [],
+    "history_relevant_to_present": "这里的笼子直接连接着深层幽暗地域，以便捕获新鲜猎物。"
+  },
+  "loc_mercenary_camp": {
+    "id": "loc_mercenary_camp",
+    "name": "雇佣兵招募营帐",
+    "controlling_faction": "fac_house_melarn",
+    "contested_by": [
+      "fac_house_nasadra"
+    ],
+    "core_tension": "雇佣兵们在两个家族之间挑拨离间，以抬高他们的身价。",
+    "gravity_hooks": [
+      "一名雇佣兵队长嘲笑纳萨德拉家族招募员的报价。",
+      "竞价战正在演变成斗殴。"
+    ],
+    "clues_hidden_here": [],
+    "clues_pointing_elsewhere": [],
+    "history_relevant_to_present": "这个营地高度流动；忠诚只存在于金币支付期间。",
+    "NPC第一次出场": [
+      {
+        "id": "card_char_nym_wanderer",
+        "name": "宁姆·流浪者",
+        "activity": "在防守严密的帐篷内指挥佣兵团的日常运作。"
+      }
+    ]
+  },
+  "loc_tax_office": {
+    "id": "loc_tax_office",
+    "name": "中层区税务执政官邸",
+    "controlling_faction": "fac_house_nasadra",
+    "contested_by": [
+      "fac_house_melarn"
+    ],
+    "core_tension": "梅拉恩家族正在安插伪造的税务记录，为发动反腐败政变寻找正当理由。",
+    "gravity_hooks": [
+      "一名职员正在火盆里疯狂地烧毁文件。",
+      "你发现了一本显示存在巨大差异的账本。"
+    ],
+    "clues_hidden_here": [],
+    "clues_pointing_elsewhere": [],
+    "history_relevant_to_present": "税务局是这座城市防御最森严的非贵族建筑。",
+    "NPC第一次出场": [
+      {
+        "id": "card_char_veldrin_tax_collector",
+        "name": "维尔德林",
+        "activity": "冷酷地处理账务，并试图将装满黑金和勒索信的包裹交给悬在窗外的维修工。"
+      }
+    ]
+  },
+  "loc_lift_3": {
+    "id": "loc_lift_3",
+    "name": "三号石化网升降梯（商旅与军用）",
+    "controlling_faction": "fac_house_nasadra",
+    "contested_by": [
+      "fac_house_melarn"
+    ],
+    "core_tension": "对这部升降梯的控制决定了谁能控制流向上层城市的武器和士兵。",
+    "gravity_hooks": [
+      "守卫毫无理由地拒绝了梅拉恩家族商人的进入。",
+      "一个装满武器的沉重板条箱‘意外’掉进了深渊。"
+    ],
+    "clues_hidden_here": [],
+    "clues_pointing_elsewhere": [],
+    "history_relevant_to_present": "这部升降梯由被束缚的土元素提供动力。"
+  },
+  "loc_melarn_manor": {
+    "id": "loc_melarn_manor",
+    "name": "梅拉恩家族悬空庄园",
+    "controlling_faction": "fac_house_melarn",
+    "contested_by": [
+      "fac_house_nasadra"
+    ],
+    "core_tension": "这座庄园是一座充满偏执狂的堡垒；塔莉莎不信任任何人，并为她自己的员工设置了致命的陷阱。",
+    "gravity_hooks": [
+      "一具仆人的尸体被若无其事地从阳台上扫了下去。",
+      "庄园的布局似乎在定期地移动和重新配置。"
+    ],
+    "clues_hidden_here": [],
+    "clues_pointing_elsewhere": [],
+    "history_relevant_to_present": "这座庄园靠法术悬浮，完全独立于物理的蛛网之外。"
+  },
+  "loc_zauviir_fortress": {
+    "id": "loc_zauviir_fortress",
+    "name": "佐维尔家族防卫堡垒",
+    "controlling_faction": "fac_house_nasadra",
+    "contested_by": [
+      "fac_house_melarn"
+    ],
+    "core_tension": "一个附庸家族，夹在对纳萨德拉家族的忠诚和来自梅拉恩家族丰厚的贿赂之间。",
+    "gravity_hooks": [
+      "守卫穿着纳萨德拉家族的颜色，但带着梅拉恩家族打造的武器。",
+      "堡垒指挥官看起来极其疲惫和恐惧。"
+    ],
+    "clues_hidden_here": [],
+    "clues_pointing_elsewhere": [],
+    "history_relevant_to_present": "佐维尔家族的忠诚是维系上层城市防御的关键。",
+    "NPC第一次出场": [
+      {
+        "id": "card_char_vierna_zauviir",
+        "name": "维尔娜主母",
+        "activity": "在堡垒内忧心忡忡，处于两大顶级家族夹缝中试图保全自身。"
+      }
+    ]
+  },
+  "loc_spider_cavalry_camp_1": {
+    "id": "loc_spider_cavalry_camp_1",
+    "name": "精锐蜘蛛骑士一号营地",
+    "controlling_faction": "fac_house_nasadra",
+    "contested_by": [
+      "fac_house_melarn"
+    ],
+    "core_tension": "骑士们渴望开始清洗行动，但他们的队长因为被勒索而犹豫不决。",
+    "gravity_hooks": [
+      "骑士们正在公开讨论他们将从贫民窟掠夺多少东西。",
+      "有人看到队长紧张地阅读一封黑封的信。"
+    ],
+    "clues_hidden_here": [],
+    "clues_pointing_elsewhere": [],
+    "history_relevant_to_present": "这些骑士是切德·纳萨德城中最令人畏惧的执行者。",
+    "NPC第一次出场": [
+      {
+        "id": "card_char_ryltar_captain",
+        "name": "瑞尔塔队长",
+        "activity": "愤怒地悬赏寻找破坏升降梯的反抗军线索。"
+      }
+    ]
+  },
+  "loc_spider_cavalry_camp_2": {
+    "id": "loc_spider_cavalry_camp_2",
+    "name": "精锐地底蜥蜴骑兵营地",
+    "controlling_faction": "fac_house_melarn",
+    "contested_by": [
+      "fac_house_nasadra"
+    ],
+    "core_tension": "秘密效忠于梅拉恩家族，等待信号从侧翼袭击纳萨德拉家族。",
+    "gravity_hooks": [
+      "蜥蜴被喂食一种奇怪的、具攻击性的兴奋剂。",
+      "一名纳萨德拉家族的检查员在矛尖的威逼下被拒绝进入。"
+    ],
+    "clues_hidden_here": [],
+    "clues_pointing_elsewhere": [],
+    "history_relevant_to_present": "蜥蜴骑兵的声望较低，但对于重型突击来说更为实用。"
+  },
+  "loc_nasadra_torture_room": {
+    "id": "loc_nasadra_torture_room",
+    "name": "第一家族私人刑讯室",
+    "controlling_faction": "fac_house_nasadra",
+    "contested_by": [
+      "fac_deep_blood_resistance"
+    ],
+    "core_tension": "米兹里正在拷打一名高级别反抗军成员，以查出起义领袖吱吱的身份。",
+    "gravity_hooks": [
+      "大厅里回荡着可怕的尖叫声。",
+      "一名行刑者抱怨犯人的血液呈强酸性。"
+    ],
+    "clues_hidden_here": [],
+    "clues_pointing_elsewhere": [],
+    "history_relevant_to_present": "房间隔音，墙上刻有古老的血肉符文。"
+  },
+  "loc_nasadra_vault": {
+    "id": "loc_nasadra_vault",
+    "name": "第一家族私人藏宝库",
+    "controlling_faction": "fac_house_nasadra",
+    "contested_by": [
+      "fac_web_smugglers"
+    ],
+    "core_tension": "走私者在金库的防御中发现了一条微小的裂缝，正在慢慢地吸走它的财富。",
+    "gravity_hooks": [
+      "一名守卫提到黄金重量存在轻微差异。",
+      "你在外墙上发现了一个微小的、由酸腐蚀出的小孔。"
+    ],
+    "clues_hidden_here": [],
+    "clues_pointing_elsewhere": [],
+    "history_relevant_to_present": "金库里保存着切德·纳萨德城建立之前的文物。"
+  },
+  "loc_noble_baths": {
+    "id": "loc_noble_baths",
+    "name": "贵族专享幽光浴场",
+    "controlling_faction": "fac_house_nasadra",
+    "contested_by": [
+      "fac_house_melarn"
+    ],
+    "core_tension": "供水是共享的，这使得它成为了进行微妙且无法追踪的暗杀的绝佳地点。",
+    "gravity_hooks": [
+      "一名贵族进入水中后，皮肤变成了病态的蓝色。",
+      "一名侍者正在疯狂地试图冲洗水池。"
+    ],
+    "clues_hidden_here": [],
+    "clues_pointing_elsewhere": [],
+    "history_relevant_to_present": "浴场由被束缚的火元素加热。"
+  },
+  "loc_lift_4": {
+    "id": "loc_lift_4",
+    "name": "四号蛛丝升降梯（贵族专属）",
+    "controlling_faction": "fac_house_nasadra",
+    "contested_by": [
+      "fac_silken_heresy"
+    ],
+    "core_tension": "异端计划在统治议会乘坐在上面时切断这部升降梯，从而使城市的领导层“斩首”。",
+    "gravity_hooks": [
+      "丝绳发出一种不自然的黑暗能量的嗡嗡声。",
+      "一名女祭司正在对升降梯进行未被批准的祈福。"
+    ],
+    "clues_hidden_here": [],
+    "clues_pointing_elsewhere": [],
+    "history_relevant_to_present": "只有主母和她们选定的配偶才能乘坐这部升降梯。"
+  },
+  "loc_anti_air_ballista": {
+    "id": "loc_anti_air_ballista",
+    "name": "上层防空精金弩炮阵地",
+    "controlling_faction": "fac_house_nasadra",
+    "contested_by": [
+      "fac_house_melarn"
+    ],
+    "core_tension": "梅拉恩家族的破坏者正在修改弩炮的轨迹，以便在激活时向纳萨德拉自己的堡垒开火。",
+    "gravity_hooks": [
+      "一名工程师正在可疑地重新校准瞄准水晶。",
+      "弩炮目前直接瞄准着纳萨德拉堡垒。"
+    ],
+    "clues_hidden_here": [],
+    "clues_pointing_elsewhere": [],
+    "history_relevant_to_present": "设计初衷是为了击退暗幕魔兽群，现在却成了内战的武器。"
+  },
+  "loc_blood_pit_1": {
+    "id": "loc_blood_pit_1",
+    "name": "深渊蛛后第一血祭坑",
+    "controlling_faction": "fac_house_nasadra",
+    "contested_by": [
+      "fac_silken_heresy"
+    ],
+    "core_tension": "祭品被邪教挪用，用来为他们自己的黑暗召唤提供能量。",
+    "gravity_hooks": [
+      "坑中的血液违背了重力，正在*向上*流动。",
+      "一名女祭司意识到祭品数量不够。"
+    ],
+    "clues_hidden_here": [],
+    "clues_pointing_elsewhere": [],
+    "history_relevant_to_present": "这个坑直接连接到魔网深渊。"
+  },
+  "loc_blood_pit_2": {
+    "id": "loc_blood_pit_2",
+    "name": "深渊蛛后第二血祭坑",
+    "controlling_faction": "fac_house_nasadra",
+    "contested_by": [
+      "fac_deep_blood_resistance"
+    ],
+    "core_tension": "反抗军把武器藏在扔进这个坑里的尸体中，让下方同胞找到。",
+    "gravity_hooks": [
+      "一具尸体扔进去时发出一声巨大的金属撞击声。",
+      "一名守卫注意到一个奴隶故意把自己扔了进去。"
+    ],
+    "clues_hidden_here": [],
+    "clues_pointing_elsewhere": [],
+    "history_relevant_to_present": "这是一个较少使用的坑，经常被高阶女祭司们忽视。"
+  },
+  "loc_heresy_torture_chamber": {
+    "id": "loc_heresy_torture_chamber",
+    "name": "异端审判与折磨室",
+    "controlling_faction": "fac_silken_heresy",
+    "contested_by": [
+      "fac_house_nasadra"
+    ],
+    "core_tension": "审判官自己就是秘密的异端分子，他们利用折磨室来转化受害者而不是惩罚他们。",
+    "gravity_hooks": [
+      "受害者从折磨中走出来时带着狂热的微笑。",
+      "折磨设备看起来更像是外科手术改造工具。"
+    ],
+    "clues_hidden_here": [],
+    "clues_pointing_elsewhere": [],
+    "history_relevant_to_present": "许多被‘净化’的贵族从这里出来后变成了邪教的潜伏特工。"
+  },
+  "loc_drider_pit": {
+    "id": "loc_drider_pit",
+    "name": "神眷蛛化精灵饲养深坑",
+    "controlling_faction": "fac_house_nasadra",
+    "contested_by": [
+      "fac_silken_heresy"
+    ],
+    "core_tension": "邪教正在巧妙地指挥蛛化精灵在城市蛛网的锚点处挖掘。",
+    "gravity_hooks": [
+      "蛛化精灵表现出异常且协调的智慧。",
+      "你听到坑深处传来石头破裂的声音。"
+    ],
+    "clues_hidden_here": [],
+    "clues_pointing_elsewhere": [],
+    "history_relevant_to_present": "蛛化精灵通常没有心智，这使得它们的协调行动变得非常可怕。"
+  },
+  "loc_melee_platform": {
+    "id": "loc_melee_platform",
+    "name": "武技长第一演武悬台（重武器与盾牌对抗）",
+    "controlling_faction": "fac_house_nasadra",
+    "contested_by": [
+      "fac_house_melarn"
+    ],
+    "core_tension": "武器大师收受了梅拉恩家族的贿赂，故意伤害纳萨德拉最优秀的新兵。",
+    "gravity_hooks": [
+      "一名大有前途的纳萨德拉新兵遭遇了一场‘悲惨的事故’。",
+      "有人看到武器大师收下了一个沉重的袋子。"
+    ],
+    "clues_hidden_here": [],
+    "clues_pointing_elsewhere": [],
+    "history_relevant_to_present": "悬台悬挂在1000英尺的高空。"
+  },
+  "loc_stealth_platform": {
+    "id": "loc_stealth_platform",
+    "name": "武技长第二演武悬台（双持弯刀与暗杀技巧）",
+    "controlling_faction": "fac_house_melarn",
+    "contested_by": [
+      "fac_house_nasadra"
+    ],
+    "core_tension": "被用来训练将在暗影黑市战争中发动袭击的刺客。",
+    "gravity_hooks": [
+      "受训者正在拿纳萨德拉贵族的假人练习。",
+      "一个影子似乎脱离了本体并溜走了。"
+    ],
+    "clues_hidden_here": [],
+    "clues_pointing_elsewhere": [],
+    "history_relevant_to_present": "这个悬台永久地笼罩在魔法黑暗中。"
+  },
+  "loc_mage_tower_bottom": {
+    "id": "loc_mage_tower_bottom",
+    "name": "法师悬垂之塔底层（恶魔召唤与束缚室）",
+    "controlling_faction": "fac_house_nasadra",
+    "contested_by": [
+      "fac_silken_heresy"
+    ],
+    "core_tension": "邪教承诺给予被束缚的恶魔自由，以换取他们在毁灭城市方面的帮助。",
+    "gravity_hooks": [
+      "一只被束缚的巴洛炎魔低声呼唤你的真名。",
+      "防御符文正被一只无形的手慢慢改变。"
+    ],
+    "clues_hidden_here": [],
+    "clues_pointing_elsewhere": [],
+    "history_relevant_to_present": "这里的恶魔为城市的大部分魔法基础设施提供能量。",
+    "NPC第一次出场": [
+      {
+        "id": "card_char_nalfein_baenre",
+        "name": "纳尔芬·班瑞",
+        "activity": "在底层准备深渊献祭仪式，并偶尔前往黑市强行收购邪恶灵魂石。"
+      }
+    ]
+  },
+  "loc_mage_tower_middle": {
+    "id": "loc_mage_tower_middle",
+    "name": "法师悬垂之塔主层（奥术与禁忌图书馆）",
+    "controlling_faction": "fac_house_nasadra",
+    "contested_by": [
+      "fac_silken_heresy"
+    ],
+    "core_tension": "异端法师正在利用图书馆研究城市钟乳石结构的弱点。",
+    "gravity_hooks": [
+      "关于石工和结构工程的书籍失踪了。",
+      "一个幽灵图书管理员示意你安静，指着一个疯狂的学者。"
+    ],
+    "clues_hidden_here": [],
+    "clues_pointing_elsewhere": [],
+    "history_relevant_to_present": "包含大分裂时代之前的知识。",
+    "NPC第一次出场": [
+      {
+        "id": "card_char_pharaun_heretic",
+        "name": "法劳恩",
+        "activity": "恭维东方武僧，忽悠对方在维护物理蛛网时贴上破坏结界的符文。"
+      }
+    ]
+  },
+  "loc_hanging_tower_top": {
+    "id": "loc_hanging_tower_top",
+    "name": "法师悬垂之塔顶层（古代位面传送门枢纽）",
+    "controlling_faction": "fac_silken_heresy",
+    "contested_by": [
+      "fac_house_nasadra"
+    ],
+    "core_tension": "邪教计划在城市正上方打开一扇通往远域的传送门，让重力完成剩下的工作。",
+    "gravity_hooks": [
+      "气压剧烈波动，让你耳鸣。",
+      "传送门环闪烁着令人作呕的洋红色光芒。"
+    ],
+    "clues_hidden_here": [],
+    "clues_pointing_elsewhere": [],
+    "history_relevant_to_present": "传送门已经停用了几千年，直到现在。",
+    "NPC第一次出场": [
+      {
+        "id": "card_char_xalyth_cult_leader",
+        "name": "萨莉丝",
+        "activity": "在传送门枢纽准备终极仪式，企图将整个城市拉入远域。"
+      }
+    ]
+  },
+  "loc_spider_knight_camp": {
+    "id": "loc_spider_knight_camp",
+    "name": "精锐蜘蛛骑士二号营地",
+    "controlling_faction": "fac_house_nasadra",
+    "contested_by": [
+      "fac_deep_blood_resistance"
+    ],
+    "core_tension": "坐骑正被潜伏在马厩伙计中的反抗军间谍暗中下毒。",
+    "gravity_hooks": [
+      "一只巨型骑乘蜘蛛无法控制地抽搐。",
+      "一名地精马厩伙计看起来对自己非常满意。"
+    ],
+    "clues_hidden_here": [],
+    "clues_pointing_elsewhere": [],
+    "history_relevant_to_present": "这里是‘铁丝清洗’行动的主要集结地。"
+  },
+  "loc_priestess_chamber": {
+    "id": "loc_priestess_chamber",
+    "name": "高阶女祭司私人冥想茧房",
+    "controlling_faction": "fac_house_nasadra",
+    "contested_by": [
+      "fac_silken_heresy"
+    ],
+    "core_tension": "高阶女祭司一直梦到城市陷落的幻象，但她将其视为信仰的考验而忽略了。",
+    "gravity_hooks": [
+      "女祭司在睡梦中尖叫。",
+      "墙上的壁画描绘了城市坠入深渊的情景。"
+    ],
+    "clues_hidden_here": [],
+    "clues_pointing_elsewhere": [],
+    "history_relevant_to_present": "茧房是用神圣蜘蛛的蛛丝编织而成的。"
+  },
+  "loc_matron_council": {
+    "id": "loc_matron_council",
+    "name": "主母联合议事大厅",
+    "controlling_faction": "fac_house_nasadra",
+    "contested_by": [
+      "fac_house_melarn"
+    ],
+    "core_tension": "米兹里正在利用议会分散其他家族的注意力，同时她下方的清洗行动正在开始。",
+    "gravity_hooks": [
+      "当信使在米兹里耳边低语时，她平静地微笑着。",
+      "塔莉莎明显很紧张，手按在隐藏的匕首上。"
+    ],
+    "clues_hidden_here": [],
+    "clues_pointing_elsewhere": [],
+    "history_relevant_to_present": "这是一个被认为和平的地方，但在这里发生的谋杀比在角斗场里还要多。",
+    "NPC第一次出场": [
+      {
+        "id": "card_char_mizri_nasadra",
+        "name": "米兹里主母",
+        "activity": "在议事大厅表面和气地谈判，背地里密谋清洗。"
+      }
+    ]
+  },
+  "loc_nightclub_abyss": {
+    "id": "loc_nightclub_abyss",
+    "name": "深渊魅影高级夜总会",
+    "controlling_faction": "fac_web_smugglers",
+    "contested_by": [
+      "fac_house_melarn",
+      "fac_house_nasadra"
+    ],
+    "core_tension": "表面上是卓尔贵族们寻欢作乐、挥金如土的销金窟，暗地里却是老板瓦林·夜影收集致命情报和黑料的蛛网中心。",
+    "gravity_hooks": [
+      "一个梅拉恩家族的特使在喝下一杯发光的酒后，开始向一名魅魔酒保吐露秘密。",
+      "你注意到舞台的幻象墙后有眼睛在闪烁。"
+    ],
+    "clues_hidden_here": [],
+    "clues_pointing_elsewhere": [],
+    "history_relevant_to_present": "在被瓦林收购前，这里曾是一个破败的卓尔神庙旧址。",
+    "NPC第一次出场": [
+      {
+        "id": "card_char_vhalin_spymaster",
+        "name": "瓦林·夜影",
+        "activity": "带领打手堵住两头通风管，优雅地威胁捡到绝密录音的清洁工。"
+      }
+    ]
+  },
+  "loc_flesh_auction": {
+    "id": "loc_flesh_auction",
+    "name": "中层血肉奴隶拍卖台",
+    "controlling_faction": "fac_house_nasadra",
+    "contested_by": [
+      "fac_web_smugglers"
+    ],
+    "core_tension": "财富与残忍的交汇点。由于新出现了一名罕见的堕落异国公主，这里即将引发一场各大贵族间的竞价流血冲突。",
+    "gravity_hooks": [
+      "一名卓尔税务官正在严厉地检查每一笔交易的账目。",
+      "拍卖台上正展示着一名异国堕落公主，尽管受尽折磨，她却固执地拒绝一切逃跑机会，声称这是神明的惩罚。"
+    ],
+    "clues_hidden_here": [],
+    "clues_pointing_elsewhere": [],
+    "history_relevant_to_present": "这是城市最重要的财政来源之一，由梅拉恩家族负责运营，但收益需上缴大部分给第一家族。",
+    "NPC第一次出场": [
+      {
+        "id": "card_char_talytha_melarn",
+        "name": "塔莉莎·梅拉恩",
+        "activity": "作为拍卖行的实际控制者，在幕后审视所有高价值的交易。"
+      },
+      {
+        "id": "card_char_elara_slave",
+        "name": "埃拉拉",
+        "activity": "作为压轴商品被展示在拍卖台上，引发各大家族的竞价。"
+      }
+    ]
+  }
+}

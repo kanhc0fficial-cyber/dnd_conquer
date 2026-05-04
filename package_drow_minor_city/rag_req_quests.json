@@ -1,0 +1,24 @@
+{
+  "requests": [
+    {
+      "search_purpose": "Slum uprising and elevator sabotage",
+      "what_i_will_do_with_result": "Design a PC quest where the resistance tries to drop the elevator, and the PC can either help for heroism or betray for money.",
+      "query": "Slave uprising, destroying infrastructure, sabotage the elevator, betraying the rebellion for money"
+    },
+    {
+      "search_purpose": "Assassin cult vs Ruling House",
+      "what_i_will_do_with_result": "Create a background plot where the shadow assassins assassinate matriarchs over several months.",
+      "query": "Shadow assassins, serial murders of nobles, patriarchal cult fighting matriarchy, political assassinations over time"
+    },
+    {
+      "search_purpose": "Smuggler and Zhentarim turf war",
+      "what_i_will_do_with_result": "Design a quest where the PC is hired by a beautiful Zhent spy to ruin the local smugglers.",
+      "query": "Spy manipulating factions, turf war, femme fatale hiring the hero, destroying local crime syndicate"
+    },
+    {
+      "search_purpose": "Forbidden Illithid romance",
+      "what_i_will_do_with_result": "Create a background story of an illithid falling for a blind drow, ending in tragedy or escape.",
+      "query": "Monster falling in love with blind girl, forbidden psychic romance, alien empathy, tragic beauty"
+    }
+  ]
+}

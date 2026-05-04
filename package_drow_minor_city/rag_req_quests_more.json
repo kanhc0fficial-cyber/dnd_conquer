@@ -1,0 +1,34 @@
+{
+  "requests": [
+    {
+      "search_purpose": "Myconid healing the slums",
+      "what_i_will_do_with_result": "Design a quest where PC finds a glowing plant girl illegally healing the sick, and an alchemist wants her captured.",
+      "query": "Hidden healer, magical creature hunted for body parts, secret clinic, innocent monster"
+    },
+    {
+      "search_purpose": "Mind flayer alien romance",
+      "what_i_will_do_with_result": "Create a honey trap where PC is asked on a date by a beautiful blind girl, who is secretly an alien experiencing human emotion.",
+      "query": "Alien tries dating, monster puppet body, weird romance, protecting an innocent girl who is a monster"
+    },
+    {
+      "search_purpose": "Finding a cursed soulstone",
+      "what_i_will_do_with_result": "Design a hook where PC finds a cursed rock while working, and a scary exiled noblewoman demands it.",
+      "query": "Finding a cursed artifact, scary buyer, dark magic stone, accidental discovery of evil relic"
+    },
+    {
+      "search_purpose": "Arena match fixing for Zhentarim",
+      "what_i_will_do_with_result": "Create a quest where PC is paid by a femme fatale to drug a gladiator during cage maintenance.",
+      "query": "Fixing a sports match, paid to drug a fighter, arena sabotage, working for the mob"
+    },
+    {
+      "search_purpose": "Doomed mapping expedition",
+      "what_i_will_do_with_result": "Design an expedition where PC is hired as a disposable porter, and they stumble into a dragon's petrified victim hoard.",
+      "query": "Doomed expedition, expendable redshirt guide, stumbling into a monster lair, looting petrified victims"
+    },
+    {
+      "search_purpose": "Finding the Matron's blackmail",
+      "what_i_will_do_with_result": "Create a hook where PC finds a recording crystal in the nightclub vents, and bouncers corner them.",
+      "query": "Finding scandalous photos, cornered by bouncers, blackmail material on the boss, caught in the vents"
+    }
+  ]
+}

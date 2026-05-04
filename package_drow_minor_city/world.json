@@ -1,0 +1,23 @@
+{
+  "city_name": "彻德·纳萨德 (Ched Nasad)",
+  "nickname": "闪烁之网城 (City of Flickering Webs)",
+  "core_tension": "垂直天命与深渊引力：在这个悬浮在V形深渊中的城市，高度代表权力，但也意味着更惨烈的坠落。贵族们在蛛网上博弈，而底层的奴隶和被遗忘者正在啃噬支撑一切的根基。",
+  "clocks": [
+    {
+      "id": "clock_house_war",
+      "goal": "第一家族发动全城大清洗",
+      "current": 2,
+      "max": 6,
+      "next_event": "纳萨德拉家族主母宣布加强对中层商户的政治审查。",
+      "pc_entrypoint": 4
+    },
+    {
+      "id": "clock_slave_uprising",
+      "goal": "底层奴隶全面暴动并切断主升降梯",
+      "current": 3,
+      "max": 6,
+      "next_event": "“黑血”地精奴隶在二号过滤水车处进行破坏活动，导致供水短缺。",
+      "pc_entrypoint": 3
+    }
+  ]
+}

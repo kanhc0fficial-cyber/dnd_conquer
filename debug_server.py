@@ -198,7 +198,10 @@ class Handler(BaseHTTPRequestHandler):
                 last = path[-1]
                 try:
                     if isinstance(node, list):
-                        node[int(last)] = value
+                        if last == "-":
+                            node.append(value)
+                        else:
+                            node[int(last)] = value
                     else:
                         node[last] = value
                 except (IndexError, ValueError) as e:

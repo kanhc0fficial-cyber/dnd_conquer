@@ -91,6 +91,28 @@ def fill_template(template: str, **kwargs) -> str:
         template = template.replace(f"{{{key}}}", str(value))
     return template
 
+def assistant_message_to_history(message) -> dict:
+    """Convert an SDK assistant message into chat history, preserving provider extras."""
+    history_msg: dict = {"role": "assistant", "content": message.content}
+
+    extra = getattr(message, "model_extra", None) or {}
+    for key in ("reasoning_content",):
+        value = getattr(message, key, None)
+        if value is None:
+            value = extra.get(key)
+        if value is not None:
+            history_msg[key] = value
+
+    if message.tool_calls:
+        history_msg["tool_calls"] = [
+            {
+                "id": tc.id, "type": "function",
+                "function": {"name": tc.function.name, "arguments": tc.function.arguments}
+            }
+            for tc in message.tool_calls
+        ]
+    return history_msg
+
 # ── 简化版 JSONPatch 执行器 ────────────────────────────────────────────────────
 def pointer_unescape(part: str) -> str:
     return part.replace("~1", "/").replace("~0", "~")
@@ -888,17 +910,8 @@ def main():
             if msg_iter.content:
                 print(msg_iter.content)
 
-            # 将本轮 assistant 消息写入对话历史
-            assistant_dict: dict = {"role": "assistant", "content": msg_iter.content}
-            if msg_iter.tool_calls:
-                assistant_dict["tool_calls"] = [
-                    {
-                        "id": tc.id, "type": "function",
-                        "function": {"name": tc.function.name, "arguments": tc.function.arguments}
-                    }
-                    for tc in msg_iter.tool_calls
-                ]
-            messages2.append(assistant_dict)
+            # 将本轮 assistant 消息写入对话历史；thinking mode 需要回传 reasoning_content。
+            messages2.append(assistant_message_to_history(msg_iter))
 
             if finish_reason != "tool_calls" or not msg_iter.tool_calls:
                 # LLM 已完成推理，退出循环

@@ -1,0 +1,24 @@
+{
+  "requests": [
+    {
+      "search_purpose": "Stumbling onto sabotage",
+      "what_i_will_do_with_result": "Design a quest where a lowly worker discovers a plot to destroy infrastructure and is bribed/threatened to keep quiet.",
+      "query": "Wrong place wrong time, stumbling onto a conspiracy, bribed to look the other way, worker finds a bomb"
+    },
+    {
+      "search_purpose": "Finding a dead drop",
+      "what_i_will_do_with_result": "Create a hook where the PC finds a corrupt official's hidden stash while doing maintenance.",
+      "query": "Finding a dead drop, hidden stash of money, blackmail material, accidental discovery of secret files"
+    },
+    {
+      "search_purpose": "Hired as an expendable thief",
+      "what_i_will_do_with_result": "Design a heist where a faction hires the PC simply because they are agile, greedy, and nobody will miss them if they die.",
+      "query": "Expendable asset, hired for a heist, disposable thief, deniable operation"
+    },
+    {
+      "search_purpose": "Honey trap for a greedy adventurer",
+      "what_i_will_do_with_result": "Create a scenario where a spy seduces the PC at a tavern to use them as an unwitting pawn.",
+      "query": "Honey trap, seduced into doing a crime, pawn in a spy game, manipulated by femme fatale"
+    }
+  ]
+}

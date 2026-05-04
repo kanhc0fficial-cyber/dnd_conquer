@@ -103,10 +103,22 @@
     "attitude_desc": "（玩家角色，无好感度系统）",
     "attitude_update_rule": null,
     "inventory": [
-      "羊皮纸地图残片"
+      "治疗药水 (Potion of Healing)",
+      "治疗药水 (Potion of Healing)",
+      "治疗药水 (Potion of Healing)",
+      "飞镖 (Dart)",
+      "飞镖 (Dart)",
+      "飞镖 (Dart)",
+      "飞镖 (Dart)",
+      "飞镖 (Dart)",
+      "飞镖 (Dart)",
+      "飞镖 (Dart)",
+      "飞镖 (Dart)",
+      "飞镖 (Dart)",
+      "飞镖 (Dart)"
     ],
-    "gold": 42,
-    "agenda": "观察当前局势，在不暴露自身弱点的前提下，逐步与其他幸存者建立可信赖的关系。"
+    "gold": 912.0,
+    "agenda": "在谷地营地进行休整与物资补充，规划前往月出之塔的路线以寻找移除寄生虫的方法。"
   },
   "card_char_shadowheart": {
     "id": "card_char_shadowheart",
@@ -242,7 +254,7 @@
       "gut_room_keys"
     ],
     "gold": 28,
-    "agenda": "寻找医师移除脑中的夺心魔蝌蚪，寻找前往博德之门的道路，同时保护神秘遗物不被夺走。"
+    "agenda": "跟随邪念在营地休整，警惕哈尔辛对星界遗物的察觉，为前往月出之塔寻找治疗方法做准备。"
   },
   "card_char_gale": {
     "id": "card_char_gale",
@@ -454,7 +466,9 @@
     "attitude_update_rule": "极度看重对自然平衡的维护和对弱者的保护，对阻止地精暴行、帮助提夫林难民的举动会大幅增加好感；反感破坏自然、使用邪恶魔法或自私冷血的行为。",
     "status": "已从兽栏铁笼中脱困，与邪念和影心组成了临时同盟，正准备深入圣所清剿地精三大头目。",
     "current_form": "熊形态",
-    "inventory": [],
+    "inventory": [
+      "一把长剑"
+    ],
     "gold": 8,
     "agenda": "与邪念和影心组成临时同盟，利用熊形态的战斗力深入破碎圣所，依次消灭地精三大头目(明萨拉、德罗尔、古特)，根除绝对真神教团对这片区域的威胁。"
   },

@@ -1,0 +1,101 @@
+{
+  "story_01_shadow_assassination": {
+    "name": "血染蛛丝：暗影刺客的首秀",
+    "type": "background_clock",
+    "involved_factions": [
+      "fac_jaezred_chaulssin",
+      "fac_house_nasadra"
+    ],
+    "involved_npcs": [
+      "card_char_syl_shadow_dancer"
+    ],
+    "timeline": "Day 25",
+    "event_description": "希尔·影舞者凭借高超的潜行技术，成功潜入纳萨德拉家族的外围岗哨，专业地暗杀了一名女性继承人。现场没有留下任何魔法痕迹，只有尸体旁的一朵黑色石花。此事件导致全城戒严，所有男性卓尔遭到残酷搜查。",
+    "pc_impact": "PC在巡逻区修补蛛网时可能会被守卫粗暴地盘问，甚至被要求免费加班修补被刺客切断的逃跑路线蛛网。但这不影响事件的核心结果。"
+  },
+  "story_02_illithid_obsession": {
+    "name": "异类的审美",
+    "type": "background_clock",
+    "involved_factions": [
+      "fac_oryndoll_expedition"
+    ],
+    "involved_npcs": [
+      "card_char_ilx_oryndoll"
+    ],
+    "timeline": "Day 55",
+    "event_description": "远征军夺心魔伊尔克斯绑架了城中著名的幻术表演家，但它出于对艺术和美的诡异痴迷，没有吸食其大脑，反而将其藏匿起来欣赏她的表演。这种行为导致远征军长官震怒，内部开始派人追杀这个抗命的下属。",
+    "pc_impact": "PC可能在某个偏僻角落进行高空作业时，偶然看到一个高大的灵吸怪正在极其别扭地给一个被魅惑的卓尔献花，但只要PC不管闲事就不会有危险。"
+  },
+  "story_03_myconid_awakening": {
+    "name": "孢子与粘液的冲突",
+    "type": "background_clock",
+    "involved_factions": [
+      "fac_myconid_glow_cap",
+      "fac_slime_cult"
+    ],
+    "involved_npcs": [
+      "card_char_myconid_princess",
+      "card_char_yvanna_slime_druid"
+    ],
+    "timeline": "Day 85",
+    "event_description": "为了阻止化学废料的污染，孢子公主“微光”进入尸体抛弃坑播撒净化孢子，正好遭遇了正在培育强酸软泥怪的伊万娜。植物与腐烂的魔力发生剧烈碰撞，导致底层区下了一场发光的轻微毒雨。",
+    "pc_impact": "PC如果恰好在底层修网，会因为毒雨掉一点血，但也能在雨后趁机捡到一些因为魔力变异的稀有炼金蘑菇卖钱。"
+  },
+  "story_04_baenre_pact": {
+    "name": "流放者的复仇前奏",
+    "type": "background_clock",
+    "involved_factions": [
+      "fac_house_baenre_exile",
+      "fac_house_nasadra"
+    ],
+    "involved_npcs": [
+      "card_char_nalfein_baenre"
+    ],
+    "timeline": "Day 115",
+    "event_description": "纳尔芬·班瑞在法师塔底层完成了一个小型的深渊献祭仪式，召唤出三只高阶影魔，精准屠杀了一个纳萨德拉家族的税务小队，抢走了一批魔法水晶。城市上层陷入短暂的恐慌。",
+    "pc_impact": "PC去修补现场被战斗破坏的建筑网时，能隐约感受到深渊的冰冷残留，并在残骸里捡到一些税务小队遗落的零钱。"
+  },
+  "story_05_slime_contamination": {
+    "name": "贵族浴场的溶解惨案",
+    "type": "background_clock",
+    "involved_factions": [
+      "fac_slime_cult",
+      "fac_house_nasadra"
+    ],
+    "involved_npcs": [
+      "card_char_yvanna_slime_druid"
+    ],
+    "timeline": "Day 145",
+    "event_description": "粘液教派的计划取得阶段性成功，狂热信徒将强酸排入了贵族专享幽光浴场。三名正在洗浴的次级家族长女被瞬间溶解，事件被强行压下，但贵族之间不再互相信任。",
+    "pc_impact": "全城悬赏捉拿投毒者，高级场所的安保升级。PC可能会接到底层水管维修的高薪危险工作。"
+  },
+  "story_06_mercenary_extortion": {
+    "name": "无血的经济锁喉",
+    "type": "background_clock",
+    "involved_factions": [
+      "fac_bregan_daerthe",
+      "fac_house_nasadra"
+    ],
+    "involved_npcs": [
+      "card_char_nym_wanderer"
+    ],
+    "timeline": "Day 165",
+    "event_description": "宁姆·流浪者作为专业的佣兵副官，完美执行了上级指令，下令封锁南门通道，以“野兽暴动”为借口切断了地表物资。一周后，纳萨德拉家族被迫支付了高达500%的通关费，确立了佣兵团不可撼动的经济霸权。",
+    "pc_impact": "PC发现市面上的酒水、地表香料以及自己的维修材料价格暴涨，但如果PC和佣兵关系好，可以倒卖物资发一笔横财。"
+  },
+  "story_07_smuggler_exodus": {
+    "name": "黑暗中的微光大逃亡",
+    "type": "background_clock",
+    "involved_factions": [
+      "fac_web_smugglers",
+      "fac_moon_dancers"
+    ],
+    "involved_npcs": [
+      "npc_smuggler_boss",
+      "card_char_lyra_moon_dancer"
+    ],
+    "timeline": "Day 180",
+    "event_description": "在城市因多方势力的破坏而摇摇欲坠时，走私老大凯伦出人意料地与月舞者合作。他们利用所有积攒的财富和隐秘通道，在一个无月之夜，将三千名底层奴隶和平民安全转移出了切德·纳萨德。",
+    "pc_impact": "整个贫民窟一夜之间变得空空荡荡，PC曾经熟悉的一些底层老主顾永远消失了，留下了一个满目疮痍但却有一丝希望的结局。PC可以顺手占领那些空出来的“无主豪宅”。"
+  }
+}

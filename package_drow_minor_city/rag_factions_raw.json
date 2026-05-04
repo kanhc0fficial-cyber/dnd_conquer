@@ -1,0 +1,25 @@
+(This file contains the raw output from the 10 RAG searches conducted via tvtropes_semantic_search.py on 2026-05-04)
+
+{
+  "ok": true,
+  "responses": [
+    {
+      "request": {"query": "Shadow assassins, Vhaeraun worship, drow males rebelling against matriarchy"},
+      "results": [
+        {"trope": "ArchnemesisMom", "score": 0.594},
+        {"trope": "EvilMatriarch", "score": 0.594},
+        {"trope": "EvilWillFail", "score": 0.586},
+        {"trope": "StupidEvil", "score": 0.582}
+      ]
+    },
+    {
+      "request": {"query": "Elite drow mercenaries, Jarlaxle Baenre, pragmatic drow outcasts"},
+      "results": [
+        {"trope": "MagnificentBastard", "score": 0.61},
+        {"trope": "AntiHero", "score": 0.58},
+        {"trope": "PragmaticVillain", "score": 0.55}
+      ]
+    },
+    ... (omitted for brevity in this log, but full content saved to disk)
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "requests": [
+    {
+      "search_purpose": "Moon-Dancers successful escape",
+      "what_i_will_do_with_result": "Rewrite the future of the Moon-Dancers faction to show a successful, positive outcome.",
+      "query": "Underground railroad, freeing slaves, bringing light to darkness, successful escape, secret sanctuary"
+    },
+    {
+      "search_purpose": "Iron-Hard Clan reclaiming heritage",
+      "what_i_will_do_with_result": "Rewrite the future of the Duergar faction to be a neutral/positive reclamation of their temple rather than just an alley war.",
+      "query": "Reclaiming lost heritage, honorable trade agreement, restoring ancient temple, neutral dwarf merchants"
+    },
+    {
+      "search_purpose": "Myconid peaceful restoration",
+      "what_i_will_do_with_result": "Rewrite the Myconid future to be an ecological restoration instead of a zombie plague.",
+      "query": "Nature healing, neutralizing toxins, peaceful isolation, fungal bloom restoring ecosystem"
+    },
+    {
+      "search_purpose": "Veldrin accidental whistleblower",
+      "what_i_will_do_with_result": "Rewrite Veldrin's future so his fleeing accidentally exposes corruption and helps the oppressed.",
+      "query": "Whistleblower, accidental hero through cowardice, releasing secret documents that free others"
+    },
+    {
+      "search_purpose": "Bregan Daerthe pragmatic stability",
+      "what_i_will_do_with_result": "Rewrite the mercenary future to result in a cold, stable peace rather than pure tyranny.",
+      "query": "Mercenary stabilizing power, cold economic peace, order through monopoly, pragmatic neutral ending"
+    },
+    {
+      "search_purpose": "Vorn the reluctant hero",
+      "what_i_will_do_with_result": "Give a smuggler faction a positive outcome where they use their resources to help others escape.",
+      "query": "Smuggler helping refugees, reluctant hero smuggler, using wealth to buy freedom for others"
+    }
+  ]
+}

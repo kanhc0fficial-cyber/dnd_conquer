@@ -118,6 +118,7 @@
       "飞镖 (Dart)"
     ],
     "gold": 912.0,
+    "history": [],
     "agenda": "在谷地营地进行休整与物资补充，规划前往月出之塔的路线以寻找移除寄生虫的方法。"
   },
   "card_char_shadowheart": {
@@ -254,6 +255,7 @@
       "gut_room_keys"
     ],
     "gold": 28,
+    "history": [],
     "agenda": "跟随邪念在营地休整，警惕哈尔辛对星界遗物的察觉，为前往月出之塔寻找治疗方法做准备。"
   },
   "card_char_gale": {
@@ -364,6 +366,7 @@
       "item_potion_of_healing"
     ],
     "gold": 55,
+    "history": [],
     "agenda": "说服主角收留自己，利用自己的魔法知识提供帮助，并试图获取队伍中多余的魔法装备来喂养法阵。"
   },
   "card_char_halsin": {
@@ -470,6 +473,7 @@
       "一把长剑"
     ],
     "gold": 8,
+    "history": [],
     "agenda": "与邪念和影心组成临时同盟，利用熊形态的战斗力深入破碎圣所，依次消灭地精三大头目(明萨拉、德罗尔、古特)，根除绝对真神教团对这片区域的威胁。"
   },
   "card_item_mysterious_artefact": {

@@ -37,6 +37,9 @@ LOGS_DIR  = os.path.join(DATA_DIR, "logs")
 os.makedirs(LOGS_DIR, exist_ok=True)
 LOG_FILE  = os.path.join(LOGS_DIR, "run_log.txt")
 
+# 第二轮工具调用失败容忍次数：超过此数后自动切换到第一轮 API 重试
+TOOL_ROUND2_FALLBACK_THRESHOLD = 2
+
 # ── 文件日志：所有输出和错误同时写入 run_log.txt ─────────────────────────────
 import datetime as _dt
 
@@ -373,6 +376,90 @@ TOOLS = [
                 "required": ["reason", "file", "op", "path"]
             }
         }
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "transfer_character",
+            "description": (
+                "原子性地完成一名角色的地点转移：同时更新 characters.json 中该角色的 location 字段，"
+                "以及 locations 文件中旧地点的 card_ids（移除）和新地点的 card_ids（添加）与 character_activities（更新在做什么）。"
+                "调用前会自动执行一致性校验：若发现该角色同时出现在多个地点，会在返回结果中报告，并以 characters.json 的 location 字段为准。"
+            ),
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "reason": {
+                        "type": "string",
+                        "description": "【必须作为第一个字段】一句话说明转移原因。"
+                    },
+                    "character_id": {
+                        "type": "string",
+                        "description": "要转移的角色 ID，如 card_char_shadowheart"
+                    },
+                    "from_location_id": {
+                        "type": "string",
+                        "description": "（可选）转移前的地点 ID，用于额外校验。若提供且与角色当前 location 不符，操作将返回错误。"
+                    },
+                    "to_location_id": {
+                        "type": "string",
+                        "description": "转移目标地点 ID，如 loc_the_hollow"
+                    },
+                    "activity": {
+                        "type": "string",
+                        "description": "角色抵达新地点后正在做的事，将写入目标地点的 character_activities 字段。例如：'在铁匠铺附近等候，处理装备损耗'"
+                    }
+                },
+                "required": ["reason", "character_id", "to_location_id"]
+            }
+        }
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "record_event",
+            "description": (
+                "一次性向世界、角色、地点三个文件同时追加历史记录，避免遗漏并节省 token。"
+                "三个目标（world / character / location）均为可选，按需填写。"
+                "world 端写入 world.json 的 npc_background_history 数组（后台NPC历史）；"
+                "角色端写入 characters.json 指定角色的 history 数组；"
+                "地点端写入对应 locations 文件中指定地点的 history 数组。"
+            ),
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "reason": {
+                        "type": "string",
+                        "description": "【必须作为第一个字段】一句话说明记录此事件的原因。"
+                    },
+                    "date": {
+                        "type": "string",
+                        "description": "事件发生的游戏内日期，如'第四天'，将作为前缀附加到所有条目。"
+                    },
+                    "npc_history_entry": {
+                        "type": "string",
+                        "description": "要追加到 world.json 的 npc_background_history 的内容（不含日期前缀，由 date 字段自动拼接）。不需要记录则留空或省略。"
+                    },
+                    "character_id": {
+                        "type": "string",
+                        "description": "要追加角色历史的角色 ID，如 card_char_halsin。不需要则省略。"
+                    },
+                    "character_history_entry": {
+                        "type": "string",
+                        "description": "要追加到该角色 history 数组的内容。character_id 存在时有效。"
+                    },
+                    "location_id": {
+                        "type": "string",
+                        "description": "要追加地点历史的地点 ID，如 loc_the_hollow。不需要则省略。"
+                    },
+                    "location_history_entry": {
+                        "type": "string",
+                        "description": "要追加到该地点 history 数组的内容。location_id 存在时有效。"
+                    }
+                },
+                "required": ["reason"]
+            }
+        }
     }
 ]
 
@@ -620,6 +707,219 @@ def handle_execute_trade(package_state: dict, args: dict, dirty_files: set) -> s
     return json.dumps({"all_success": all_ok, "results": results}, ensure_ascii=False)
 
 
+# ── 地点查找辅助 ──────────────────────────────────────────────────────────────
+def _find_location_object(package_state: dict, loc_id: str) -> tuple[str | None, dict | None]:
+    """
+    在所有 package 文件中按 location ID 查找地点对象，返回 (文件名, 地点对象)。
+    支持两种结构：
+      - dict-of-locations 结构：{loc_id: {id, card_ids, ...}, ...}（grove_locations.json）
+      - single-object 结构：{id: loc_id, card_ids: [...], ...}（grove_area.json）
+    """
+    for fname, fdata in package_state.items():
+        if not isinstance(fdata, dict):
+            continue
+        # Pattern 1: dict keyed by location IDs
+        if loc_id in fdata and isinstance(fdata.get(loc_id), dict):
+            return fname, fdata[loc_id]
+        # Pattern 2: single location object whose id field matches
+        if fdata.get("id") == loc_id and "card_ids" in fdata:
+            return fname, fdata
+    return None, None
+
+
+# ── 原子性角色地点转移 ────────────────────────────────────────────────────────
+def handle_transfer_character(package_state: dict, args: dict, dirty_files: set) -> str:
+    """
+    一次性完成角色地点转移：
+    1. 更新 characters.json 中该角色的 location 字段
+    2. 从旧地点的 card_ids 中移除该角色，并清理旧地点的 character_activities
+    3. 向新地点的 card_ids 中添加该角色，并写入 character_activities
+    4. 执行一致性校验：检测角色是否同时存在于多个地点
+    """
+    reason    = args.get("reason", "未提供原因")
+    char_id   = str(args.get("character_id", "")).strip()
+    to_loc_id = str(args.get("to_location_id", "")).strip()
+    from_loc_id = str(args.get("from_location_id", "")).strip()
+    activity  = str(args.get("activity", "")).strip()
+
+    if not char_id or not to_loc_id:
+        return json.dumps({"success": False, "message": "character_id 和 to_location_id 均为必填项"}, ensure_ascii=False)
+
+    # ── 1. 查找角色 ─────────────────────────────────────────────────────────
+    characters = package_state.get("characters.json", {})
+    char = characters.get(char_id) if isinstance(characters, dict) else None
+    if char is None:
+        return json.dumps({"success": False, "message": f"未在 characters.json 中找到角色 {char_id!r}"}, ensure_ascii=False)
+
+    current_loc_id = str(char.get("location", "")).strip()
+
+    # 若调用方提供了 from_location_id，做额外校验
+    if from_loc_id and from_loc_id != current_loc_id:
+        return json.dumps({
+            "success": False,
+            "message": f"校验失败：角色 {char_id} 的当前位置为 {current_loc_id!r}，与提供的 from_location_id={from_loc_id!r} 不符"
+        }, ensure_ascii=False)
+
+    # ── 2. 一致性检查：扫描所有 location 文件，寻找包含该角色的 card_ids ────
+    locations_containing_char: list[tuple[str, str]] = []  # [(file, loc_id)]
+    for fname, fdata in package_state.items():
+        if not isinstance(fdata, dict):
+            continue
+        # dict-of-locations 结构
+        for key, val in fdata.items():
+            if isinstance(val, dict) and char_id in val.get("card_ids", []):
+                locations_containing_char.append((fname, key))
+        # single-object 结构
+        if fdata.get("id") and char_id in fdata.get("card_ids", []):
+            loc_obj_id = fdata["id"]
+            entry = (fname, loc_obj_id)
+            if entry not in locations_containing_char:
+                locations_containing_char.append(entry)
+
+    consistency_warnings: list[str] = []
+    if len(locations_containing_char) > 1:
+        consistency_warnings.append(
+            f"⚠ 一致性错误：{char_id} 同时出现在以下地点 card_ids 中：{locations_containing_char}"
+        )
+
+    # ── 3. 处理旧地点 ────────────────────────────────────────────────────────
+    old_fnames_updated: list[str] = []
+    if current_loc_id:
+        old_fname, old_loc_obj = _find_location_object(package_state, current_loc_id)
+        if old_loc_obj is not None:
+            card_ids: list = old_loc_obj.get("card_ids", [])
+            if char_id in card_ids:
+                card_ids.remove(char_id)
+                old_loc_obj["card_ids"] = card_ids
+            activities: dict = old_loc_obj.get("character_activities")
+            if isinstance(activities, dict):
+                activities.pop(char_id, None)
+            dirty_files.add(old_fname)
+            old_fnames_updated.append(old_fname)
+
+    # 也清理一致性检查中发现的其他地点（避免遗留重复）
+    for fname, lid in locations_containing_char:
+        _, loc_obj = _find_location_object(package_state, lid)
+        if loc_obj is None:
+            continue
+        card_ids = loc_obj.get("card_ids", [])
+        if char_id in card_ids:
+            card_ids.remove(char_id)
+            loc_obj["card_ids"] = card_ids
+        activities = loc_obj.get("character_activities")
+        if isinstance(activities, dict):
+            activities.pop(char_id, None)
+        dirty_files.add(fname)
+
+    # ── 4. 处理新地点 ────────────────────────────────────────────────────────
+    new_fname, new_loc_obj = _find_location_object(package_state, to_loc_id)
+    if new_loc_obj is None:
+        return json.dumps({
+            "success": False,
+            "message": f"未在任何 package 文件中找到目标地点 {to_loc_id!r}",
+            "consistency_warnings": consistency_warnings
+        }, ensure_ascii=False)
+
+    new_card_ids: list = new_loc_obj.get("card_ids", [])
+    if char_id not in new_card_ids:
+        new_card_ids.append(char_id)
+        new_loc_obj["card_ids"] = new_card_ids
+
+    if activity:
+        if not isinstance(new_loc_obj.get("character_activities"), dict):
+            new_loc_obj["character_activities"] = {}
+        new_loc_obj["character_activities"][char_id] = activity
+
+    dirty_files.add(new_fname)
+
+    # ── 5. 更新角色的 location 字段 ─────────────────────────────────────────
+    char["location"] = to_loc_id
+    dirty_files.add("characters.json")
+
+    result = {
+        "success": True,
+        "character_id": char_id,
+        "from_location": current_loc_id,
+        "to_location": to_loc_id,
+        "activity": activity,
+        "reason": reason,
+    }
+    if consistency_warnings:
+        result["consistency_warnings"] = consistency_warnings
+    return json.dumps(result, ensure_ascii=False)
+
+
+# ── 批量历史记录写入 ──────────────────────────────────────────────────────────
+def handle_record_event(package_state: dict, args: dict, dirty_files: set) -> str:
+    """
+    一次性向 world.json 的 npc_background_history、指定角色的 history、
+    以及指定地点的 history 数组追加历史条目。
+    """
+    reason          = args.get("reason", "未提供原因")
+    date            = str(args.get("date", "")).strip()
+    npc_entry       = args.get("npc_history_entry")
+    char_id         = str(args.get("character_id", "")).strip()
+    char_entry      = args.get("character_history_entry")
+    loc_id          = str(args.get("location_id", "")).strip()
+    loc_entry       = args.get("location_history_entry")
+
+    def _prefixed(text: str) -> str:
+        return f"{date}：{text}" if date else text
+
+    results: list[str] = []
+
+    # ── 写入 world.json npc_background_history ───────────────────────────────
+    if npc_entry:
+        world = package_state.get("world.json")
+        if isinstance(world, dict):
+            if not isinstance(world.get("npc_background_history"), list):
+                world["npc_background_history"] = []
+            world["npc_background_history"].append(_prefixed(npc_entry))
+            dirty_files.add("world.json")
+            results.append("world.json:npc_background_history ✓")
+        else:
+            results.append("[error] world.json 不存在或格式错误")
+
+    # ── 写入角色 history ─────────────────────────────────────────────────────
+    if char_id and char_entry:
+        characters = package_state.get("characters.json", {})
+        char = characters.get(char_id) if isinstance(characters, dict) else None
+        if char is not None:
+            if not isinstance(char.get("history"), list):
+                char["history"] = []
+            char["history"].append(_prefixed(char_entry))
+            dirty_files.add("characters.json")
+            results.append(f"characters.json:{char_id}:history ✓")
+        else:
+            results.append(f"[error] 未在 characters.json 中找到角色 {char_id!r}")
+
+    # ── 写入地点 history ─────────────────────────────────────────────────────
+    if loc_id and loc_entry:
+        _, loc_obj = _find_location_object(package_state, loc_id)
+        if loc_obj is not None:
+            if not isinstance(loc_obj.get("history"), list):
+                loc_obj["history"] = []
+            loc_obj["history"].append(_prefixed(loc_entry))
+            # find the filename again to mark dirty
+            for fname, fdata in package_state.items():
+                if not isinstance(fdata, dict):
+                    continue
+                if loc_id in fdata and fdata.get(loc_id) is loc_obj:
+                    dirty_files.add(fname)
+                    break
+                if fdata.get("id") == loc_id and fdata is loc_obj:
+                    dirty_files.add(fname)
+                    break
+            results.append(f"{loc_id}:history ✓")
+        else:
+            results.append(f"[error] 未在任何 package 文件中找到地点 {loc_id!r}")
+
+    if not results:
+        results.append("[warning] 所有条目均为空，未写入任何历史记录")
+
+    return json.dumps({"results": results, "reason": reason}, ensure_ascii=False)
+
+
 # ── 主流程 ────────────────────────────────────────────────────────────────────
 def main():
     print("=" * 60)
@@ -844,7 +1144,7 @@ def main():
 
     # ── 辅助：分发单次工具调用（非 search/execute_trade 的通用工具）─────────────
     def _dispatch_common_tool(fn_name: str, args: dict) -> tuple[str, str | None]:
-        """执行 apply_json_patch / reveal_hidden，返回 (result_str, changed_file_or_None)。"""
+        """执行 apply_json_patch / reveal_hidden / transfer_character / record_event，返回 (result_str, changed_file_or_None)。"""
         if fn_name == "apply_json_patch":
             result, changed_file = apply_patch_to_file(
                 package_state, args, selections, args_cli.unlock_protected)
@@ -860,6 +1160,16 @@ def main():
                 return f"[reveal_hidden] {target}:{fp} 已揭示", target
             except Exception as exc:
                 return f"[error] reveal_hidden: {target}:{fp} 解析失败: {exc}", None
+        elif fn_name == "transfer_character":
+            result_str = handle_transfer_character(package_state, args, dirty_files)
+            result_obj = json.loads(result_str)
+            if result_obj.get("success"):
+                return f"[transfer_character] {args.get('character_id')} → {args.get('to_location_id')} ✓  {result_str}", None
+            else:
+                return f"[transfer_character][error] {result_str}", None
+        elif fn_name == "record_event":
+            result_str = handle_record_event(package_state, args, dirty_files)
+            return f"[record_event] {result_str}", None
         else:
             return f"[error] 未知工具: {fn_name}", None
 
@@ -966,11 +1276,18 @@ def main():
 
     else:
         # ── 标准单次调用（two_round / single_round_tool） ────────────────────
+        # 连续失败 TOOL_ROUND2_FALLBACK_THRESHOLD 次后，自动切换到第一轮的 API（client / MODEL）
         t2 = time.time()
         for attempt in range(1, max_retries + 1):
+            use_fallback = attempt > TOOL_ROUND2_FALLBACK_THRESHOLD
+            active_client = client if use_fallback else client_tool
+            active_model  = MODEL  if use_fallback else MODEL_TOOL
+            if use_fallback:
+                print(f"  [备用] 第二轮已连续失败 {TOOL_ROUND2_FALLBACK_THRESHOLD} 次，切换至第一轮 API（{BASE_URL}）重试…")
+                write_log(f"[备用] 第二轮切换至第一轮 API 重试 (attempt={attempt})")
             try:
-                response2 = client_tool.chat.completions.create(
-                    model=MODEL_TOOL,
+                response2 = active_client.chat.completions.create(
+                    model=active_model,
                     messages=messages2,
                     tools=TOOLS,
                     tool_choice="auto"

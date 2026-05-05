@@ -1,0 +1,14 @@
+{
+  "requests": [
+    {
+      "search_purpose": "Find a concrete Ghost/Wound/Lie for an exotic female slave at a flesh auction",
+      "what_i_will_do_with_result": "Use the result to create a new NPC with a tragic past: a fallen princess who believes she deserves her current punishment",
+      "query": "A fallen princess or noblewoman sold into slavery who believes she deserves her cruel punishment because of a past sin or guilt"
+    },
+    {
+      "search_purpose": "Find a hidden agenda and plot elements for a high-end nightclub proprietor",
+      "what_i_will_do_with_result": "Create a new NPC who runs a nightclub for Drow nobles but acts as a spymaster gathering blackmail material on them",
+      "query": "A charismatic owner or star performer of a high-class nightclub who secretly gathers blackmail and acts as a spymaster manipulating the elite guests"
+    }
+  ]
+}

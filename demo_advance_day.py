@@ -40,6 +40,17 @@ LOG_FILE  = os.path.join(LOGS_DIR, "run_log.txt")
 # 第二轮工具调用失败容忍次数：超过此数后自动切换到第一轮 API 重试
 TOOL_ROUND2_FALLBACK_THRESHOLD = 2
 
+def set_package_dir(path: str):
+    """Switch the active package directory used for JSON data and modes."""
+    global PKG_DIR, MODES_DIR
+    resolved = os.path.abspath(path)
+    if not os.path.isdir(resolved):
+        raise FileNotFoundError(f"package directory not found: {resolved}")
+    if "package" not in os.path.basename(resolved).lower():
+        raise ValueError(f"package directory name must contain 'package': {resolved}")
+    PKG_DIR = resolved
+    MODES_DIR = os.path.join(PKG_DIR, "modes")
+
 # ── 文件日志：所有输出和错误同时写入 run_log.txt ─────────────────────────────
 import datetime as _dt
 
@@ -76,15 +87,30 @@ def load_package_jsons() -> dict[str, dict | list]:
 # ── 模式加载 ────────────────────────────────────────────────────────────────────
 MODES_DIR = os.path.join(PKG_DIR, "modes")
 
+def find_modes_dir() -> str:
+    """Use the selected package's modes, falling back to any package*/modes folder."""
+    if os.path.isdir(MODES_DIR):
+        return MODES_DIR
+    for root, dirs, _ in os.walk(DATA_DIR):
+        dirs[:] = [d for d in dirs if d not in {".git", "__pycache__"}]
+        for d in sorted(dirs):
+            if "package" not in d.lower():
+                continue
+            candidate = os.path.join(root, d, "modes")
+            if os.path.isdir(candidate):
+                return candidate
+    return MODES_DIR
+
 def load_modes() -> dict:
     """从 package/modes/*.json 动态加载所有可用模式。"""
     modes: dict = {}
-    if not os.path.isdir(MODES_DIR):
+    modes_dir = find_modes_dir()
+    if not os.path.isdir(modes_dir):
         return modes
-    for fname in sorted(os.listdir(MODES_DIR)):
+    for fname in sorted(os.listdir(modes_dir)):
         if fname.endswith(".json"):
             key = fname[:-5]
-            with open(os.path.join(MODES_DIR, fname), "r", encoding="utf-8") as f:
+            with open(os.path.join(modes_dir, fname), "r", encoding="utf-8") as f:
                 modes[key] = json.load(f)
     return modes
 
@@ -930,17 +956,12 @@ def main():
     import datetime
     import time
 
-    # 1. 加载所有可用模式
-    AVAILABLE_MODES = load_modes()
-    if not AVAILABLE_MODES:
-        print("[错误] package/modes/ 目录为空或不存在，无法运行。")
-        sys.exit(1)
-
-    # 2. 解析命令行参数
     parser = argparse.ArgumentParser(description="DnD Demo — 动态模式驱动引擎")
     parser.add_argument("player_action", nargs="?",
                         default="我决定前往翠绿林地，与影心一同出发。途中，我对影心说：你的遗物似乎在颤动，有什么异常吗？",
                         help="玩家本回合的行动描述")
+    parser.add_argument("--package-dir", default=PKG_DIR,
+                        help="要读取和写回的 package 数据目录；目录名必须包含 package")
     parser.add_argument("--mode", default=None,
                         help="运行模式（package/modes/ 下的 JSON 文件名，不含 .json）。默认: narrative（标准叙事模式）")
     parser.add_argument("--game-state-file", default=None,
@@ -957,6 +978,20 @@ def main():
     parser.add_argument("--skip-round-1", action="store_true",
                         help="[已废弃] 等效于 --mode direct_patch")
     args_cli = parser.parse_args()
+
+    try:
+        set_package_dir(args_cli.package_dir)
+    except Exception as exc:
+        print(f"[错误] 无法使用 package 目录: {exc}")
+        sys.exit(1)
+
+    print(f"  Package: {os.path.relpath(PKG_DIR, DATA_DIR)}")
+
+    # 1. 加载所有可用模式
+    AVAILABLE_MODES = load_modes()
+    if not AVAILABLE_MODES:
+        print(f"[错误] {os.path.relpath(find_modes_dir(), DATA_DIR)} 目录为空或不存在，无法运行。")
+        sys.exit(1)
 
     # 向后兼容：--skip-round-1 映射到 direct_patch 模式
     mode_key = args_cli.mode

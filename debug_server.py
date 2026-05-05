@@ -20,6 +20,44 @@ PKG_DIR   = os.path.join(BASE_DIR, "package")
 MODES_DIR = os.path.join(PKG_DIR, "modes")
 HTML_FILE = os.path.join(BASE_DIR, "debug.html")
 
+def _package_dirs():
+    """Return all directories whose name contains 'package', keyed by relative path."""
+    found = []
+    for root, dirs, _ in os.walk(BASE_DIR):
+        dirs[:] = [d for d in dirs if d not in {".git", "__pycache__"}]
+        for d in dirs:
+            if "package" in d.lower():
+                path = os.path.join(root, d)
+                rel = os.path.relpath(path, BASE_DIR).replace("\\", "/")
+                found.append({"key": rel, "name": rel, "path": path})
+    found.sort(key=lambda x: (x["key"] != "package", x["key"].lower()))
+    return found
+
+def _package_dir(key=None):
+    packages = _package_dirs()
+    if not packages:
+        return None
+    if not key:
+        return packages[0]["path"]
+    key = unquote(str(key)).replace("\\", "/").strip("/")
+    for pkg in packages:
+        if pkg["key"] == key:
+            return pkg["path"]
+    return None
+
+def _modes_dir(pkg_dir):
+    local = os.path.join(pkg_dir, "modes") if pkg_dir else None
+    if local and os.path.isdir(local):
+        return local
+    for pkg in _package_dirs():
+        candidate = os.path.join(pkg["path"], "modes")
+        if os.path.isdir(candidate):
+            return candidate
+    return local
+
+def _package_key_from_qs(qs):
+    return qs.get("package", qs.get("pkg", [""]))[0]
+
 # ── Job store ──────────────────────────────────────────────────────────────────
 # job_id → { "status": "running"|"done"|"error", "lines": [...], "lock": Lock }
 JOBS = {}
@@ -105,19 +143,33 @@ class Handler(BaseHTTPRequestHandler):
             self.end_headers()
             self.wfile.write(body)
 
+        elif p.path == "/api/packages":
+            self._send_json([
+                {"key": pkg["key"], "name": pkg["name"]}
+                for pkg in _package_dirs()
+            ])
+
         elif p.path == "/api/files":
+            pkg_dir = _package_dir(_package_key_from_qs(qs))
+            if not pkg_dir:
+                self._send_json({"error": "package folder not found"}, 404)
+                return
             try:
-                files = sorted(f for f in os.listdir(PKG_DIR) if f.endswith(".json"))
+                files = sorted(f for f in os.listdir(pkg_dir) if f.endswith(".json"))
             except FileNotFoundError:
                 files = []
             self._send_json(files)
 
         elif p.path == "/api/file":
+            pkg_dir = _package_dir(_package_key_from_qs(qs))
+            if not pkg_dir:
+                self._send_json({"error": "package folder not found"}, 404)
+                return
             name = os.path.basename(unquote(qs.get("name", [""])[0]))
             if not name:
                 self._send_json({"error": "missing name"}, 400)
                 return
-            fp = os.path.join(PKG_DIR, name)
+            fp = os.path.join(pkg_dir, name)
             if not os.path.isfile(fp):
                 self._send_json({"error": "file not found"}, 404)
                 return
@@ -128,13 +180,18 @@ class Handler(BaseHTTPRequestHandler):
                 self._send_json({"error": f"JSON parse error: {e}"}, 500)
 
         elif p.path == "/api/modes":
+            pkg_dir = _package_dir(_package_key_from_qs(qs))
+            if not pkg_dir:
+                self._send_json({"error": "package folder not found"}, 404)
+                return
+            modes_dir = _modes_dir(pkg_dir)
             modes = []
-            if os.path.isdir(MODES_DIR):
-                for fname in sorted(os.listdir(MODES_DIR)):
+            if os.path.isdir(modes_dir):
+                for fname in sorted(os.listdir(modes_dir)):
                     if fname.endswith(".json"):
                         key = fname[:-5]
                         try:
-                            m = json.load(open(os.path.join(MODES_DIR, fname), encoding="utf-8"))
+                            m = json.load(open(os.path.join(modes_dir, fname), encoding="utf-8"))
                             modes.append({
                                 "key":         key,
                                 "name":        m.get("name", key),
@@ -171,15 +228,19 @@ class Handler(BaseHTTPRequestHandler):
             return
 
         if p.path == "/api/patch_field":
+            pkg_dir = _package_dir(body.get("package") or body.get("pkg"))
+            if not pkg_dir:
+                self._send_json({"error": "package folder not found"}, 404)
+                return
             file_name = os.path.basename(body.get("file", ""))
             path      = body.get("path", [])
             value     = body.get("value")
             if not file_name or not isinstance(path, list) or len(path) == 0:
                 self._send_json({"error": "missing or invalid file/path"}, 400)
                 return
-            fp = os.path.join(PKG_DIR, file_name)
-            # Guard: resolved path must stay within PKG_DIR
-            if not os.path.abspath(fp).startswith(os.path.abspath(PKG_DIR) + os.sep):
+            fp = os.path.join(pkg_dir, file_name)
+            # Guard: resolved path must stay within the selected package dir
+            if not os.path.abspath(fp).startswith(os.path.abspath(pkg_dir) + os.sep):
                 self._send_json({"error": "invalid file"}, 400)
                 return
             if not os.path.isfile(fp):
@@ -214,8 +275,14 @@ class Handler(BaseHTTPRequestHandler):
                 self._send_json({"error": str(e)}, 500)
 
         elif p.path == "/api/run":
+            pkg_key = body.get("package") or body.get("pkg")
+            pkg_dir = _package_dir(pkg_key)
+            if not pkg_dir:
+                self._send_json({"error": "package folder not found"}, 404)
+                return
             script = os.path.join(BASE_DIR, "demo_advance_day.py")
             cmd = [sys.executable, "-u", script]
+            cmd += ["--package-dir", pkg_dir]
             if body.get("player_action"):
                 cmd.append(body["player_action"])
             if body.get("unlock_protected"):

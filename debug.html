@@ -9,6 +9,8 @@ html,body{height:100%;overflow:hidden}
 body{font:13px/1.5 Consolas,Menlo,monospace;background:#1e1e1e;color:#d4d4d4;display:flex;flex-direction:column}
 #hdr{padding:4px 12px;background:#323233;border-bottom:1px solid #3c3c3c;display:flex;align-items:center;gap:8px;flex-shrink:0;font-size:11px}
 #hdr h1{font-size:13px;font-weight:bold;color:#e8e8e8}
+#package-sel{background:#1e1e1e;border:1px solid #3c3c3c;color:#d4d4d4;font:11px Consolas,Menlo,monospace;padding:2px 6px;max-width:260px}
+#package-sel:focus{outline:1px solid #4d9eff}
 #pin-badge{background:#0e639c;color:#fff;border-radius:10px;padding:1px 7px;font-size:10px;display:none}
 #status{color:#888;margin-left:auto}
 #main{flex:1;display:flex;overflow:hidden;min-height:0}
@@ -75,6 +77,8 @@ body{font:13px/1.5 Consolas,Menlo,monospace;background:#1e1e1e;color:#d4d4d4;dis
 <body>
 <div id="hdr">
   <h1>DnD Debug</h1>
+  <label class="lbl" for="package-sel">Package</label>
+  <select id="package-sel"></select>
   <span id="pin-badge">0 已固定</span>
   <span id="status">正在加载...</span>
 </div>
@@ -122,7 +126,7 @@ body{font:13px/1.5 Consolas,Menlo,monospace;background:#1e1e1e;color:#d4d4d4;dis
       </div>
       <div class="row">
         <span class="lbl">上下文</span>
-        <span id="ctx-summary" style="font-size:11px;color:#777;flex:1">未固定时默认发送 package/*.json 全部内容</span>
+        <span id="ctx-summary" style="font-size:11px;color:#777;flex:1">未固定时默认发送当前 package/*.json 全部内容</span>
       </div>
       <div class="row">
         <span id="sh" style="font-size:11px;color:#555;flex:1">Ctrl+单击任意树节点可固定该层级到上下文</span>
@@ -143,15 +147,36 @@ body{font:13px/1.5 Consolas,Menlo,monospace;background:#1e1e1e;color:#d4d4d4;dis
 </div>
 <script>
 'use strict';
-const S={cache:{},active:null,pins:{},selRow:null,changedPaths:null};
+const S={packages:[],pkg:null,cache:{},active:null,pins:{},selRow:null,changedPaths:null};
 const $=id=>document.getElementById(id);
 function setStatus(msg,color){const el=$('status');el.textContent=msg;el.style.color=color||'#888';}
 async function apiFetch(url){const r=await fetch(url);if(!r.ok)throw new Error(r.status+' '+url);return r.json();}
 async function apiPost(url,data){const r=await fetch(url,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)});if(!r.ok)throw new Error(r.status);return r.json();}
+function pkgParam(){return 'package='+encodeURIComponent(S.pkg||'');}
+function cacheKey(name){return name;}
 
 async function init(){
   try{
-    const[files,modes]=await Promise.all([apiFetch('/api/files'),apiFetch('/api/modes')]);
+    const packages=await apiFetch('/api/packages');
+    S.packages=packages;
+    const pkgSel=$('package-sel');pkgSel.innerHTML='';
+    for(const p of packages){
+      const opt=document.createElement('option');opt.value=p.key;opt.textContent=p.name;
+      pkgSel.appendChild(opt);
+    }
+    pkgSel.onchange=()=>loadPackage(pkgSel.value);
+    if(!packages.length){setStatus('未找到 package 目录','#f48771');return;}
+    const first=(S.pkg&&packages.some(p=>p.key===S.pkg))?S.pkg:packages[0].key;
+    pkgSel.value=first;
+    await loadPackage(first);
+  }catch(e){setStatus('加载失败: '+e.message,'#f48771');}
+}
+async function loadPackage(pkg){
+  try{
+    S.pkg=pkg;S.cache={};S.active=null;S.pins={};S.changedPaths=null;S.selRow=null;
+    updatePinsUI();updateRunFields();
+    setStatus('加载 '+pkg+'...');
+    const[files,modes]=await Promise.all([apiFetch('/api/files?'+pkgParam()),apiFetch('/api/modes?'+pkgParam())]);
     // Populate mode selector
     const sel=$('mode-sel');sel.innerHTML='';
     for(const m of modes){
@@ -159,7 +184,10 @@ async function init(){
       opt.dataset.desc=m.description||'';
       sel.appendChild(opt);
     }
-    if(modes.length){updateModeDesc();}
+    if(modes.length){updateModeDesc();}else{
+      const opt=document.createElement('option');opt.value='';opt.textContent='无可用模式';
+      sel.appendChild(opt);updateModeDesc();
+    }
     sel.onchange=updateModeDesc;
     const tabs=$('tabs');tabs.innerHTML='';
     for(const f of files){
@@ -168,7 +196,8 @@ async function init(){
       tabs.appendChild(b);
     }
     if(files.length)await switchFile(files[0]);
-    setStatus('就绪');
+    else $('jtree').innerHTML='<span class="dim">该 package 目录没有 JSON 文件</span>';
+    setStatus('就绪: '+pkg);
   }catch(e){setStatus('加载失败: '+e.message,'#f48771');}
 }
 function updateModeDesc(){
@@ -179,22 +208,23 @@ function updateModeDesc(){
   const diRow=$('di').parentElement;
   if(diRow)diRow.style.display=(opt&&opt.value.includes('patch'))?'':'none';
 }
-async function reload(){S.cache={};S.changedPaths=null;await init();}
+async function reload(){if(S.pkg)await loadPackage(S.pkg);else await init();}
 async function switchFile(name){
+  const ck=cacheKey(name);
   // Guard: if already showing this file, skip
-  if(S.active===name&&S.cache[name]){renderTree(S.cache[name],name,S.changedPaths);return;}
+  if(S.active===name&&S.cache[ck]){renderTree(S.cache[ck],name,S.changedPaths);return;}
   S.active=name;
   document.querySelectorAll('.tab').forEach(b=>b.classList.toggle('on',b.dataset.f===name));
-  if(!S.cache[name]){
+  if(!S.cache[ck]){
     setStatus('加载 '+name+'...');
     try{
-      S.cache[name]=await apiFetch('/api/file?name='+encodeURIComponent(name));
+      S.cache[ck]=await apiFetch('/api/file?'+pkgParam()+'&name='+encodeURIComponent(name));
     }catch(e){
       setStatus('加载失败: '+e.message,'#f48771');return;
     }
   }
   // Only render if this tab is still the active one (user may have switched again)
-  if(S.active===name)renderTree(S.cache[name],name,S.changedPaths);
+  if(S.active===name)renderTree(S.cache[ck],name,S.changedPaths);
   setStatus('就绪');
 }
 
@@ -344,7 +374,7 @@ function updateRunFields(){
     $('ctx-summary').textContent='将发送 '+pins.length+' 个固定片段';
     $('sh').textContent='已固定 → '+pins.map(p=>p.file+':/'+p.rootPath.join('/')).join('  |  ');
   }else{
-    $('ctx-summary').textContent='未固定时默认发送 package/*.json 全部内容';
+    $('ctx-summary').textContent='未固定时默认发送 '+(S.pkg||'package')+'/*.json 全部内容';
     $('sh').textContent='Ctrl+单击任意树节点可固定该层级到上下文';
   }
 }
@@ -409,6 +439,7 @@ async function run(){
   const pins=Object.values(S.pins).map(p=>({file:p.file,path:p.rootPath,label:p.label,type:p.type}));
 
   const payload={
+      package:S.pkg,
       player_action:action,
       unlock_protected:unlockChecked,
       mode: selectedMode||undefined,
@@ -420,7 +451,8 @@ async function run(){
   $('unlock-cb').checked = false;
 
   appendOut('  模式  : '+($('mode-sel').options[$('mode-sel').selectedIndex]||{textContent:selectedMode}).textContent,'i');
-  appendOut('  上下文: '+(pins.length?pins.length+' 个固定片段':'全部 package JSON'),'i');
+  appendOut('  Package: '+(S.pkg||'package'),'i');
+  appendOut('  上下文: '+(pins.length?pins.length+' 个固定片段':'全部 '+(S.pkg||'package')+' JSON'),'i');
   if(unlockChecked) appendOut('  ⚠️ 警告: 已开启一次性上帝权限，允许修改 _ 字段','warn');
   appendOut('─'.repeat(54),'dim');
 
@@ -459,7 +491,7 @@ async function run(){
           if(stateUpdated){
             setStatus('刷新 JSON 文件...','#dcdcaa');
             const reloads=Object.keys(S.cache).map(file=>
-              apiFetch('/api/file?name='+encodeURIComponent(file))
+              apiFetch('/api/file?'+pkgParam()+'&name='+encodeURIComponent(file))
                 .then(d=>{S.cache[file]=d;})
                 .catch(()=>{})
             );
@@ -506,7 +538,7 @@ function promptAddArrayItem(filename, path) {
   } catch (e) {
     val = raw; // fallback to string
   }
-  apiPost('/api/patch_field', {file: filename, path: [...path, '-'], value: val})
+  apiPost('/api/patch_field', {package:S.pkg, file: filename, path: [...path, '-'], value: val})
     .then(() => {
       let node = S.cache[filename];
       for (const p of path) node = node[p];
@@ -546,7 +578,7 @@ function startInlineEdit(span, filename, path, oldValue) {
       } else {
         newVal = raw;
       }
-      await apiPost('/api/patch_field', {file: filename, path: path, value: newVal});
+      await apiPost('/api/patch_field', {package:S.pkg, file: filename, path: path, value: newVal});
       let node = S.cache[filename];
       for (let i = 0; i < path.length - 1; i++) node = node[path[i]];
       node[path[path.length - 1]] = newVal;

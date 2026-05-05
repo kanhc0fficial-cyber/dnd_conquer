@@ -1,0 +1,42 @@
+{
+  "pins": [
+    {
+      "file": "characters.json",
+      "path": [
+        "card_char_xie_nian"
+      ],
+      "label": "邪念",
+      "type": "char"
+    },
+    {
+      "file": "world.json",
+      "path": [],
+      "label": "world.json",
+      "type": "world"
+    },
+    {
+      "file": "characters.json",
+      "path": [
+        "card_char_shadowheart"
+      ],
+      "label": "影心",
+      "type": "char"
+    },
+    {
+      "file": "characters.json",
+      "path": [
+        "card_char_gale"
+      ],
+      "label": "盖尔",
+      "type": "char"
+    },
+    {
+      "file": "grove_locations.json",
+      "path": [
+        "loc_the_hollow"
+      ],
+      "label": "谷地（提夫林营地）",
+      "type": "loc"
+    }
+  ]
+}

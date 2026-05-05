@@ -1,0 +1,14 @@
+{
+  "pc_monk_li": {
+    "id": "pc_monk_li",
+    "name": "李 (Li)",
+    "type": "Player Character",
+    "race": "人类 (寿龙国)",
+    "class": "武僧",
+    "level": 1,
+    "faction": "None",
+    "background": "来自遥远东方寿龙国的年轻武僧。为了追寻失落的武学秘籍和历练心性，他跟随着一支不幸覆灭的商队，意外流落到了幽暗地域的切德·纳萨德城。",
+    "motivation": "在极端残酷的地底世界中坚持自己的武道，寻找回到地表或继续修行的方法。",
+    "location": "loc_foreigner_registry"
+  }
+}

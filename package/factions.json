@@ -7,7 +7,31 @@
     "fundamental_scarcity": "安全感——虽然位居第一，但随时担心被下位家族篡夺，以及蛛网结构的稳定性。",
     "agenda": "巩固统治，清洗潜在的异议者，并确保蛛丝升降梯的绝对控制权。",
     "future": "如果不加干预，纳萨德拉家族将发动一场大清洗，导致中下层蛛网的大规模断裂，城市陷入内战并可能崩塌。",
-    "current_progress": 2
+    "current_progress": 2,
+    "existing_characters": [
+      "card_char_mizri_nasadra",
+      "card_char_ryltar_captain"
+    ],
+    "possible_enemies": [
+      {
+        "id": "enemy_drow_guard",
+        "name": "纳萨德拉家族卫兵"
+      },
+      {
+        "id": "enemy_spider_knight",
+        "name": "精锐蜘蛛骑士"
+      },
+      {
+        "id": "enemy_drow_priestess",
+        "name": "罗丝高阶女祭司"
+      }
+    ],
+    "possible_minor_npcs": [
+      "仆役",
+      "低阶家族士兵",
+      "信使",
+      "被折磨的奴隶"
+    ]
   },
   "fac_deep_blood_resistance": {
     "id": "fac_deep_blood_resistance",
@@ -17,7 +41,30 @@
     "fundamental_scarcity": "自由与尊严——他们在恶劣的环境中寻求生存和反击的机会。",
     "agenda": "破坏上层设施（如升降梯和水源），收集武器，等待一个足以颠覆城市结构的契机。",
     "future": "如果不加干预，他们将引发一次规模巨大的奴隶起义，推翻贵族的压迫，但也将导致城市结构的大范围破坏，迫使幸存者在废墟中重建家园。",
-    "current_progress": 3
+    "current_progress": 3,
+    "existing_characters": [
+      "card_char_zzik_zzik",
+      "card_char_grom_gladiator"
+    ],
+    "possible_enemies": [
+      {
+        "id": "enemy_goblin_rebel",
+        "name": "武装地精暴徒"
+      },
+      {
+        "id": "enemy_orc_gladiator",
+        "name": "绝望的兽人角斗士"
+      },
+      {
+        "id": "enemy_rebel_saboteur",
+        "name": "反抗军破坏者"
+      }
+    ],
+    "possible_minor_npcs": [
+      "受伤的逃亡奴隶",
+      "传递消息的地精",
+      "暗藏武器的乞丐"
+    ]
   },
   "fac_web_smugglers": {
     "id": "fac_web_smugglers",
@@ -27,7 +74,31 @@
     "fundamental_scarcity": "资源与通道——在严密的税务和军事封锁中寻找暴利。",
     "agenda": "渗透税务机构，开辟新的走私通道，保持城市权力的平衡以便于贸易。",
     "future": "如果不加干预，他们在积累了巨额财富后，会良心发现，利用其隐秘的走私网络将数千名被困的奴隶和平民安全转移出即将崩溃的城市。",
-    "current_progress": 2
+    "current_progress": 2,
+    "existing_characters": [
+      "card_char_vorn_one_eye",
+      "card_char_kaelen_smuggler",
+      "card_char_vhalin_spymaster"
+    ],
+    "possible_enemies": [
+      {
+        "id": "enemy_smuggler_thug",
+        "name": "黑市打手"
+      },
+      {
+        "id": "enemy_drow_rogue",
+        "name": "卓尔游荡者"
+      },
+      {
+        "id": "enemy_duergar_mercenary",
+        "name": "被雇佣的灰矮人佣兵"
+      }
+    ],
+    "possible_minor_npcs": [
+      "兜售假情报的线人",
+      "黑市搬运工",
+      "成瘾的买家"
+    ]
   },
   "fac_jaezred_chaulssin": {
     "id": "fac_jaezred_chaulssin",
@@ -37,7 +108,28 @@
     "fundamental_scarcity": "认可与主权——作为卓尔社会的底层，他们渴望彻底颠覆现有的性别阶级，建立男性主导的新秩序。",
     "agenda": "暗杀纳萨德拉家族的关键高层，并在卓尔男性中传播异端思想。",
     "future": "如果不加干预，他们将引发一场血腥的内部屠杀，削弱贵族的同时，也会导致整座城市陷入永恒的阴影位面裂隙中。",
-    "current_progress": 2
+    "current_progress": 2,
+    "existing_characters": [
+      "card_char_syl_shadow_dancer"
+    ],
+    "possible_enemies": [
+      {
+        "id": "enemy_shadow_assassin",
+        "name": "阴影刺客"
+      },
+      {
+        "id": "enemy_shadow_demon",
+        "name": "影魔"
+      },
+      {
+        "id": "enemy_drow_male_infiltrator",
+        "name": "男性卓尔渗透者"
+      }
+    ],
+    "possible_minor_npcs": [
+      "伪装成平民的密探",
+      "被魅惑的线人"
+    ]
   },
   "fac_bregan_daerthe": {
     "id": "fac_bregan_daerthe",
@@ -47,7 +139,28 @@
     "fundamental_scarcity": "稳定的领地与合法性——尽管富有且强大，但他们始终是城市的局外人，处于被贵族利用和排斥的夹缝中。",
     "agenda": "在各家族冲突中左右逢源，最大限度地获取金币和魔法物资，同时保护其秘密贸易节点。",
     "future": "如果不加干预，他们将通过经济垄断和武力威慑，在各家族间建立一种冷酷而稳定的“雇佣兵和平”，使城市免于全面内战。",
-    "current_progress": 3
+    "current_progress": 3,
+    "existing_characters": [
+      "card_char_nym_wanderer"
+    ],
+    "possible_enemies": [
+      {
+        "id": "enemy_bregan_mercenary",
+        "name": "达耶特精英佣兵"
+      },
+      {
+        "id": "enemy_drow_gunslinger",
+        "name": "卓尔火枪手"
+      },
+      {
+        "id": "enemy_illusionist_scout",
+        "name": "幻术师斥候"
+      }
+    ],
+    "possible_minor_npcs": [
+      "佣兵营地后勤人员",
+      "酒馆情报商"
+    ]
   },
   "fac_oryndoll_expedition": {
     "id": "fac_oryndoll_expedition",
@@ -57,7 +170,28 @@
     "fundamental_scarcity": "知识与宿主——他们需要新鲜的大脑来维持主脑的运作，并寻找对抗某种未知地底威胁的方法。",
     "agenda": "绑架具有高智力的城市官员和施法者，通过心灵控制将其转化为内部间谍。",
     "future": "如果不加干预，整座城市的一半高层将被转化为脑噬者傀儡，城市将变成奥灵多尔的养殖场。",
-    "current_progress": 1
+    "current_progress": 1,
+    "existing_characters": [
+      "card_char_ilx_oryndoll"
+    ],
+    "possible_enemies": [
+      {
+        "id": "enemy_mind_flayer",
+        "name": "夺心魔调查员"
+      },
+      {
+        "id": "enemy_intellect_devourer",
+        "name": "噬脑怪"
+      },
+      {
+        "id": "enemy_thrall_guard",
+        "name": "被心灵控制的卓尔傀儡"
+      }
+    ],
+    "possible_minor_npcs": [
+      "举止僵硬的平民（被控制）",
+      "无意识的仆役"
+    ]
   },
   "fac_deep_dragon_shadowfire": {
     "id": "fac_deep_dragon_shadowfire",
@@ -67,7 +201,28 @@
     "fundamental_scarcity": "娱乐与新颖的秘密——在漫长的寿命中，它对普通的金银已失去兴趣，只有足以颠覆世界的禁忌知识能让它动容。",
     "agenda": "操纵小家族之间的冲突，以便在其毁灭后搜刮其密室中的远古遗物。",
     "future": "如果不加干预，它将诱导城市触发某种禁忌机关，将整座城市拖入它的巢穴，成为它收藏的一部分。",
-    "current_progress": 2
+    "current_progress": 2,
+    "existing_characters": [
+      "card_char_shadowfire_dragon"
+    ],
+    "possible_enemies": [
+      {
+        "id": "enemy_dragon_cultist",
+        "name": "盲信的巨龙教徒"
+      },
+      {
+        "id": "enemy_stone_golem",
+        "name": "活化石雕守卫"
+      },
+      {
+        "id": "enemy_deep_dragon_wyrmling",
+        "name": "深龙雏龙"
+      }
+    ],
+    "possible_minor_npcs": [
+      "被迷惑的探险者",
+      "寻找预言的狂热者"
+    ]
   },
   "fac_minor_official_veldrin": {
     "id": "fac_minor_official_veldrin",
@@ -77,7 +232,29 @@
     "fundamental_scarcity": "豁免权与更高的地位——他知道自己所做的事一旦暴露必死无疑，因此拼命积攒足以保命的秘密。",
     "agenda": "通过设置行政障碍勒索“黑血”反抗军和走私者，同时向贵族提供经过篡改的财务报告。",
     "future": "如果不加干预，他在潜逃时将意外遗落记录了贵族所有贪腐与勾结证据的黑账本，这些文件将落入平民手中，意外引发一场针对腐败体制的成功维权运动。",
-    "current_progress": 4
+    "current_progress": 4,
+    "existing_characters": [
+      "card_char_veldrin_tax_collector"
+    ],
+    "possible_enemies": [
+      {
+        "id": "enemy_tax_enforcer",
+        "name": "税务执法打手"
+      },
+      {
+        "id": "enemy_corrupt_guard",
+        "name": "受贿的城市卫兵"
+      },
+      {
+        "id": "enemy_bounty_hunter",
+        "name": "受雇赏金猎人"
+      }
+    ],
+    "possible_minor_npcs": [
+      "战战兢兢的记账员",
+      "排队交税的商贩",
+      "被勒索的平民"
+    ]
   },
   "fac_clan_iron_hard": {
     "id": "fac_clan_iron_hard",
@@ -87,7 +264,29 @@
     "fundamental_scarcity": "领地安全与神圣矿石——他们极度厌恶卓尔的傲慢，但为了获取只有此地才产出的特殊真菌而不得不进行贸易。",
     "agenda": "排挤竞争对手（如地底侏儒商人），并寻找机会夺回数百年前被卓尔占领的一座神庙遗迹。",
     "future": "如果不加干预，他们将积攒足够的财富和军备，和平买下或通过决斗赢回曾经属于他们的神庙区，并在那里建立一个严守中立的繁荣贸易特区。",
-    "current_progress": 2
+    "current_progress": 2,
+    "existing_characters": [
+      "card_char_helga_iron_hard"
+    ],
+    "possible_enemies": [
+      {
+        "id": "enemy_duergar_warrior",
+        "name": "灰矮人重甲战士"
+      },
+      {
+        "id": "enemy_duergar_smith_priest",
+        "name": "灰矮人锻造牧师"
+      },
+      {
+        "id": "enemy_clockwork_hound",
+        "name": "发条机械猎犬"
+      }
+    ],
+    "possible_minor_npcs": [
+      "挥汗如雨的学徒",
+      "搬运矿石的苦力",
+      "讨价还价的商贩"
+    ]
   },
   "fac_slime_cult": {
     "id": "fac_slime_cult",
@@ -97,7 +296,28 @@
     "fundamental_scarcity": "熵与消解——他们追求万物的腐烂与回归最初的混沌，对权力和财富毫无兴趣。",
     "agenda": "在城市的供水系统中散播具有腐蚀性的神力粘液，将城市结构慢慢溶化。",
     "future": "如果不加干预，城市的基石将被彻底溶化，整座城市将坠入深不见底的关纳德泥沼中。",
-    "current_progress": 2
+    "current_progress": 2,
+    "existing_characters": [
+      "card_char_yvanna_slime_druid"
+    ],
+    "possible_enemies": [
+      {
+        "id": "enemy_black_pudding",
+        "name": "黑布丁怪"
+      },
+      {
+        "id": "enemy_slime_mutant",
+        "name": "粘液变异卓尔"
+      },
+      {
+        "id": "enemy_gelatinous_cube",
+        "name": "凝胶方块"
+      }
+    ],
+    "possible_minor_npcs": [
+      "精神错乱的下水道流浪汉",
+      "身上带有奇怪真菌的狂徒"
+    ]
   },
   "fac_moon_dancers": {
     "id": "fac_moon_dancers",
@@ -107,7 +327,29 @@
     "fundamental_scarcity": "生存空间与希望——他们在罗丝的恐怖统治下如履薄冰，极度缺乏安全的避难所和通往地表的向导。",
     "agenda": "营救被判处死刑的囚犯，协助那些想要逃离城市的卓尔，并在暗处传播依莉丝翠的悦耳乐声。",
     "future": "如果不加干预，他们将成功打通一条被遗忘的“地下铁路”，不仅能安全地将受压迫的卓尔护送到地表，还将在光芒照耀的隐秘山谷中建立一个和平的庇护所。",
-    "current_progress": 1
+    "current_progress": 1,
+    "existing_characters": [
+      "card_char_lyra_moon_dancer"
+    ],
+    "possible_enemies": [
+      {
+        "id": "enemy_moon_dancer_blade",
+        "name": "月舞剑客"
+      },
+      {
+        "id": "enemy_surface_elf_ally",
+        "name": "地表精灵盟友"
+      },
+      {
+        "id": "enemy_silver_light_cleric",
+        "name": "银光牧师"
+      }
+    ],
+    "possible_minor_npcs": [
+      "隐藏身份的信徒",
+      "等待护送的难民",
+      "紧张的带路向导"
+    ]
   },
   "fac_myconid_glow_cap": {
     "id": "fac_myconid_glow_cap",
@@ -117,7 +359,28 @@
     "fundamental_scarcity": "纯净的土壤——卓尔城市的化学废料和死灵魔法正在污染他们的孢子云，威胁其种族的生存。",
     "agenda": "利用幻觉孢子在森林周围建立屏障，驱逐所有卓尔，并试图寻找净化土壤的古老魔法。",
     "future": "如果不加干预，他们将释放一种特殊的净化孢子云，不仅中和了卓尔的化学废料，还将城市外围变成了一片散发生机与荧光的宁静生态绿洲。",
-    "current_progress": 3
+    "current_progress": 3,
+    "existing_characters": [
+      "card_char_myconid_princess"
+    ],
+    "possible_enemies": [
+      {
+        "id": "enemy_myconid_sovereign",
+        "name": "蕈人王卫队"
+      },
+      {
+        "id": "enemy_spore_servant",
+        "name": "孢子仆从"
+      },
+      {
+        "id": "enemy_hallucinatory_shroom",
+        "name": "致幻毒蘑菇怪"
+      }
+    ],
+    "possible_minor_npcs": [
+      "散播中立孢子的幼年蕈人",
+      "沉浸在幻觉共鸣中的真菌生物"
+    ]
   },
   "fac_zhentarim_spies": {
     "id": "fac_zhentarim_spies",
@@ -127,7 +390,29 @@
     "fundamental_scarcity": "情报的垄断与主导地位——他们在寻找足以控制整个幽暗地域北部的战略支点。",
     "agenda": "向不同家族兜售情报，挑拨离间，同时暗中测绘整座城市的防御弱点，为未来的大规模入侵做准备。",
     "future": "如果不加干预，散塔林会将利用一次贵族内战的机会发动斩首行动，将整座城市据为己有，作为进军地表的跳板。",
-    "current_progress": 2
+    "current_progress": 2,
+    "existing_characters": [
+      "card_char_lydia_zhentarim"
+    ],
+    "possible_enemies": [
+      {
+        "id": "enemy_zhentarim_assassin",
+        "name": "散塔林会毒刃刺客"
+      },
+      {
+        "id": "enemy_human_mercenary",
+        "name": "人类重装佣兵"
+      },
+      {
+        "id": "enemy_doppelganger_spy",
+        "name": "变形怪间谍"
+      }
+    ],
+    "possible_minor_npcs": [
+      "表面热情的香料商人",
+      "负责望风的乞丐",
+      "走私马车夫"
+    ]
   },
   "fac_house_baenre_exile": {
     "id": "fac_house_baenre_exile",
@@ -137,6 +422,27 @@
     "fundamental_scarcity": "复仇的工具与合法的身份——他急需在这座城市建立自己的势力，以便有一天能杀回魔索布莱城。",
     "agenda": "寻找可以控制的高层代理人，利用其奥术知识为筹码，在城市阴影中构建一个效忠于他个人的地下网络。",
     "future": "如果不加干预，他将利用城市的所有资源为代价，召唤出一支影魔大军去冲击他的仇敌，而这座城市将作为炮灰被彻底牺牲。",
-    "current_progress": 1
+    "current_progress": 1,
+    "existing_characters": [
+      "card_char_nalfein_baenre"
+    ],
+    "possible_enemies": [
+      {
+        "id": "enemy_shadow_demon",
+        "name": "束缚影魔"
+      },
+      {
+        "id": "enemy_drow_necromancer",
+        "name": "卓尔死灵法师学徒"
+      },
+      {
+        "id": "enemy_undead_thrall",
+        "name": "复生的亡灵奴隶"
+      }
+    ],
+    "possible_minor_npcs": [
+      "被恐惧支配的实验室助手",
+      "运送魔法材料的黑市跑腿"
+    ]
   }
 }

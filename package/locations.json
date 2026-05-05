@@ -94,11 +94,12 @@
     "clues_hidden_here": [],
     "clues_pointing_elsewhere": [],
     "history_relevant_to_present": "这个坑深入幽暗地域的程度超出了任何地图的标记。",
-    "NPC第一次出场": [
+    "npc_first_appearances": [
       {
         "id": "card_char_yvanna_slime_druid",
         "name": "伊万娜·腐缚者",
-        "activity": "在堆肥深处研究如何将尸体转化为腐烂的原始汤。"
+        "activity": "在堆肥深处研究如何将尸体转化为腐烂的原始汤。",
+        "appearance_condition": "pc_level >= 1"
       }
     ]
   },
@@ -165,11 +166,12 @@
     "clues_hidden_here": [],
     "clues_pointing_elsewhere": [],
     "history_relevant_to_present": "多年前这里发生过一次大坍塌，导致数百人死亡。",
-    "NPC第一次出场": [
+    "npc_first_appearances": [
       {
         "id": "card_char_myconid_princess",
         "name": "微光",
-        "activity": "散发着微光，躲在阴暗角落里用孢子汁液治愈濒死的地精，面临被猎杀的风险。"
+        "activity": "散发着微光，躲在阴暗角落里用孢子汁液治愈濒死的地精，面临被猎杀的风险。",
+        "appearance_condition": "pc_level >= 1"
       }
     ]
   },
@@ -236,16 +238,18 @@
     "clues_hidden_here": [],
     "clues_pointing_elsewhere": [],
     "history_relevant_to_present": "沃恩用一次失败的梅拉恩家族远征留下的废品建起了这家店。",
-    "NPC第一次出场": [
+    "npc_first_appearances": [
       {
         "id": "card_char_helga_iron_hard",
         "name": "赫尔加·铁石",
-        "activity": "在隐秘铁砧前开出极高价码，雇佣“死了也没人在乎”的飞贼去偷秘银。"
+        "activity": "在隐秘铁砧前开出极高价码，雇佣“死了也没人在乎”的飞贼去偷秘银。",
+        "appearance_condition": "pc_level >= 1"
       },
       {
         "id": "card_char_vorn_one_eye",
         "name": "独眼沃恩",
-        "activity": "在前台两头吃回扣，倒卖一些次品或赃物。"
+        "activity": "在前台两头吃回扣，倒卖一些次品或赃物。",
+        "appearance_condition": "pc_level >= 1"
       }
     ]
   },
@@ -264,16 +268,18 @@
     "clues_hidden_here": [],
     "clues_pointing_elsewhere": [],
     "history_relevant_to_present": "这条巷子被魔法隐蔽着，这是一个被摧毁的次级家族留下的遗迹。",
-    "NPC第一次出场": [
+    "npc_first_appearances": [
       {
         "id": "card_char_kaelen_smuggler",
         "name": "凯伦",
-        "activity": "在黑市指挥走私网络。"
+        "activity": "在黑市指挥走私网络。",
+        "appearance_condition": "pc_level >= 1"
       },
       {
         "id": "card_char_ilx_oryndoll",
         "name": "伊尔克斯",
-        "activity": "操纵盲女化身在黑市边缘买醉，寻找有感情的猎物体验“约会”。"
+        "activity": "操纵盲女化身在黑市边缘买醉，寻找有感情的猎物体验“约会”。",
+        "appearance_condition": "pc_level >= 5"
       }
     ]
   },
@@ -324,11 +330,12 @@
     "clues_hidden_here": [],
     "clues_pointing_elsewhere": [],
     "history_relevant_to_present": "这部升降梯运送所有食物；没有它，城市就会挨饿。",
-    "NPC第一次出场": [
+    "npc_first_appearances": [
       {
         "id": "card_char_zzik_zzik",
         "name": "吱吱",
-        "activity": "暗中监视被强酸腐蚀的承重网，准备收买撞破计划的维修工。"
+        "activity": "暗中监视被强酸腐蚀的承重网，准备收买撞破计划的维修工。",
+        "appearance_condition": "pc_level >= 1"
       }
     ]
   },
@@ -411,11 +418,12 @@
     "clues_hidden_here": [],
     "clues_pointing_elsewhere": [],
     "history_relevant_to_present": "这家店今年已经五次易主，每次都是通过暗杀完成的。",
-    "NPC第一次出场": [
+    "npc_first_appearances": [
       {
         "id": "card_char_syl_shadow_dancer",
         "name": "希尔·影舞者",
-        "activity": "在刺客工具店伪装成冷酷的男性战士，准备下一次暗杀。"
+        "activity": "在刺客工具店伪装成冷酷的男性战士，准备下一次暗杀。",
+        "appearance_condition": "pc_level >= 1"
       }
     ]
   },
@@ -434,11 +442,12 @@
     "clues_hidden_here": [],
     "clues_pointing_elsewhere": [],
     "history_relevant_to_present": "这家店建在一个次级地脉连接点上，可以增强幻术魔法。",
-    "NPC第一次出场": [
+    "npc_first_appearances": [
       {
         "id": "card_char_lyra_moon_dancer",
         "name": "莱拉·星眼",
-        "activity": "在卷轴店的伪装下，寻找身手敏捷的人去刑场上空切断承重网救人。"
+        "activity": "在卷轴店的伪装下，寻找身手敏捷的人去刑场上空切断承重网救人。",
+        "appearance_condition": "pc_level >= 1"
       }
     ]
   },
@@ -457,11 +466,12 @@
     "clues_hidden_here": [],
     "clues_pointing_elsewhere": [],
     "history_relevant_to_present": "这里的公会会长最近在可疑的情况下被替换了。",
-    "NPC第一次出场": [
+    "npc_first_appearances": [
       {
         "id": "card_char_shadowfire_dragon",
         "name": "盲影",
-        "activity": "以脆弱盲眼精灵先知的伪装，引诱贪婪的维修工去送致命的伪造预言。"
+        "activity": "以脆弱盲眼精灵先知的伪装，引诱贪婪的维修工去送致命的伪造预言。",
+        "appearance_condition": "pc_level >= 5"
       }
     ]
   },
@@ -512,11 +522,12 @@
     "clues_hidden_here": [],
     "clues_pointing_elsewhere": [],
     "history_relevant_to_present": "这家客栈悬挂在一根巨大的古老蛛丝上。",
-    "NPC第一次出场": [
+    "npc_first_appearances": [
       {
         "id": "card_char_lydia_zhentarim",
         "name": "莉迪亚·暗星",
-        "activity": "伪装成高阶香料商人，在高级客栈用致幻香气色诱底层工人去安放窃听器。"
+        "activity": "伪装成高阶香料商人，在高级客栈用致幻香气色诱底层工人去安放窃听器。",
+        "appearance_condition": "pc_level >= 3"
       }
     ]
   },
@@ -535,11 +546,12 @@
     "clues_hidden_here": [],
     "clues_pointing_elsewhere": [],
     "history_relevant_to_present": "这里的沙子永远被染成红色；这被奴隶们视为神圣之地。",
-    "NPC第一次出场": [
+    "npc_first_appearances": [
       {
         "id": "card_char_grom_gladiator",
         "name": "格罗姆",
-        "activity": "在场上连胜，不知道自己的饮水碗即将被维修工高空投毒。"
+        "activity": "在场上连胜，不知道自己的饮水碗即将被维修工高空投毒。",
+        "appearance_condition": "pc_level >= 1"
       }
     ]
   },
@@ -574,11 +586,12 @@
     "clues_hidden_here": [],
     "clues_pointing_elsewhere": [],
     "history_relevant_to_present": "这个营地高度流动；忠诚只存在于金币支付期间。",
-    "NPC第一次出场": [
+    "npc_first_appearances": [
       {
         "id": "card_char_nym_wanderer",
         "name": "宁姆·流浪者",
-        "activity": "在防守严密的帐篷内指挥佣兵团的日常运作。"
+        "activity": "在防守严密的帐篷内指挥佣兵团的日常运作。",
+        "appearance_condition": "pc_level >= 3"
       }
     ]
   },
@@ -597,11 +610,12 @@
     "clues_hidden_here": [],
     "clues_pointing_elsewhere": [],
     "history_relevant_to_present": "税务局是这座城市防御最森严的非贵族建筑。",
-    "NPC第一次出场": [
+    "npc_first_appearances": [
       {
         "id": "card_char_veldrin_tax_collector",
         "name": "维尔德林",
-        "activity": "冷酷地处理账务，并试图将装满黑金和勒索信的包裹交给悬在窗外的维修工。"
+        "activity": "冷酷地处理账务，并试图将装满黑金和勒索信的包裹交给悬在窗外的维修工。",
+        "appearance_condition": "pc_level >= 3"
       }
     ]
   },
@@ -652,11 +666,12 @@
     "clues_hidden_here": [],
     "clues_pointing_elsewhere": [],
     "history_relevant_to_present": "佐维尔家族的忠诚是维系上层城市防御的关键。",
-    "NPC第一次出场": [
+    "npc_first_appearances": [
       {
         "id": "card_char_vierna_zauviir",
         "name": "维尔娜主母",
-        "activity": "在堡垒内忧心忡忡，处于两大顶级家族夹缝中试图保全自身。"
+        "activity": "在堡垒内忧心忡忡，处于两大顶级家族夹缝中试图保全自身。",
+        "appearance_condition": "pc_level >= 3"
       }
     ]
   },
@@ -675,11 +690,12 @@
     "clues_hidden_here": [],
     "clues_pointing_elsewhere": [],
     "history_relevant_to_present": "这些骑士是切德·纳萨德城中最令人畏惧的执行者。",
-    "NPC第一次出场": [
+    "npc_first_appearances": [
       {
         "id": "card_char_ryltar_captain",
         "name": "瑞尔塔队长",
-        "activity": "愤怒地悬赏寻找破坏升降梯的反抗军线索。"
+        "activity": "愤怒地悬赏寻找破坏升降梯的反抗军线索。",
+        "appearance_condition": "pc_level >= 1"
       }
     ]
   },
@@ -890,11 +906,12 @@
     "clues_hidden_here": [],
     "clues_pointing_elsewhere": [],
     "history_relevant_to_present": "这里的恶魔为城市的大部分魔法基础设施提供能量。",
-    "NPC第一次出场": [
+    "npc_first_appearances": [
       {
         "id": "card_char_nalfein_baenre",
         "name": "纳尔芬·班瑞",
-        "activity": "在底层准备深渊献祭仪式，并偶尔前往黑市强行收购邪恶灵魂石。"
+        "activity": "在底层准备深渊献祭仪式，并偶尔前往黑市强行收购邪恶灵魂石。",
+        "appearance_condition": "pc_level >= 5"
       }
     ]
   },
@@ -913,11 +930,12 @@
     "clues_hidden_here": [],
     "clues_pointing_elsewhere": [],
     "history_relevant_to_present": "包含大分裂时代之前的知识。",
-    "NPC第一次出场": [
+    "npc_first_appearances": [
       {
         "id": "card_char_pharaun_heretic",
         "name": "法劳恩",
-        "activity": "恭维东方武僧，忽悠对方在维护物理蛛网时贴上破坏结界的符文。"
+        "activity": "恭维东方武僧，忽悠对方在维护物理蛛网时贴上破坏结界的符文。",
+        "appearance_condition": "pc_level >= 1"
       }
     ]
   },
@@ -936,11 +954,12 @@
     "clues_hidden_here": [],
     "clues_pointing_elsewhere": [],
     "history_relevant_to_present": "传送门已经停用了几千年，直到现在。",
-    "NPC第一次出场": [
+    "npc_first_appearances": [
       {
         "id": "card_char_xalyth_cult_leader",
         "name": "萨莉丝",
-        "activity": "在传送门枢纽准备终极仪式，企图将整个城市拉入远域。"
+        "activity": "在传送门枢纽准备终极仪式，企图将整个城市拉入远域。",
+        "appearance_condition": "pc_level >= 5"
       }
     ]
   },
@@ -991,11 +1010,12 @@
     "clues_hidden_here": [],
     "clues_pointing_elsewhere": [],
     "history_relevant_to_present": "这是一个被认为和平的地方，但在这里发生的谋杀比在角斗场里还要多。",
-    "NPC第一次出场": [
+    "npc_first_appearances": [
       {
         "id": "card_char_mizri_nasadra",
         "name": "米兹里主母",
-        "activity": "在议事大厅表面和气地谈判，背地里密谋清洗。"
+        "activity": "在议事大厅表面和气地谈判，背地里密谋清洗。",
+        "appearance_condition": "pc_level >= 5"
       }
     ]
   },
@@ -1015,11 +1035,12 @@
     "clues_hidden_here": [],
     "clues_pointing_elsewhere": [],
     "history_relevant_to_present": "在被瓦林收购前，这里曾是一个破败的卓尔神庙旧址。",
-    "NPC第一次出场": [
+    "npc_first_appearances": [
       {
         "id": "card_char_vhalin_spymaster",
         "name": "瓦林·夜影",
-        "activity": "带领打手堵住两头通风管，优雅地威胁捡到绝密录音的清洁工。"
+        "activity": "带领打手堵住两头通风管，优雅地威胁捡到绝密录音的清洁工。",
+        "appearance_condition": "pc_level >= 1"
       }
     ]
   },
@@ -1038,16 +1059,18 @@
     "clues_hidden_here": [],
     "clues_pointing_elsewhere": [],
     "history_relevant_to_present": "这是城市最重要的财政来源之一，由梅拉恩家族负责运营，但收益需上缴大部分给第一家族。",
-    "NPC第一次出场": [
+    "npc_first_appearances": [
       {
         "id": "card_char_talytha_melarn",
         "name": "塔莉莎·梅拉恩",
-        "activity": "作为拍卖行的实际控制者，在幕后审视所有高价值的交易。"
+        "activity": "作为拍卖行的实际控制者，在幕后审视所有高价值的交易。",
+        "appearance_condition": "pc_level >= 3"
       },
       {
         "id": "card_char_elara_slave",
         "name": "埃拉拉",
-        "activity": "作为压轴商品被展示在拍卖台上，引发各大家族的竞价。"
+        "activity": "作为压轴商品被展示在拍卖台上，引发各大家族的竞价。",
+        "appearance_condition": "pc_level >= 1"
       }
     ]
   }

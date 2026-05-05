@@ -186,7 +186,7 @@
     "challenge_rating": 3,
     "stats": {
       "AC": 13,
-      "HP": 32,
+      "HP": 0,
       "speed": "30尺, 攀爬30尺",
       "abilities": {
         "STR": 15,
@@ -218,13 +218,13 @@
     "challenge_rating": 3,
     "stats": {
       "AC": 15,
-      "HP": 75,
+      "HP": 44,
       "speed": "30尺, 攀爬30尺",
       "abilities": {
         "STR": 18,
         "DEX": 10,
         "CON": 15,
-        "INT": 6,
+        "INT": 0,
         "WIS": 12,
         "CHA": 7
       }

@@ -18,7 +18,7 @@
     "contradictions": [
       "虽然宣扬无情，但她寝室的密柜里藏着一张她小姨生前编织的小巧蛛网吊坠。"
     ],
-    "location": "loc_house_nasadra_fortress",
+    "location": "loc_matron_council",
     "possible_locations": [
       "第一家族私人刑讯室",
       "主母联合议事大厅"
@@ -43,7 +43,7 @@
     "contradictions": [
       "他口口声声说要同归于尽，却在暗中保护一个在劳工区生病的兽人孤儿。"
     ],
-    "location": "loc_slaves_pens",
+    "location": "loc_lift_2",
     "possible_locations": [
       "二号石化网升降梯（重型货运机括）"
     ]
@@ -64,7 +64,7 @@
     "contradictions": [
       "他贪财如命，但从未出卖过那个多年前救过他一命的卓尔逃兵。"
     ],
-    "location": "loc_broken_web_slum",
+    "location": "loc_duergar_fence",
     "background": "在灰矮人城市的一次矿井坍塌中失去了眼睛和所有财产，被当成废料卖给了卓尔。 对任何“体制”和“法律”的极度蔑视，只相信看得见的金币。",
     "motivation": "“正义和忠诚是卓尔编出来的笑话，在这个深渊里，金币是唯一的重力。” 在第一家族和反抗军之间左右逢源，倒卖情报和酸性腐蚀剂，目标是攒够钱买通守卫逃离幽暗地域。",
     "possible_locations": [

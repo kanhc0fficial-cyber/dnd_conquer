@@ -176,7 +176,11 @@ async function loadPackage(pkg){
     S.pkg=pkg;S.cache={};S.active=null;S.pins={};S.changedPaths=null;S.selRow=null;
     updatePinsUI();updateRunFields();
     setStatus('加载 '+pkg+'...');
-    const[files,modes]=await Promise.all([apiFetch('/api/files?'+pkgParam()),apiFetch('/api/modes?'+pkgParam())]);
+    const[files,modes,fileErrors]=await Promise.all([
+      apiFetch('/api/files?'+pkgParam()),
+      apiFetch('/api/modes?'+pkgParam()),
+      apiFetch('/api/file_errors?'+pkgParam()).catch(()=>({}))
+    ]);
     // Populate mode selector
     const sel=$('mode-sel');sel.innerHTML='';
     for(const m of modes){
@@ -194,6 +198,10 @@ async function loadPackage(pkg){
       const b=document.createElement('button');
       b.className='tab';b.textContent=f;b.dataset.f=f;b.onclick=()=>switchFile(f);
       tabs.appendChild(b);
+    }
+    const badFiles=Object.keys(fileErrors);
+    if(badFiles.length){
+      appendOut('['+pkg+'] 已跳过 '+badFiles.length+' 个无法解析的 JSON: '+badFiles.join(', '),'warn');
     }
     if(files.length)await switchFile(files[0]);
     else $('jtree').innerHTML='<span class="dim">该 package 目录没有 JSON 文件</span>';

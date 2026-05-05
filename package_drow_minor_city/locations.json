@@ -251,7 +251,13 @@
         "activity": "在前台两头吃回扣，倒卖一些次品或赃物。",
         "appearance_condition": "pc_level >= 1"
       }
-    ]
+    ],
+    "card_ids": [
+      "card_char_vorn_one_eye"
+    ],
+    "character_activities": {
+      "card_char_vorn_one_eye": "在前台两头吃回扣，倒卖一些次品或赃物。"
+    }
   },
   "loc_blind_alley_black_market": {
     "id": "loc_blind_alley_black_market",
@@ -337,7 +343,13 @@
         "activity": "暗中监视被强酸腐蚀的承重网，准备收买撞破计划的维修工。",
         "appearance_condition": "pc_level >= 1"
       }
-    ]
+    ],
+    "card_ids": [
+      "card_char_zzik_zzik"
+    ],
+    "character_activities": {
+      "card_char_zzik_zzik": "暗中监视被强酸腐蚀的承重网，准备收买撞破计划的维修工。"
+    }
   },
   "loc_foreigner_registry": {
     "id": "loc_foreigner_registry",
@@ -1017,7 +1029,13 @@
         "activity": "在议事大厅表面和气地谈判，背地里密谋清洗。",
         "appearance_condition": "pc_level >= 5"
       }
-    ]
+    ],
+    "card_ids": [
+      "card_char_mizri_nasadra"
+    ],
+    "character_activities": {
+      "card_char_mizri_nasadra": "在议事大厅表面和气地谈判，背地里密谋清洗。"
+    }
   },
   "loc_nightclub_abyss": {
     "id": "loc_nightclub_abyss",

@@ -58,6 +58,21 @@ def _modes_dir(pkg_dir):
 def _package_key_from_qs(qs):
     return qs.get("package", qs.get("pkg", [""]))[0]
 
+def _valid_json_files(pkg_dir):
+    files = []
+    errors = {}
+    for fname in sorted(os.listdir(pkg_dir)):
+        fp = os.path.join(pkg_dir, fname)
+        if not fname.endswith(".json") or not os.path.isfile(fp):
+            continue
+        try:
+            with open(fp, encoding="utf-8") as f:
+                json.load(f)
+            files.append(fname)
+        except Exception as exc:
+            errors[fname] = str(exc)
+    return files, errors
+
 # ── Job store ──────────────────────────────────────────────────────────────────
 # job_id → { "status": "running"|"done"|"error", "lines": [...], "lock": Lock }
 JOBS = {}
@@ -155,10 +170,21 @@ class Handler(BaseHTTPRequestHandler):
                 self._send_json({"error": "package folder not found"}, 404)
                 return
             try:
-                files = sorted(f for f in os.listdir(pkg_dir) if f.endswith(".json"))
+                files, _ = _valid_json_files(pkg_dir)
             except FileNotFoundError:
                 files = []
             self._send_json(files)
+
+        elif p.path == "/api/file_errors":
+            pkg_dir = _package_dir(_package_key_from_qs(qs))
+            if not pkg_dir:
+                self._send_json({"error": "package folder not found"}, 404)
+                return
+            try:
+                _, errors = _valid_json_files(pkg_dir)
+            except FileNotFoundError:
+                errors = {}
+            self._send_json(errors)
 
         elif p.path == "/api/file":
             pkg_dir = _package_dir(_package_key_from_qs(qs))

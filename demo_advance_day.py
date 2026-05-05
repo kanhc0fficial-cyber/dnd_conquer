@@ -71,14 +71,27 @@ def load_json(filename: str) -> dict | list:
     with open(path, "r", encoding="utf-8") as f:
         return json.load(f)
 
+def can_load_json_file(filename: str) -> tuple[bool, str | None]:
+    try:
+        load_json(filename)
+        return True, None
+    except Exception as exc:
+        return False, str(exc)
+
 def list_package_json_files() -> list[str]:
     """列出 package 根目录下的 JSON 数据文件，不包含 modes 子目录。"""
     if not os.path.isdir(PKG_DIR):
         return []
-    return sorted(
-        fname for fname in os.listdir(PKG_DIR)
-        if fname.endswith(".json") and os.path.isfile(os.path.join(PKG_DIR, fname))
-    )
+    valid_files = []
+    for fname in sorted(os.listdir(PKG_DIR)):
+        if not fname.endswith(".json") or not os.path.isfile(os.path.join(PKG_DIR, fname)):
+            continue
+        ok, error = can_load_json_file(fname)
+        if ok:
+            valid_files.append(fname)
+        else:
+            print(f"[警告] 跳过无法解析的 JSON: {os.path.relpath(os.path.join(PKG_DIR, fname), DATA_DIR)} ({error})")
+    return valid_files
 
 def load_package_jsons() -> dict[str, dict | list]:
     """加载 package 根目录下全部 JSON 文件。"""

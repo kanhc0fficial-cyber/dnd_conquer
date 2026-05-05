@@ -1,0 +1,8 @@
+feat: enrich Drow Minor City package and document JSON schema
+
+- Rename `package` directory to `package_drow_minor_city`.
+- Enrich `factions.json` with linked characters, possible enemies, and minor NPCs.
+- Expand `monsters.json` with 16 new Underdark creatures (CR 1-10).
+- Refactor `locations.json` and `quests.json` to use English keys (`npc_first_appearances`) and add `appearance_condition` (e.g., `pc_level >= 5`) for progression locking.
+- Add `pc.json` with a level 1 Shou Lung human monk.
+- Add `验收标准/schema_standard.md` documenting the unified, numbered JSON schema for characters and locations.
